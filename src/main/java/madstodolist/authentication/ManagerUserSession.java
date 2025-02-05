@@ -3,7 +3,7 @@ package madstodolist.authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class ManagerUserSession {
