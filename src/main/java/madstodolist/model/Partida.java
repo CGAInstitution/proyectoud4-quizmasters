@@ -3,6 +3,7 @@ package madstodolist.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,14 +18,14 @@ public class Partida {
     private LocalDateTime dateTime;
 
     @Column(name = "joinable")
-    private boolean Joinable;
+    private boolean joinable;
 
     @Column(name = "modo_juego")
     private String modoDeJuego;
 
     @ManyToMany
     @JoinTable(name = "jugadores_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "jugador_id"))
-    private List<Usuario> usuarios;
+    private List<Usuario> usuarios =  new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "ganador")
@@ -33,7 +34,7 @@ public class Partida {
     public Partida(long id, LocalDateTime dateTime, boolean joinable, List<Usuario> usuarios, String modoDeJuego, Usuario ganador) {
         this.id = id;
         this.dateTime = dateTime;
-        Joinable = joinable;
+        this.joinable = joinable;
         this.usuarios = usuarios;
         this.modoDeJuego = modoDeJuego;
         this.ganador = ganador;
@@ -41,7 +42,7 @@ public class Partida {
 
     public Partida(LocalDateTime dateTime, boolean joinable, String modoDeJuego) {
         this.dateTime = dateTime;
-        Joinable = joinable;
+        this.joinable = joinable;
         this.modoDeJuego = modoDeJuego;
     }
 
@@ -65,11 +66,11 @@ public class Partida {
     }
 
     public boolean isJoinable() {
-        return Joinable;
+        return joinable;
     }
 
     public void setJoinable(boolean joinable) {
-        Joinable = joinable;
+        this.joinable = joinable;
     }
 
     public String getModoDeJuego() {
