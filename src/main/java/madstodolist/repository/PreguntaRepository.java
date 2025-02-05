@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface PreguntaRepository extends CrudRepository<Pregunta, Long> {
 
     List<Pregunta> findByCategoria(Categoria categoria);
+    Optional<Pregunta> findByEnunciado(String enunciado);
 }

@@ -112,4 +112,23 @@ public class PreguntaTest {
         assertThat(preguntasGeografia.size()).isEqualTo(3);
         assertThat(preguntasGeografia.get(0).getRespuestaCorrecta()).isEqualTo("Timbu");
     }
+
+    @Test
+    @Transactional
+    public void buscarPreguntaPorEnunciado() {
+        //GIVEN
+        //una pregunta en la Base de datos
+        Pregunta preguntaGeografia_1 = new Pregunta("¿Cúal es la capital de Bután?","Timbu",Categoria.GEOGRAFIA,10f);
+        preguntaRepository.save(preguntaGeografia_1);
+
+        //WHEN
+        //buscamos la pregunta por enunciado
+        Pregunta preguntaBD = preguntaRepository.findByEnunciado("¿Cúal es la capital de Bután?").orElse(null);
+
+        //THEN
+        //comprobamos que los datos son correctos
+        assertThat(preguntaBD).isNotNull();
+        assertThat(preguntaBD.getRespuestaCorrecta()).isEqualTo("Timbu");
+
+    }
 }
