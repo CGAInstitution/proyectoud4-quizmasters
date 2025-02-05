@@ -89,6 +89,14 @@ public class Partida {
         this.usuarios = usuarios;
     }
 
+    public void addUsuario(Usuario usuario){
+        getUsuarios().add(usuario);
+    }
+
+    public void deleteUsuario(Usuario usuario){
+        getUsuarios().remove(usuario);
+    }
+
     public Usuario getGanador() {
         return ganador;
     }
