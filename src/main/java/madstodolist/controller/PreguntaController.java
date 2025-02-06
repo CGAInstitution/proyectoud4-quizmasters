@@ -1,11 +1,13 @@
 package madstodolist.controller;
 
+import madstodolist.model.Categoria;
 import madstodolist.model.Pregunta;
 import madstodolist.service.PreguntaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -20,5 +22,30 @@ public class PreguntaController {
         List<Pregunta> preguntas = preguntaService.findAll();
         model.addAttribute("preguntas", preguntas);
         return "preguntas";
+    }
+
+    @GetMapping("/preguntas/nueva")
+    public String nuevaPregunta(Model model) {
+        model.addAttribute("pregunta", new Pregunta());
+        model.addAttribute("categorias", Categoria.values());
+        return "formNuevaPregunta";
+    }
+
+    @PostMapping("/preguntas/nueva")
+    public String nuevaPregunta(@ModelAttribute Pregunta pregunta, Model model, RedirectAttributes redirectAttributes) {
+        preguntaService.crearPregunta(pregunta.getEnunciado(),pregunta.getRespuestaCorrecta(),pregunta.getCategoria(),pregunta.getPuntuacion());
+        redirectAttributes.addFlashAttribute("mensaje", "Pregunta creada correctamente");
+        return "redirect:/preguntas";
+    }
+
+    @DeleteMapping("/preguntas/{id}")
+    @ResponseBody
+    public String eliminarPregunta(@PathVariable(value="id") Long id, RedirectAttributes flash) {
+        Pregunta pregunta = preguntaService.findById(id);
+        if (pregunta == null) {
+            throw new RuntimeException("La pregunta no existe");
+        }
+        preguntaService.deletePregunta(pregunta);
+        return "OK";
     }
 }

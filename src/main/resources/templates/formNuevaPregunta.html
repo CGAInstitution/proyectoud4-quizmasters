@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Nueva pregunta')"></head>
+
+<body>
+<div class="container-fluid">
+
+    <h2 th:text="'Nueva pregunta'"></h2>
+
+    <form method="post" th:action="@{/preguntas/nueva}" th:object="${pregunta}">
+        <div class="col-6">
+        <div class="form-group">
+            <label for="enunciado">Enunciado de la pregunta:</label>
+            <input class="form-control" id="enunciado" name="enunciado" required th:field="*{enunciado}" type="text"/>
+            <label for="respuesta">Respuesta correcta:</label>
+            <input class="form-control" id="respuesta" name="respuesta" required th:field="*{respuestaCorrecta}" type="text"/>
+            <label for="categorias">Categoría:</label>
+            <select th:field="*{categoria}" class="form-control" id="categorias">
+                <option th:each="categoria:${categorias}" th:value="${categoria}" th:text="${categoria}"/>
+            </select>
+            <label for="puntuacion">Puntuación:</label>
+            <input class="form-control" id="puntuacion" name="puntuacion" required th:field="*{puntuacion}" type="text"/>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Crear pregunta</button>
+        <a class="btn btn-link" th:href="@{/preguntas}">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<div th:replace="fragments::javascript"/>
+
+</body>
+</html>

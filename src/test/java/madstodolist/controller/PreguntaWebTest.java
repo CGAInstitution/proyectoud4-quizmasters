@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,5 +53,17 @@ public class PreguntaWebTest {
                 .andExpect(view().name("preguntas"))
                 .andExpect(content().string(containsString("¿Cúal es la capital de Francia?")))
                 .andExpect(content().string(containsString("¿Cúal es la capital de Rusia?")));
+    }
+
+    @Test
+    public void test_nuevaPregunta() throws Exception {
+        String urlPeticion = "/preguntas/nueva";
+        String urlAction = "action=\"/preguntas/nueva";
+
+        this.mockMvc.perform(get(urlPeticion))
+                .andExpect((content().string(allOf(
+                        containsString("form method=\"post\""),
+                        containsString(urlAction)
+                ))));
     }
 }
