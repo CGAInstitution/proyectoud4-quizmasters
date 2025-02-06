@@ -42,6 +42,10 @@ public class ModoDeJuegoService {
     @Transactional
     public ModoDeJuego crateModoDeJuego (int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
 
+        modoDeJuegoRepository.findByNombre(nombre).ifPresent(modoDeJuego -> {
+            throw new IllegalArgumentException("Ya existe un modo de juego con ese nombre");
+        });
+
         ModoDeJuego modoDeJuego = new ModoDeJuego( numeroDePreguntas,  nombre, categoriasIncluidas);
         modoDeJuegoRepository.save(modoDeJuego);
         return modelMapper.map(modoDeJuego, ModoDeJuego.class);
@@ -51,17 +55,33 @@ public class ModoDeJuegoService {
     @Transactional
     public ModoDeJuego updateModoDeJuego(Long idJuego, int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
 
-        ModoDeJuego modoDeJuego = modoDeJuegoRepository.findById(idJuego).orElse(null);
-        if (modoDeJuego == null) {
-            throw new IllegalArgumentException();
+        ModoDeJuego modoDeJuego = modoDeJuegoRepository.findById(idJuego)
+                .orElseThrow(() -> new IllegalArgumentException("Modo de juego no encontrado con ID: " + idJuego));
+
+        if (modoDeJuegoRepository.findByNombre(nombre).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un modo de juego con el nombre: " + nombre);
         }
 
         modoDeJuego.setNumeroDePreguntas(numeroDePreguntas);
         modoDeJuego.setNombre(nombre);
         modoDeJuego.setCategoriasIncluidas(categoriasIncluidas);
-        modoDeJuegoRepository.save(modoDeJuego);
 
-        return modelMapper.map(modoDeJuego, ModoDeJuego.class);
+        return modoDeJuego;
+    }
+
+
+    @Transactional
+    public ModoDeJuego updateModoDeJuego(ModoDeJuego modoDeJuego, int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
+
+        if (modoDeJuegoRepository.findByNombre(nombre).filter(mj -> !mj.getId()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un modo de juego con ese nombre");
+        }
+
+        modoDeJuego.setNumeroDePreguntas(numeroDePreguntas);
+        modoDeJuego.setNombre(nombre);
+        modoDeJuego.setCategoriasIncluidas(categoriasIncluidas);
+
+        return modoDeJuego; // JPA sincroniza automáticamente los cambios dentro de @Transactional
     }
 
 

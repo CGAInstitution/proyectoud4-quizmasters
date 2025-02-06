@@ -9,7 +9,7 @@ public class ModoDeJuego {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "numero_de_preguntas")
     private int numeroDePreguntas;
@@ -29,6 +29,10 @@ public class ModoDeJuego {
 
     public ModoDeJuego() {
 
+    }
+
+    public long getId() {
+        return id;
     }
 
     public int getNumeroDePreguntas() {
