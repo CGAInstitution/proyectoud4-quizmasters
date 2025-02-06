@@ -49,6 +49,10 @@ public class PreguntaService {
         return preguntaRepository.findByCategoria(categoria);
     }
 
+    public List<Pregunta> findAll(){
+        return (List<Pregunta>) preguntaRepository.findAll();
+    }
+
     public Pregunta updatePregunta(Pregunta pregunta, String newEnunciado,String newRespuesta, Categoria newCategoria, Float newPuntuacion){
         if(pregunta == null){
             logger.debug("No se puede actualizar pregunta. La pregunta está vacía");
