@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${partidaForm}" th:action="@{/partida/new}" method="post">
+    <label>Modo de Juego</label>
+    <input type="text" th:field="*{modoDeJuego}">
+    <br>
+    <label>Es Joinable</label>
+    <input type="checkbox" th:field="*{joinable}">
+    <br>
+    <button th:text="'Submit'" type="submit"/>
+</form>
+
+</body>
+</html>
