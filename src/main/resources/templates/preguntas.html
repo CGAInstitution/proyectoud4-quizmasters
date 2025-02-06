@@ -16,6 +16,13 @@
         <div class="col">
             <p><a class="btn btn-primary" th:href="@{/preguntas/nueva}"> Crear nueva pregunta</a>
                 <a class="btn btn-link" href="/logout">Salir</a></p>
+            <form method="post" th:action="@{/preguntas}">
+                <label for="categoriaSelect">Filtra por categoría:</label>
+                <select id="categoriaSelect" name="categoria" class="form-control" onchange="this.form.submit()">
+                    <option value="" th:selected="${categoria == null}">TODAS</option>
+                    <option th:each="categoria:${categorias}" th:value="${categoria}" th:selected="${categoria == selectedCategoria}" th:text="${categoria}"/>
+                </select>
+            </form>
             <table class="table table-striped">
                 <thead>
                 <tr>
