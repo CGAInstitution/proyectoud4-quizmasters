@@ -58,7 +58,7 @@ public class PreguntaService {
             logger.debug("No se puede actualizar pregunta. La pregunta está vacía");
             throw new RuntimeException("No se puede actualizar pregunta. Pregunta null");
         }
-        if(preguntaRepository.findByEnunciado(newEnunciado).isPresent()){
+        if(!newEnunciado.equals(pregunta.getEnunciado()) && preguntaRepository.findByEnunciado(newEnunciado).isPresent()){
             logger.debug("No se puede actualizar pregunta. Ya existe ese enunciado");
 
             throw new RuntimeException("Ya existe enunciado de pregunta");

@@ -34,7 +34,7 @@
                     <td th:text="${pregunta.respuestaCorrecta}"></td>
                     <td th:text="${pregunta.categoria}"></td>
                     <td th:text="${pregunta.puntuacion}"></td>
-                    <td><a class="btn btn-primary btn-xs" th:href="@{/preguntas/{id}/editar(id=${pregunta.id})}"/>editar</a>
+                    <td><a class="btn btn-primary btn-xs" th:href="@{/preguntas/editar/{id}(id=${pregunta.id})}"/>editar</a>
                         <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
                            th:onclick="'del(\'/preguntas/' + ${pregunta.id} + '\')'">borrar</button>
                     </td>

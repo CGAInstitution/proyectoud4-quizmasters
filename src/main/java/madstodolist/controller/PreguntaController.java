@@ -48,4 +48,24 @@ public class PreguntaController {
         preguntaService.deletePregunta(pregunta);
         return "OK";
     }
+
+    @GetMapping("/preguntas/editar/{id}")
+    public String editarPregunta(@PathVariable(value="id") Long id, Model model) {
+        Pregunta preguntaActual = preguntaService.findById(id);
+        model.addAttribute("pregunta", preguntaActual);
+        model.addAttribute("categorias", Categoria.values());
+        return "formEditarPregunta";
+    }
+
+    @PostMapping("/preguntas/editar/{id}")
+    public String grabarPreguntaModificada(@PathVariable(value="id") Long id,@ModelAttribute Pregunta pregunta, Model model, RedirectAttributes flash) {
+        Pregunta preguntaActual = preguntaService.findById(id);
+        if (preguntaActual == null) {
+            throw new RuntimeException("La pregunta editada no existe");
+        }
+        preguntaService.updatePregunta(preguntaActual,pregunta.getEnunciado(),pregunta.getRespuestaCorrecta(),pregunta.getCategoria(),pregunta.getPuntuacion());
+        flash.addFlashAttribute("mensaje", "Pregunta modificada correctamente");
+        return "redirect:/preguntas";
+
+    }
 }
