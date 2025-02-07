@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Preguntas')"></head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row mt-3">
+        <div class="col">
+            <h2 th:text="'Listado de preguntas'"></h2>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <p><a class="btn btn-primary" th:href="@{/preguntas/nueva}"> Crear nueva pregunta</a>
+                <a class="btn btn-link" href="/logout">Salir</a></p>
+            <form method="post" th:action="@{/preguntas}">
+                <label for="categoriaSelect">Filtra por categoría:</label>
+                <select id="categoriaSelect" name="categoria" class="form-control" onchange="this.form.submit()">
+                    <option value="" th:selected="${categoria == null}">TODAS</option>
+                    <option th:each="categoria:${categorias}" th:value="${categoria}" th:selected="${categoria == selectedCategoria}" th:text="${categoria}"/>
+                </select>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Pregunta</th>
+                    <th>Respuesta</th>
+                    <th>Categoría</th>
+                    <th>Puntuación</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pregunta: ${preguntas}">
+                    <td th:text="${pregunta.id}"></td>
+                    <td th:text="${pregunta.enunciado}"></td>
+                    <td th:text="${pregunta.respuestaCorrecta}"></td>
+                    <td th:text="${pregunta.categoria}"></td>
+                    <td th:text="${pregunta.puntuacion}"></td>
+                    <td><a class="btn btn-primary btn-xs" th:href="@{/preguntas/editar/{id}(id=${pregunta.id})}"/>editar</a>
+                        <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
+                           th:onclick="'del(\'/preguntas/' + ${pregunta.id} + '\')'">borrar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<div th:replace="fragments::javascript"/>
+
+<!-- Lanzamos una petición DELETE por JavaScript para borrar una pregunta -->
+
+<script type="text/javascript">
+    function del(urlBorrar) {
+        if (confirm('¿Estás seguro/a de que quieres borrar la pregunta?')) {
+            fetch(urlBorrar, {
+                method: 'DELETE'
+            }).then((res) => location.reload());
+        }
+    }
+</script>
+
+
+
+</body>
+</html>
