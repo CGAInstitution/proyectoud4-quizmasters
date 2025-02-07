@@ -20,8 +20,13 @@ public class Partida {
     @Column(name = "joinable")
     private boolean joinable;
 
-    @Column(name = "modo_juego")
-    private String modoDeJuego;
+    @ManyToOne
+    @JoinColumn(name = "modo_juego")
+    private ModoDeJuego modoDeJuego;
+
+    @ManyToMany
+    @JoinTable(name = "preguntas_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "pregunta_id"))
+    private List<Pregunta> preguntas =  new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "jugadores_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "jugador_id"))
@@ -31,7 +36,7 @@ public class Partida {
     @JoinColumn(name = "ganador")
     private Usuario ganador;
 
-    public Partida(long id, LocalDateTime dateTime, boolean joinable, List<Usuario> usuarios, String modoDeJuego, Usuario ganador) {
+    public Partida(long id, LocalDateTime dateTime, boolean joinable, List<Usuario> usuarios, ModoDeJuego modoDeJuego, Usuario ganador) {
         this.id = id;
         this.dateTime = dateTime;
         this.joinable = joinable;
@@ -40,7 +45,7 @@ public class Partida {
         this.ganador = ganador;
     }
 
-    public Partida(LocalDateTime dateTime, boolean joinable, String modoDeJuego) {
+    public Partida(LocalDateTime dateTime, boolean joinable, ModoDeJuego modoDeJuego) {
         this.dateTime = dateTime;
         this.joinable = joinable;
         this.modoDeJuego = modoDeJuego;
@@ -73,11 +78,11 @@ public class Partida {
         this.joinable = joinable;
     }
 
-    public String getModoDeJuego() {
+    public ModoDeJuego getModoDeJuego() {
         return modoDeJuego;
     }
 
-    public void setModoDeJuego(String modoDeJuego) {
+    public void setModoDeJuego(ModoDeJuego modoDeJuego) {
         this.modoDeJuego = modoDeJuego;
     }
 
@@ -103,6 +108,14 @@ public class Partida {
 
     public void setGanador(Usuario ganador) {
         this.ganador = ganador;
+    }
+
+    public List<Pregunta> getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(List<Pregunta> preguntas) {
+        this.preguntas = preguntas;
     }
 
     @Override
