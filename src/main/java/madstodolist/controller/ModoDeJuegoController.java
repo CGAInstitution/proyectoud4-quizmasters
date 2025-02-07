@@ -1,18 +1,15 @@
 package madstodolist.controller;
 
-import jakarta.servlet.http.HttpSession;
-import madstodolist.dto.TareaData;
-import madstodolist.dto.UsuarioData;
+
+import madstodolist.model.Categoria;
 import madstodolist.model.ModoDeJuego;
+import madstodolist.model.Pregunta;
 import madstodolist.service.ModoDeJuegoService;
-import madstodolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -42,5 +39,19 @@ public class ModoDeJuegoController {
 
         return "ok";
 
+    }
+
+    @GetMapping("/modosDeJuego/nuevo")
+    public String nuevaPregunta(Model model) {
+        model.addAttribute("modoDeJuego", new ModoDeJuego());
+        model.addAttribute("listaDeCategoria", Categoria.values());
+        return "formNuevoModoDeJuego";
+    }
+
+    @PostMapping("/modosDeJuego/nuevo")
+    public String nuevaPregunta(@ModelAttribute ModoDeJuego modoDeJuego, Model model, RedirectAttributes redirectAttributes) {
+        modoDeJuegoService.crateModoDeJuego(modoDeJuego.getNumeroDePreguntas(), modoDeJuego.getNombre(), modoDeJuego.getCategorias());
+        redirectAttributes.addFlashAttribute("mensaje", "Pregunta creada correctamente");
+        return "redirect:/modosDeJuego";
     }
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Nuevo modo de juego')"></head>
+
+<body>
+<div class="container-fluid">
+
+    <h2 th:text="'Nuevo modo de juego'"></h2>
+
+    <form method="post" th:action="@{/modosDeJuego/nuevo}" th:object="${modoDeJuego}">
+        <div class="col-6">
+            <div class="form-group"enunciado>
+                    <label for="nombre">Nombre del modo de juego:</label>
+                <input class="form-control" id="nombre" name="enunciado" required th:field="*{nombre}" type="text"/>
+                <label for="categorias">Categoría:</label>
+                <select th:field="*{categorias}" class="form-control" id="categorias">
+                    <option th:each="categoria:${listaDeCategoria}" th:value="${categoria}" th:text="${categoria}"/>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Crear pregunta</button>
+            <a class="btn btn-link" th:href="@{/modoDeJuego}">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<div th:replace="fragments::javascript"/>
+
+</body>
+</html>

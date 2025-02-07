@@ -61,12 +61,17 @@ public class ModoDeJuegoService {
     @Transactional
     public ModoDeJuego updateModoDeJuego(Long idJuego, int numeroDePreguntas, String nombre, String categoriasIncluidas) {
 
-        ModoDeJuego modoDeJuego = modoDeJuegoRepository.findById(idJuego)
-                .orElseThrow(() -> new IllegalArgumentException("Modo de juego no encontrado con ID: " + idJuego));
+
+
+        if (modoDeJuegoRepository.findById(idJuego).isPresent() && modoDeJuegoRepository.findById(idJuego).get().getNombre().equals(nombre)) {
+            throw new IllegalArgumentException("Ya existe un modo de juego con el nombre: " + nombre);
+        }
 
         if (modoDeJuegoRepository.findByNombre(nombre).isPresent()) {
             throw new IllegalArgumentException("Ya existe un modo de juego con el nombre: " + nombre);
         }
+
+        ModoDeJuego modoDeJuego = modoDeJuegoRepository.findById(idJuego).get();
 
         modoDeJuego.setNumeroDePreguntas(numeroDePreguntas);
         modoDeJuego.setNombre(nombre);
@@ -80,7 +85,7 @@ public class ModoDeJuegoService {
     public ModoDeJuego updateModoDeJuego(ModoDeJuego modoDeJuego, int numeroDePreguntas, String nombre, String categoriasIncluidas) {
 
         if (modoDeJuegoRepository.findByNombre(nombre)
-                .filter(mj -> mj.getId() != null) // Verifica si el ID no es nulo
+                .filter(mj -> mj.getId() != null)
                 .isPresent()) {
             throw new IllegalArgumentException("Ya existe un modo de juego con ese nombre");
         }
