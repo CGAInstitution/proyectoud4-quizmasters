@@ -14,6 +14,6 @@ public interface ModoDeJuegoRepository extends CrudRepository<ModoDeJuego, Long>
 
     Optional<ModoDeJuego> findByNombre(String nombre);
 
-    List<ModoDeJuego> findModoDeJuegosByCategoriasIncluidas(List<String> categoriasIncluidas);
+    List<ModoDeJuego> findAll();
 
 }

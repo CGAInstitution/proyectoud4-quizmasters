@@ -9,7 +9,7 @@ public class ModoDeJuego {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "numero_de_preguntas")
     private int numeroDePreguntas;
@@ -17,22 +17,30 @@ public class ModoDeJuego {
     @Column(name = "nombre")
     private String nombre;
 
-    @ElementCollection
-    @Column(name = "categorias_incluidas")
-    private List<String> categoriasIncluidas;
 
-    public ModoDeJuego(int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
+    @Column(name = "categorias")
+    private String categorias;
+
+    public ModoDeJuego(int numeroDePreguntas, String nombre, String categorias) {
         this.numeroDePreguntas = numeroDePreguntas;
         this.nombre = nombre;
-        this.categoriasIncluidas = categoriasIncluidas;
+        this.categorias = categorias;
     }
 
     public ModoDeJuego() {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public String getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(String categorias) {
+        this.categorias = categorias;
     }
 
     public int getNumeroDePreguntas() {
@@ -51,11 +59,5 @@ public class ModoDeJuego {
         this.nombre = nombre;
     }
 
-    public List<String> getCategoriasIncluidas() {
-        return categoriasIncluidas;
-    }
 
-    public void setCategoriasIncluidas(List<String> categoriasIncluidas) {
-        this.categoriasIncluidas = categoriasIncluidas;
-    }
 }

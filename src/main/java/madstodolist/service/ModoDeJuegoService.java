@@ -15,9 +15,6 @@ public class ModoDeJuegoService {
     @Autowired
     private ModoDeJuegoRepository modoDeJuegoRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     public ModoDeJuegoService(ModoDeJuegoRepository modoDeJuegoRepository) {
         this.modoDeJuegoRepository = modoDeJuegoRepository;
     }
@@ -26,7 +23,16 @@ public class ModoDeJuegoService {
     public ModoDeJuego findById(Long idJuego) {
         ModoDeJuego modoDeJuego = modoDeJuegoRepository.findById(idJuego).orElse(null);
         if (modoDeJuego == null) return null;
-        else return modelMapper.map(modoDeJuego, ModoDeJuego.class);
+        else return modoDeJuego;
+    }
+
+    @Transactional
+    public List<ModoDeJuego> findAllModosDeJuego() {
+
+       List<ModoDeJuego> modosDeJuego = modoDeJuegoRepository.findAll();
+
+         return modosDeJuego;
+
     }
 
     @Transactional
@@ -40,7 +46,7 @@ public class ModoDeJuegoService {
     }
 
     @Transactional
-    public ModoDeJuego crateModoDeJuego (int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
+    public ModoDeJuego crateModoDeJuego (int numeroDePreguntas, String nombre, String categoriasIncluidas) {
 
         modoDeJuegoRepository.findByNombre(nombre).ifPresent(modoDeJuego -> {
             throw new IllegalArgumentException("Ya existe un modo de juego con ese nombre");
@@ -48,12 +54,12 @@ public class ModoDeJuegoService {
 
         ModoDeJuego modoDeJuego = new ModoDeJuego( numeroDePreguntas,  nombre, categoriasIncluidas);
         modoDeJuegoRepository.save(modoDeJuego);
-        return modelMapper.map(modoDeJuego, ModoDeJuego.class);
+        return modoDeJuego;
 
     }
 
     @Transactional
-    public ModoDeJuego updateModoDeJuego(Long idJuego, int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
+    public ModoDeJuego updateModoDeJuego(Long idJuego, int numeroDePreguntas, String nombre, String categoriasIncluidas) {
 
         ModoDeJuego modoDeJuego = modoDeJuegoRepository.findById(idJuego)
                 .orElseThrow(() -> new IllegalArgumentException("Modo de juego no encontrado con ID: " + idJuego));
@@ -64,24 +70,27 @@ public class ModoDeJuegoService {
 
         modoDeJuego.setNumeroDePreguntas(numeroDePreguntas);
         modoDeJuego.setNombre(nombre);
-        modoDeJuego.setCategoriasIncluidas(categoriasIncluidas);
+        modoDeJuego.setCategorias(categoriasIncluidas);
 
         return modoDeJuego;
     }
 
 
     @Transactional
-    public ModoDeJuego updateModoDeJuego(ModoDeJuego modoDeJuego, int numeroDePreguntas, String nombre, List<String> categoriasIncluidas) {
+    public ModoDeJuego updateModoDeJuego(ModoDeJuego modoDeJuego, int numeroDePreguntas, String nombre, String categoriasIncluidas) {
 
-        if (modoDeJuegoRepository.findByNombre(nombre).filter(mj -> !mj.getId()).isPresent()) {
+        if (modoDeJuegoRepository.findByNombre(nombre)
+                .filter(mj -> mj.getId() != null) // Verifica si el ID no es nulo
+                .isPresent()) {
             throw new IllegalArgumentException("Ya existe un modo de juego con ese nombre");
         }
 
+
         modoDeJuego.setNumeroDePreguntas(numeroDePreguntas);
         modoDeJuego.setNombre(nombre);
-        modoDeJuego.setCategoriasIncluidas(categoriasIncluidas);
+        modoDeJuego.setCategorias(categoriasIncluidas);
 
-        return modoDeJuego; // JPA sincroniza automáticamente los cambios dentro de @Transactional
+        return modoDeJuego;
     }
 
 
