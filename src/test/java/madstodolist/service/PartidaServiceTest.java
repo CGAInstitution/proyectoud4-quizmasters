@@ -3,7 +3,9 @@ package madstodolist.service;
 import jakarta.transaction.Transactional;
 import madstodolist.dto.PartidaForm;
 import madstodolist.dto.UsuarioData;
+import madstodolist.model.ModoDeJuego;
 import madstodolist.model.Partida;
+import madstodolist.repository.ModoDeJuegoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,16 +22,21 @@ public class PartidaServiceTest {
 
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    private ModoDeJuegoRepository modoDeJuegoRepository;
 
     @Test
     @Transactional
     public void addPartida(){
+        ModoDeJuego modoDeJuego = new ModoDeJuego();
+        modoDeJuego.setNombre("Clásico");
+        modoDeJuegoRepository.save(modoDeJuego);
         PartidaForm partidaForm = new PartidaForm("Clásico", LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         assertThat(partida.getId()).isNotNull();
         Partida partidaDB = partidaService.findPartidaById(partida.getId());
         assertThat(partidaDB).isNotNull();
-        //assertThat(partidaDB.getModoDeJuego()).isEqualTo("Clásico");
+        assertThat(partidaDB.getModoDeJuego().getNombre()).isEqualTo("Clásico");
         assertThat(partidaDB.getUsuarios()).isEmpty();
     }
 

@@ -3,12 +3,16 @@ package madstodolist.service;
 import jakarta.transaction.Transactional;
 import madstodolist.dto.PartidaForm;
 import madstodolist.dto.UsuarioData;
+import madstodolist.model.ModoDeJuego;
 import madstodolist.model.Partida;
 import madstodolist.model.Usuario;
+import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.PartidaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PartidaService {
@@ -16,12 +20,21 @@ public class PartidaService {
     PartidaRepository partidaRepository;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private ModoDeJuegoRepository modoDeJuegoRepository;
 
     @Transactional
     public Partida guardarPartida(PartidaForm partidaForm){
         Partida partidaNueva = modelMapper.map(partidaForm, Partida.class);
-        partidaRepository.save(partidaNueva);
-        return partidaNueva;
+        Optional<ModoDeJuego> modoDeJuego = modoDeJuegoRepository.findByNombre(partidaForm.getModoDeJuego());
+        if (modoDeJuego.isPresent()) {
+            partidaNueva.setModoDeJuego(modoDeJuego.get());
+            partidaRepository.save(partidaNueva);
+            return partidaNueva;
+        } else {
+            return null;
+        }
+
     }
 
     public Partida findPartidaById(long id){
