@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ol>
+    <li th:each="partida: ${partidas}" th:text="'Id: ' + ${partida.id} + ', Modo de juego: ' + ${partida.modoDeJuego} + ', Joinable: ' + ${partida.joinable}"></li>
+</ol>
+<a th:href="@{/partida/new}">
+    <button th:text="'Crear Partida'"/>
+</a>
+</body>
+</html>
