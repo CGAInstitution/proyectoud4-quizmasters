@@ -50,8 +50,20 @@ public class ModoDeJuegoController {
 
     @PostMapping("/modosDeJuego/nuevo")
     public String nuevaPregunta(@ModelAttribute ModoDeJuego modoDeJuego, Model model, RedirectAttributes redirectAttributes) {
+
         modoDeJuegoService.crateModoDeJuego(modoDeJuego.getNumeroDePreguntas(), modoDeJuego.getNombre(), modoDeJuego.getCategorias());
         redirectAttributes.addFlashAttribute("mensaje", "Pregunta creada correctamente");
         return "redirect:/modosDeJuego";
     }
+
+    @GetMapping("/modosDeJuego/editar/{id}")
+    public String editarPregunta(@PathVariable(value="id") Long id, Model model) {
+        ModoDeJuego modoDeJuegoActual = modoDeJuegoService.findById(id);
+        model.addAttribute("pregunta", modoDeJuegoActual);
+        model.addAttribute("categorias", Categoria.values());
+        return "formEditarPregunta";
+    }
+
+
+
 }

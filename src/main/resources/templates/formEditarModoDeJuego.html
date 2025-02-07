@@ -4,15 +4,15 @@
 <head th:replace="fragments :: head (titulo='Modificar Modo De Juego')"></head>
 
 <body>
-
-<form method="post" th:action="@{/modosDeJuego/nuevo}" th:object="${modoDeJuego}">
+<form method="post" th:action="@{/modosDeJuego/editar}" th:object="${modoDeJuego}">
     <div class="col-6">
         <div class="form-group">
-            <label for="nombre">Nombre del modo de juego:</label>
+            <label for="nombre">Nuevo nombre del modo de juego:</label>
             <input class="form-control" id="nombre" name="enunciado" required th:field="*{nombre}" type="text"/>
             <br/>
-            <label for="nombre">Numero de preguntas del modo de juego:</label>
-            <input class="form-control" type="number" id="preguntas" name="enunciado" required th:field="*{numeroDePreguntas}"/>
+            <label for="nombre">Nuevo numero de preguntas del modo de juego:</label>
+            <input class="form-control" type="number" id="preguntas" name="enunciado" required
+                   th:field="*{numeroDePreguntas}"/>
             <br/>
 
             <!-- Lista de categorías -->
