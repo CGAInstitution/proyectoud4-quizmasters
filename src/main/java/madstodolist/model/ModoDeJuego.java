@@ -17,31 +17,33 @@ public class ModoDeJuego {
     @Column(name = "nombre")
     private String nombre;
 
+    @ElementCollection(targetClass = Categoria.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "modo_juego_categorias", joinColumns = @JoinColumn(name = "modo_de_juego_id"))
+    @Column(name = "categoria")
+    @Enumerated(EnumType.STRING)
+    private List<Categoria> categorias;
 
-    @Column(name = "categorias")
-    private String categorias;
+    public ModoDeJuego() {
+    }
 
-    public ModoDeJuego(int numeroDePreguntas, String nombre, String categorias) {
+    public ModoDeJuego(int numeroDePreguntas, String nombre, List<Categoria> categorias) {
         this.numeroDePreguntas = numeroDePreguntas;
         this.nombre = nombre;
         this.categorias = categorias;
     }
 
-    public ModoDeJuego() {
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
 
+    public void setCategorias(List<Categoria> categoria) {
+        this.categorias = categoria;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getCategorias() {
-        return categorias;
-    }
-
-    public void setCategorias(String categorias) {
-        this.categorias = categorias;
-    }
 
     public int getNumeroDePreguntas() {
         return numeroDePreguntas;
