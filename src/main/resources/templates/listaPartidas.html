@@ -21,14 +21,20 @@
                     <th>Id</th>
                     <th>Modo de Juego</th>
                     <th>Activa</th>
+                    <th>Gestión</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="partida: ${partidas}">
-                    <td th:text=${partida.id}></td>
-                    <td th:text="${partida.modoDeJuego.nombre}"></td>
-                    <td th:text="${partida.joinable}"></td>
-                </tr>
+                    <tr th:each="partida: ${partidas}">
+                        <td th:text="${partida.id}"></td>
+                        <td th:text="${partida.modoDeJuego.nombre}"></td>
+                        <td th:text="${partida.joinable}"></td>
+                        <td>
+                            <a class ="btn btn-primary" th:href="@{/partida/edit/{id}(id = ${partida.id})}">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <p><a class ="btn btn-primary" th:href="@{/partida/new}">

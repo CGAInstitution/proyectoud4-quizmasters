@@ -24,7 +24,7 @@ public class Partida {
     @JoinColumn(name = "modo_juego")
     private ModoDeJuego modoDeJuego;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "preguntas_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "pregunta_id"))
     private List<Pregunta> preguntas =  new ArrayList<>();
 

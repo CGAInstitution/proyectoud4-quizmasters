@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head (titulo='Partida Nueva')"></head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h2 th:text="'Nueva Partida'"/>
+    <form th:object="${partida}" th:action="@{/partida/edit/{id}(id = ${partida.getId()})}" method="post">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="cmbModo">Modo de Juego:</label>
+                <select class="form-control" id="cmbModo" th:field="*{modoDeJuego}">
+                    <option th:each="mododeJuego: ${modosDeJuego}" th:value="${mododeJuego.id}" th:text="${mododeJuego.nombre}"/>
+                </select>
+            </div>
+            <div class="form-group">
+                <input class="checkboxes" id="Unible" type="checkbox" th:text="'Es Unible:'" th:field="*{joinable}">
+            </div>
+            <div class="form-group">
+                <label>Lista de Preguntas</label>
+                <a class="btn btn-primary" th:method="'post'" th:href="@{/partida/regenerate/{id}(id = ${partida.getId()})}">
+                    Regenerar
+                </a>
+                <table class="table table-striped" th:if="${#strings.isEmpty(mensaje)}">
+                    <thead>
+                    <tr>
+                        <th>Pregunta</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pregunta: ${partida.getPreguntas()}">
+                        <td th:text="${pregunta.getEnunciado()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div th:text="${mensaje}" th:if="${!#strings.isEmpty(mensaje)}"></div>
+            </div>
+            <a class="btn btn-link" th:href="@{/partida/list}">Volver</a>
+        </div>
+    </form>
+</div>
+
+<div th:replace="fragments::javascript"/>
+
+</body>
+</html>

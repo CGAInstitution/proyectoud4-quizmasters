@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -54,7 +55,9 @@ public class PartidaService {
         return partida;
     }
 
+    @Transactional
     public void generarPreguntasPartida(Partida partida) throws NotEnoughQuestionsException {
+        partida.setPreguntas(new ArrayList<>());
         ModoDeJuego modoDeJuego = partida.getModoDeJuego();
         List<Pregunta> preguntas = getMatchingPreguntas(partida);
         if (preguntas.size() < modoDeJuego.getNumeroDePreguntas()) throw new NotEnoughQuestionsException(String.format("El numero de preguntas recuperado %d es menor al necesario de %d", preguntas.size(), modoDeJuego.getNumeroDePreguntas()));
@@ -63,6 +66,7 @@ public class PartidaService {
             Pregunta pregunta = preguntas.remove(random.nextInt(preguntas.size()));
             partida.addPregunta(pregunta);
         }
+        partidaRepository.save(partida);
     }
 
     public List<Pregunta> getMatchingPreguntas(Partida partida){
