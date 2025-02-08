@@ -70,7 +70,11 @@ public class PartidaService {
     }
 
     public List<Pregunta> getMatchingPreguntas(Partida partida){
-        return preguntaRepository.findByCategoria(Categoria.valueOf(partida.getModoDeJuego().getCategorias()));
+        List<Pregunta> preguntas = new ArrayList<>();
+        for (Categoria categoria: partida.getModoDeJuego().getCategorias()){
+            preguntas.addAll(preguntaRepository.findByCategoria(categoria));
+        }
+        return preguntas;
     }
 
     @Transactional
