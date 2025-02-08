@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='Responder')}"></head>
+
+<body>
+<div class="container-fluid" th:object="${quiz}">
+
+    <h2 th:text="*{preguntaActual.getEnunciado()}"></h2>
+
+    <form method="post" th:action="@{/responder}">
+        <div class="col-6">
+        <div class="form-group">
+            <label for="respuesta">Respuesta: </label>
+            <input id="respuesta" type="text" required="required" name="respuesta"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Responder</button>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments::javascript}"/>
+
+</body>
+</html>
