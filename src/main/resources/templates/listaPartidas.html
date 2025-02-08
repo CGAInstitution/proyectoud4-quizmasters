@@ -1,15 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments :: head (titulo='Lista de Partidas')"></head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<ol>
-    <li th:each="partida: ${partidas}" th:text="'Id: ' + ${partida.id} + ', Modo de juego: ' + ${partida.modoDeJuego.nombre} + ', Joinable: ' + ${partida.joinable}"></li>
-</ol>
-<a th:href="@{/partida/new}">
-    <button th:text="'Crear Partida'"/>
-</a>
+
+<div class="container-fluid">
+
+    <div class="row mt-3">
+        <div class="col">
+            <h2 th:text="'Listado de preguntas'"></h2>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Modo de Juego</th>
+                    <th>Activa</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="partida: ${partidas}">
+                    <td th:text=${partida.id}></td>
+                    <td th:text="${partida.modoDeJuego.nombre}"></td>
+                    <td th:text="${partida.joinable}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <p><a class ="btn btn-primary" th:href="@{/partida/new}">
+                Crear Partida
+                </a>
+                <a class="btn btn-link" href="/logout">Salir</a></p>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments::javascript"/>
+
 </body>
 </html>
