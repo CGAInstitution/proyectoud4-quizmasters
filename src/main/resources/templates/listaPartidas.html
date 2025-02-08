@@ -6,7 +6,7 @@
 </head>
 <body>
 <ol>
-    <li th:each="partida: ${partidas}" th:text="'Id: ' + ${partida.id} + ', Modo de juego: ' + ${partida.modoDeJuego} + ', Joinable: ' + ${partida.joinable}"></li>
+    <li th:each="partida: ${partidas}" th:text="'Id: ' + ${partida.id} + ', Modo de juego: ' + ${partida.modoDeJuego.nombre} + ', Joinable: ' + ${partida.joinable}"></li>
 </ol>
 <a th:href="@{/partida/new}">
     <button th:text="'Crear Partida'"/>

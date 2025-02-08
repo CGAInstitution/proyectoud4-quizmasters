@@ -1,6 +1,7 @@
 package madstodolist.controller;
 
 import madstodolist.dto.PartidaForm;
+import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.PartidaRepository;
 import madstodolist.service.PartidaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ public class PartidaController {
     PartidaRepository partidaRepository;
     @Autowired
     private PartidaService partidaService;
+    @Autowired
+    private ModoDeJuegoRepository modoDeJuegoRepository;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
         model.addAttribute("partidaForm", new PartidaForm());
+        model.addAttribute("modosDeJuego", modoDeJuegoRepository.findAll());
         return "formPartida";
     }
 

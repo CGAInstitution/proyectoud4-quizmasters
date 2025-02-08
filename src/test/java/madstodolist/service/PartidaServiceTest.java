@@ -31,7 +31,8 @@ public class PartidaServiceTest {
         ModoDeJuego modoDeJuego = new ModoDeJuego();
         modoDeJuego.setNombre("Clásico");
         modoDeJuegoRepository.save(modoDeJuego);
-        PartidaForm partidaForm = new PartidaForm("Clásico", LocalDateTime.now(), true);
+        Long id = modoDeJuego.getId();
+        PartidaForm partidaForm = new PartidaForm(id, LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         assertThat(partida.getId()).isNotNull();
         Partida partidaDB = partidaService.findPartidaById(partida.getId());
@@ -43,7 +44,11 @@ public class PartidaServiceTest {
     @Test
     @Transactional
     public void addUsuario(){
-        PartidaForm partidaForm = new PartidaForm("Clásico", LocalDateTime.now(), true);
+        ModoDeJuego modoDeJuego = new ModoDeJuego();
+        modoDeJuego.setNombre("Clásico");
+        modoDeJuegoRepository.save(modoDeJuego);
+        Long id = modoDeJuego.getId();
+        PartidaForm partidaForm = new PartidaForm(id, LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         Partida partidaDB = partidaService.findPartidaById(partida.getId());
 

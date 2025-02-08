@@ -118,6 +118,10 @@ public class Partida {
         this.preguntas = preguntas;
     }
 
+    public void addPregunta(Pregunta pregunta){
+        getPreguntas().add(pregunta);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

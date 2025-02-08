@@ -7,7 +7,9 @@
 <body>
 <form th:object="${partidaForm}" th:action="@{/partida/new}" method="post">
     <label>Modo de Juego</label>
-    <input type="text" th:field="*{modoDeJuego}">
+    <select th:field="*{modoDeJuegoId}">
+        <option th:each="mododeJuego: ${modosDeJuego}" th:value="${mododeJuego.id}" th:text="${mododeJuego.nombre}"/>
+    </select>
     <br>
     <label>Es Joinable</label>
     <input type="checkbox" th:field="*{joinable}">
