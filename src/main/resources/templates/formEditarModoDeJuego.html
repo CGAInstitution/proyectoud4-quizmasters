@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Modificar Modo De Juego')"></head>
+
+<body>
+<form method="post" th:action="@{/modosDeJuego/editar}" th:object="${modoDeJuego}">
+    <div class="col-6">
+        <div class="form-group">
+            <label for="nombre">Nuevo nombre del modo de juego:</label>
+            <input class="form-control" id="nombre" name="enunciado" required th:field="*{nombre}" type="text"/>
+            <br/>
+            <label for="nombre">Nuevo numero de preguntas del modo de juego:</label>
+            <input class="form-control" type="number" id="preguntas" name="enunciado" required
+                   th:field="*{numeroDePreguntas}"/>
+            <br/>
+
+            <!-- Lista de categorías -->
+            <div class="form-group">
+                <div th:each="categoria : ${listaDeCategoria}" class="form-check">
+                    <!-- Usamos 'categoria.name()' si deseas mostrar el nombre del enum como valor -->
+                    <input type="checkbox" th:field="*{categorias}" th:value="${categoria.name()}" class="form-check-input" id="categoria-[[${categoria.name()}]]">
+                    <label th:for="'categoria-' + ${categoria.name()}" th:text="${categoria.name()}" class="form-check-label"></label>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Crear pregunta</button>
+        <a class="btn btn-link" th:href="@{/modoDeJuego}">Cancelar</a>
+    </div>
+</form>
+
+<body/>
+<html/>
