@@ -7,12 +7,14 @@ import madstodolist.model.*;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.PartidaRepository;
 import madstodolist.repository.PreguntaRepository;
+import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class PartidaService {
@@ -52,15 +54,19 @@ public class PartidaService {
         return partida;
     }
 
-    public void generarPreguntasPartida(Partida partida){
+    public void generarPreguntasPartida(Partida partida) throws NotEnoughQuestionsException {
         ModoDeJuego modoDeJuego = partida.getModoDeJuego();
-        List<Pregunta> preguntas = preguntaRepository.findByCategoria(Categoria.valueOf(modoDeJuego.getCategorias()));
+        List<Pregunta> preguntas = getMatchingPreguntas(partida);
+        if (preguntas.size() < modoDeJuego.getNumeroDePreguntas()) throw new NotEnoughQuestionsException(String.format("El numero de preguntas recuperado %d es menor al necesario de %d", preguntas.size(), modoDeJuego.getNumeroDePreguntas()));
         for (int i = 0; i<modoDeJuego.getNumeroDePreguntas(); i++){
-            Optional<Pregunta> pregunta = preguntas.stream().findAny();
-            if (pregunta.isPresent()){
-                partida.addPregunta(pregunta.get());
-            }
+            Random random = new Random();
+            Pregunta pregunta = preguntas.remove(random.nextInt(preguntas.size()));
+            partida.addPregunta(pregunta);
         }
+    }
+
+    public List<Pregunta> getMatchingPreguntas(Partida partida){
+        return preguntaRepository.findByCategoria(Categoria.valueOf(partida.getModoDeJuego().getCategorias()));
     }
 
     @Transactional
