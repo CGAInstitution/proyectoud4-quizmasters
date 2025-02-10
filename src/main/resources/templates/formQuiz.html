@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='QUIZ')}"></head>
+
+<body>
+<div class="container-fluid">
+
+    <h2 th:text="'QUIZ'"></h2>
+
+    <form method="get" th:action="@{/iniciar-partida}">
+        <div class="col-6">
+        <div class="form-group">
+        </div>
+
+        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>
+        <a class="btn btn-link" th:href="@{/login}">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments::javascript}"/>
+
+</body>
+</html>
