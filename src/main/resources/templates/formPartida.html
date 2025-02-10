@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments :: head (titulo='Partida Nueva')"></head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<form th:object="${partidaForm}" th:action="@{/partida/new}" method="post">
-    <label>Modo de Juego</label>
-    <input type="text" th:field="*{modoDeJuego}">
-    <br>
-    <label>Es Joinable</label>
-    <input type="checkbox" th:field="*{joinable}">
-    <br>
-    <button th:text="'Submit'" type="submit"/>
-</form>
+<div class="container-fluid">
+    <h2 th:text="'Nueva Partida'"/>
+    <form th:object="${partidaForm}" th:action="@{/partida/new}" method="post">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="cmbModo">Modo de Juego:</label>
+                <select class="form-control" id="cmbModo" th:field="*{modoDeJuegoId}">
+                    <option th:each="mododeJuego: ${modosDeJuego}" th:value="${mododeJuego.id}" th:text="${mododeJuego.nombre}"/>
+                </select>
+            </div>
+            <div class="form-group">
+                <input class="checkboxes" id="Unible" type="checkbox" th:text="'Es Unible:'" th:field="*{joinable}">
+            </div>
+            <button class="btn btn-primary" th:text="'Guardar'" type="submit"/>
+            <a class="btn btn-link" th:href="@{/partida/list}">Volver</a>
+        </div>
+    </form>
+</div>
+
+<div th:replace="fragments::javascript"/>
 
 </body>
 </html>

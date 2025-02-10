@@ -17,11 +17,15 @@ public class PartidaTest {
 
     @Autowired
     PartidaRepository partidaRepository;
+    @Autowired
+    private ModoDeJuegoRepository modoDeJuegoRepository;
 
     @Test
     @Transactional
     public void crearPartida(){
-        Partida partida = new Partida(LocalDateTime.now(), true, new ModoDeJuego());
+        ModoDeJuego modoDeJuego = new ModoDeJuego();
+        modoDeJuego.setNombre("Clásico");
+        Partida partida = new Partida(LocalDateTime.now(), true, modoDeJuego);
 
         partidaRepository.save(partida);
 
@@ -31,14 +35,16 @@ public class PartidaTest {
 
         Partida partidaDB = partidaRepository.findById(partida.getId()).get();
 
-        //assertThat(partidaDB.getModoDeJuego()).isEqualTo("Clásico");
+        assertThat(partidaDB.getModoDeJuego().getNombre()).isEqualTo("Clásico");
     }
 
     @Test
     @Transactional
     public void filterJoinablePartidas(){
-        Partida partida1 = new Partida(LocalDateTime.now(), true, new ModoDeJuego());
-        Partida partida2 = new Partida(LocalDateTime.now(), false, new ModoDeJuego());
+        ModoDeJuego modoDeJuego = new ModoDeJuego();
+        modoDeJuegoRepository.save(modoDeJuego);
+        Partida partida1 = new Partida(LocalDateTime.now(), true, modoDeJuego);
+        Partida partida2 = new Partida(LocalDateTime.now(), false, modoDeJuego);
         partidaRepository.save(partida1);
         partidaRepository.save(partida2);
 

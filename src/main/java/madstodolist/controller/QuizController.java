@@ -1,14 +1,18 @@
 package madstodolist.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 import madstodolist.dto.QuizData;
+import madstodolist.model.Partida;
 import madstodolist.model.Pregunta;
+import madstodolist.service.PartidaService;
 import madstodolist.service.PreguntaService;
 import madstodolist.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,19 +26,23 @@ public class QuizController {
 
     @Autowired
     private PreguntaService preguntaService;
+    @Autowired
+    private PartidaService partidaService;
 
-    @GetMapping("/quiz")
-    public String quiz(Model model) {
+    @GetMapping("/quiz/{id}")
+    public String quiz(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("idPartida", id);
         return "formQuiz";
     }
 
-    @GetMapping("/iniciar-partida")
-    public String iniciarPartida(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-        List<Pregunta> preguntas = preguntaService.findAll();
+    @GetMapping("/iniciar-partida/{id}")
+    public String iniciarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        Partida partida = partidaService.findPartidaById(id);
+        List<Pregunta> preguntas = partida.getPreguntas();
         List<Long> idUsuarios = new ArrayList<>();
         idUsuarios.add(1l);
 
-        QuizData quiz = quizService.iniciarQuiz(1l,idUsuarios,preguntas);
+        QuizData quiz = quizService.iniciarQuiz(partida.getId(),idUsuarios,preguntas);
         session.setAttribute("quiz", quiz);
         return "redirect:/mostrar-pregunta";
     }

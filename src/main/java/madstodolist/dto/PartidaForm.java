@@ -3,12 +3,12 @@ package madstodolist.dto;
 import java.time.LocalDateTime;
 
 public class PartidaForm {
-    private String modoDeJuego;
+    private Long modoDeJuegoId;
     private LocalDateTime dateTime;
     private boolean joinable;
 
-    public PartidaForm(String modoDeJuego, LocalDateTime dateTime, boolean joinable) {
-        this.modoDeJuego = modoDeJuego;
+    public PartidaForm(Long modoDeJuegoId, LocalDateTime dateTime, boolean joinable) {
+        this.modoDeJuegoId = modoDeJuegoId;
         this.dateTime = dateTime;
         this.joinable = joinable;
     }
@@ -16,12 +16,12 @@ public class PartidaForm {
     public PartidaForm() {
     }
 
-    public String getModoDeJuego() {
-        return modoDeJuego;
+    public Long getModoDeJuegoId() {
+        return modoDeJuegoId;
     }
 
-    public void setModoDeJuego(String modoDeJuego) {
-        this.modoDeJuego = modoDeJuego;
+    public void setModoDeJuegoId(Long modoDeJuegoId) {
+        this.modoDeJuegoId = modoDeJuegoId;
     }
 
     public LocalDateTime getDateTime() {
