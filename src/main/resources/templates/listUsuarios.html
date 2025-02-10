@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: head (titulo='Lista de Partidas')"></head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <div class="row mt-3">
+        <div class="col">
+            <h2 th:text="'Listado de partidas'"></h2>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <form th:object="${usuarios}" method="post" th:action="@{/usuarios/update}">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Administrador</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario: ${usuarios}">
+                            <td th:text="${usuario.id}"></td>
+                            <td th:text="${usuario.nombre}"></td>
+                            <td th:text="${usuario.email}"></td>
+                            <td>
+                                <span th:if="${usuario.admin}">
+                                    Sí
+                                    <a class="btn btn-primary" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Quitar Permisos'"/>
+                                </span>
+                                <span th:if="${!usuario.admin}">
+                                    No
+                                    <a class="btn btn-primary" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Dar Permisos'"/>
+                                </span>
+
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <a class="btn btn-link" href="/menu">Volver</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments::javascript"/>
+
+</body>
+</html>

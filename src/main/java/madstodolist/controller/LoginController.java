@@ -48,7 +48,7 @@ public class LoginController {
             managerUserSession.logearUsuario(usuario.getId());
 
             if (usuario.isAdmin()){
-                return "redirect:/partida/list";
+                return "redirect:/menu";
             } else
                 return "redirect:/partida/unirse";
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
