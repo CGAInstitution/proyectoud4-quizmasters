@@ -68,4 +68,10 @@ public class PartidaController {
         return "listaPartidas";
     }
 
+    @GetMapping("/partida/unirse")
+    public String showJoinablePartidas(Model model){
+        model.addAttribute("partidas", partidaRepository.findByJoinable(true));
+        return "unirsePartida";
+    }
+
 }
