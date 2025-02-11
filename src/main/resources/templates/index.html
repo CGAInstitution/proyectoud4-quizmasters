@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head th:replace="fragments :: head (titulo='ïndice')"></head>
+
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <h2 th:text="'Bienvenido'"/>
+    <div>
+        <span>Gestionar Preguntas</span>
+        <a class="btn btn-primary" th:href="@{/preguntas}">
+            <span>Acceder</span>
+        </a>
+    </div>
+    <div>
+        <span>Gestionar Modos de Juego</span>
+        <a class="btn btn-primary" th:href="@{/modosDeJuego}">
+            <span>Acceder</span>
+        </a>
+    </div>
+    <div>
+        <span>Gestionar Partidas</span>
+        <a class="btn btn-primary" th:href="@{/partida/list}">
+            <span>Acceder</span>
+        </a>
+    </div>
+    <div>
+        <span>Gestionar Usuarios</span>
+        <a class="btn btn-primary" th:href="@{/usuarios}">
+            <span>Acceder</span>
+        </a>
+    </div>
+    <p>
+        <a class="btn btn-link" href="/logout">Salir</a>
+    </p>
+</body>
+</html>

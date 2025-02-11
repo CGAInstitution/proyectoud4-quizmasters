@@ -81,4 +81,14 @@ public class PartidaService {
     public Partida addUsuarioPartida(Partida partida, UsuarioData usuario){
         return addUsuarioPartida(partida, modelMapper.map(usuario, Usuario.class));
     }
+
+    @Transactional
+    public List<Partida> findAll(){
+        return partidaRepository.findAll();
+    }
+
+    @Transactional
+    public List<Partida> findJoinable(){
+        return partidaRepository.findByJoinable(true);
+    }
 }

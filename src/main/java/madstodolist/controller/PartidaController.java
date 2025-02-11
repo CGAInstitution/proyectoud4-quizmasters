@@ -20,8 +20,6 @@ import java.util.Optional;
 @Controller
 public class PartidaController {
     @Autowired
-    PartidaRepository partidaRepository;
-    @Autowired
     private PartidaService partidaService;
     @Autowired
     private ModoDeJuegoRepository modoDeJuegoRepository;
@@ -64,8 +62,14 @@ public class PartidaController {
 
     @GetMapping("/partida/list")
     public String showAllPartidas(Model model){
-        model.addAttribute("partidas", partidaRepository.findAll());
+        model.addAttribute("partidas", partidaService.findAll());
         return "listaPartidas";
+    }
+
+    @GetMapping("/partida/unirse")
+    public String showJoinablePartidas(Model model){
+        model.addAttribute("partidas", partidaService.findJoinable());
+        return "unirsePartida";
     }
 
 }

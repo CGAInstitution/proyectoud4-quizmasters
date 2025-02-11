@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,4 +73,16 @@ public class UsuarioService {
             return modelMapper.map(usuario, UsuarioData.class);
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> findAll(){
+        return usuarioRepository.findAll();
+    }
+
+    @Transactional
+    public void updateUsuario(UsuarioData usuarioData){
+        Usuario usuario = modelMapper.map(usuarioData, Usuario.class);
+        usuarioRepository.save(usuario);
+    }
+
 }
