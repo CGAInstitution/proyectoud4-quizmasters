@@ -1,5 +1,6 @@
 package madstodolist.service;
 
+import madstodolist.controller.exception.UltimoAdministradorException;
 import madstodolist.dto.UsuarioData;
 import madstodolist.model.Usuario;
 import madstodolist.repository.UsuarioRepository;
@@ -83,6 +84,35 @@ public class UsuarioService {
     public void updateUsuario(UsuarioData usuarioData){
         Usuario usuario = modelMapper.map(usuarioData, Usuario.class);
         usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void updateUsuario(Long id, UsuarioData usuarioData){
+        UsuarioData usuario = findById(id);
+        usuario.setNombre(usuarioData.getNombre());
+        usuario.setFechaNacimiento(usuarioData.getFechaNacimiento());
+        usuarioRepository.save(modelMapper.map(usuario, Usuario.class));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> getAdmins(){
+        return usuarioRepository.findByIsAdmin(true);
+    }
+
+    @Transactional
+    public void cambiarPermisosUsuario(Long id){
+        UsuarioData usuarioData = findById(id);
+        usuarioData.setAdmin(!usuarioData.isAdmin());
+        updateUsuario(usuarioData);
+        if (getAdmins().isEmpty()) {
+            throw new UltimoAdministradorException();
+        }
+    }
+
+    @Transactional
+    public void deleteUsuario(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        usuario.ifPresent(value -> usuarioRepository.delete(value));
     }
 
 }

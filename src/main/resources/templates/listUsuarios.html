@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragments :: head (titulo='Lista de Partidas')"></head>
+<head th:replace="fragments :: head (titulo='Lista de Usuarios')"></head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -10,12 +10,11 @@
 
     <div class="row mt-3">
         <div class="col">
-            <h2 th:text="'Listado de partidas'"></h2>
+            <h2 th:text="'Listado de usuarios'"></h2>
         </div>
     </div>
     <div class="row mt-3">
         <div class="col">
-            <form th:object="${usuarios}" method="post" th:action="@{/usuarios/update}">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -23,6 +22,7 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Administrador</th>
+                        <th>Gestión</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,30 +31,65 @@
                             <td th:text="${usuario.nombre}"></td>
                             <td th:text="${usuario.email}"></td>
                             <td>
-                                <span th:if="${usuario.admin}">
+                                <span th:if="${usuario.isAdmin}">
                                     Sí
                                     <a class="btn btn-primary" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Quitar Permisos'"/>
                                 </span>
-                                <span th:if="${!usuario.admin}">
+                                <span th:if="${!usuario.isAdmin}">
                                     No
                                     <a class="btn btn-primary" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Dar Permisos'"/>
                                 </span>
-
                             </td>
-
-
+                            <td>
+                                <a class="btn btn-primary" th:href="@{/usuarios/edit/{id}(id = ${usuario.getId()})}">
+                                    Editar
+                                </a>
+                                <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
+                                        th:onclick="'del(\'/usuarios/' + ${usuario.id} + '\')'">Borrar</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <p>
+                    <a class="btn btn-primary" href="/usuarios/new">Crear Usuario</a>
                     <a class="btn btn-link" href="/menu">Volver</a>
                 </p>
-            </form>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(resultado)}">
+                <span th:text="${resultado}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <div th:replace="fragments::javascript"/>
+
+<script type="text/javascript">
+    function del(urlBorrar) {
+        if (confirm('¿Estás seguro/a de que quieres borrar el usuario?')) {
+            fetch(urlBorrar, {
+                method: 'DELETE'
+            }).then((res) => res.json())
+                .then(data => window.location.href = data.redirectUrl);
+        }
+    }
+</script>
 
 </body>
 </html>
