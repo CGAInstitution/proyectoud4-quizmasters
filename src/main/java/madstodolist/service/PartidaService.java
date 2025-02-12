@@ -7,6 +7,7 @@ import madstodolist.model.*;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.PartidaRepository;
 import madstodolist.repository.PreguntaRepository;
+import madstodolist.restcontroller.SseController;
 import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class PartidaService {
     private PreguntaRepository preguntaRepository;
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private SseController sseController;
 
     @Transactional
     public Partida guardarPartida(PartidaForm partidaForm){
@@ -98,6 +101,7 @@ public class PartidaService {
 
     @Transactional
     public Partida addUsuarioPartida(Partida partida, UsuarioData usuario){
+
         return addUsuarioPartida(partida, modelMapper.map(usuario, Usuario.class));
     }
 
