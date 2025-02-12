@@ -12,9 +12,9 @@
         <div class="col-6">
         <div class="form-group">
         </div>
-
-        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>
-        <a class="btn btn-link" th:href="@{/login}">Cancelar</a>
+            Esperando al resto de jugadores y el administrador inicie la partida
+<!--        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>-->
+            <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
         </div>
     </form>
 </div>

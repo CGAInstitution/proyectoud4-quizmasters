@@ -2,12 +2,16 @@ package madstodolist.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
+import madstodolist.authentication.ManagerUserSession;
 import madstodolist.dto.QuizData;
 import madstodolist.model.Partida;
 import madstodolist.model.Pregunta;
+import madstodolist.model.Usuario;
 import madstodolist.service.PartidaService;
 import madstodolist.service.PreguntaService;
 import madstodolist.service.QuizService;
+import madstodolist.service.UsuarioService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,18 +25,53 @@ import java.util.List;
 
 @Controller
 public class QuizController {
+
     @Autowired
     private QuizService quizService;
-
     @Autowired
     private PreguntaService preguntaService;
     @Autowired
     private PartidaService partidaService;
+    @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
+    private ManagerUserSession managerUserSession;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    @GetMapping("/quiz/{id}")
-    public String quiz(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/quiz/join/{id}")
+    public String joinQuiz(@PathVariable("id") Long id, Model model) {
+        Long idUsuario = managerUserSession.usuarioLogeado();
+        Partida partida = partidaService.findPartidaById(id);
+        partidaService.addUsuarioPartida(partida, usuarioService.findById(idUsuario));
         model.addAttribute("idPartida", id);
         return "formQuiz";
+    }
+
+    @GetMapping("/quiz/salir/{id}")
+    public String exitQuiz(@PathVariable("id") Long id, Model model) {
+        Long idUsuario = managerUserSession.usuarioLogeado();
+        Partida partida = partidaService.findPartidaById(id);
+        partidaService.deleteUsuarioPartida(partida, idUsuario);
+        model.addAttribute("idPartida", id);
+        return "redirect:/partida/unirse";
+    }
+
+    @GetMapping("/quiz/prepare/{id}")
+    public String prepareQuiz(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("idPartida", id);
+        Partida partida = partidaService.findPartidaById(id);
+        partidaService.setJoinable(partida, true);
+        model.addAttribute("jugadores", partida.getUsuarios());
+        return "quizPrepare";
+    }
+
+    @GetMapping("/quiz/prepare/cancel/{id}")
+    public String cancelarQuiz(@PathVariable("id") Long id, Model model) {
+        Partida partida = partidaService.findPartidaById(id);
+        partidaService.setJoinable(partida, false);
+        partidaService.cleanUsuariosPartida(partida);
+        return "redirect:/partida/list";
     }
 
     @GetMapping("/iniciar-partida/{id}")

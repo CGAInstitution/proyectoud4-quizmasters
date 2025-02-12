@@ -24,11 +24,14 @@ public class Partida {
     @JoinColumn(name = "modo_juego")
     private ModoDeJuego modoDeJuego;
 
+    private boolean start = false;
+    private boolean next = false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "preguntas_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "pregunta_id"))
     private List<Pregunta> preguntas =  new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jugadores_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "jugador_id"))
     private List<Usuario> usuarios =  new ArrayList<>();
 
@@ -108,6 +111,22 @@ public class Partida {
 
     public void setGanador(Usuario ganador) {
         this.ganador = ganador;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
+    }
+
+    public boolean isNext() {
+        return next;
+    }
+
+    public void setNext(boolean next) {
+        this.next = next;
     }
 
     public List<Pregunta> getPreguntas() {
