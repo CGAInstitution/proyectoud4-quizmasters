@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='QUIZ')}"></head>
+
+<body>
+<div class="container-fluid">
+
+    <h2 th:text="'Preparando Quiz'"></h2>
+    <ul>
+        <li th:each="jugador:${jugadores}" th:text="${jugador.getNombre()}"/>
+    </ul>
+
+    <a class="btn btn-link" th:href="@{/quiz/start/{id}(id = ${idPartida})}">Empezar</a></p>
+    <a class="btn btn-link" th:href="@{/quiz/prepare/cancel/{id}(id = ${idPartida})}">Cancelar</a></p>
+
+</div>
+
+<div th:replace="~{fragments::javascript}"/>
+
+
+</body>
+</html>

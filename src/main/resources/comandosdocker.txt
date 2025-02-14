@@ -1,0 +1,24 @@
+sudo docker build -t pruebaquiz .
+
+//ejecutar el contenedor:
+ docker run -p 8080:8080 pruebaquiz (el nombre de la imagen)
+ sudo docker run -d --name pruebaquiz -p 8080:8080 --restart always pruebaquiz
+
+//eliminar el contenedor
+docker rm HASH_CONTENEDOR
+
+//eliminar la imagen
+docker rmi HASH_IMAGEN
+
+
+//ip publica ec2
+3.8.156.233
+
+//crear .tar con la imagen
+docker save -o pruebaquiz.tar pruebaquiz
+
+//conectar a ec2
+ssh -i "quizPair.pem" ec2-user@ec2-3-8-156-233.eu-west-2.compute.amazonaws.com
+
+//copiar imagen en ec2
+scp -i "quizPair.pem" pruebaquiz.tar ec2-user@ec2-3-8-156-233.eu-west-2.compute.amazonaws.com:/home/ec2-user/

@@ -1,5 +1,8 @@
 package madstodolist.dto;
 
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,8 +11,11 @@ public class UsuarioData {
 
     private Long id;
     private String email;
+    @NotNull(message = "El nombre es obligatorio")
     private String nombre;
     private String password;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
     private Date fechaNacimiento;
     private boolean isAdmin;
 

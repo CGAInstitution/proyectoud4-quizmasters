@@ -18,7 +18,7 @@
             <div th:each="partida: ${partidas}">
                 <p th:text="${partida.id}"/>
                 <p th:text="${partida.modoDeJuego.nombre}"/>
-                <a class="btn btn-primary" th:href="@{/quiz/{id}(id = ${partida.id})}">
+                <a class="btn btn-primary" th:href="@{/quiz/join/{id}(id = ${partida.id})}">
                     <span>Unirse</span>
                 </a>
             </div>
