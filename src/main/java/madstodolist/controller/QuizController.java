@@ -3,6 +3,7 @@ package madstodolist.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
 import madstodolist.authentication.ManagerUserSession;
+import madstodolist.dto.PartidaDto;
 import madstodolist.dto.QuizData;
 import madstodolist.dto.UsuarioData;
 import madstodolist.model.Partida;
@@ -15,12 +16,11 @@ import madstodolist.service.QuizService;
 import madstodolist.service.UsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -72,6 +72,7 @@ public class QuizController {
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, true);
         model.addAttribute("jugadores", partida.getUsuarios());
+        managerUserSession.addPartida(id);
         return "quizPrepare";
     }
 
@@ -95,12 +96,11 @@ public class QuizController {
         return "redirect:/mostrar-pregunta";
     }
 
-    @GetMapping("/quiz/start/{id}")
-    @ResponseBody
-    public String arrancarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-        sseController.sendUpdate("empezar");
-        sseController.cleanEmitters();
-        return "Partida Empezada";
+    @MessageMapping("/quiz/start/")
+    @SendTo("/topic/start")
+    public PartidaDto arrancarPartida() {
+        Long idPartida = managerUserSession.getPartida();
+        return new PartidaDto(idPartida);
     }
 
     @GetMapping("/iniciar-partida")

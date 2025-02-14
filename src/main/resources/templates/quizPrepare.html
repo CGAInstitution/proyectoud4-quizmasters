@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments :: head (titulo='QUIZ')}"></head>
+<head th:replace="~{fragments :: head (titulo='QUIZ')}">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+</head>
 
 <body>
 <div class="container-fluid">
@@ -11,13 +14,31 @@
         <li th:each="jugador:${jugadores}" th:text="${jugador.getNombre()}"/>
     </ul>
 
-    <a class="btn btn-link" th:href="@{/quiz/start/{id}(id = ${idPartida})}">Empezar</a></p>
+    <button class="btn btn-primary" onclick="startQuiz()">Empezar</button></p>
     <a class="btn btn-link" th:href="@{/quiz/prepare/cancel/{id}(id = ${idPartida})}">Cancelar</a></p>
 
 </div>
 
 <div th:replace="~{fragments::javascript}"/>
 
+<script>
+    const stompClient = new StompJs.Client({
+        brokerURL: 'ws://localhost:8080/gs-guide-websocket'
+    });
+
+    stompClient.onConnect = function () {
+        console.log("Connected");
+    };
+
+    function startQuiz() {
+        stompClient.send({
+            destination: "/app/quiz/start/",
+            body: JSON.stringify({})
+        });
+    }
+
+    stompClient.activate();
+</script>
 
 </body>
 </html>

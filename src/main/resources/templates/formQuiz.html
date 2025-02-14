@@ -23,12 +23,22 @@
 <div th:replace="~{fragments::javascript}"/>
 
 <script>
-    var eventSource = new EventSource('/sse/start');
+    const stompClient = new StompJs.Client({
+        brokerURL: 'ws://localhost:8080/gs-guide-websocket'
+    });
+    stompClient.onConnect = (frame) => {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/start', (id) => {
+            window.location.replace("/iniciar-partida")
+        });
+    };
+    stompClient.onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
 
-    eventSource.onmessage = function(event) {
-        console.log("Update received: " + event.data);
-        eventSource.close();
-        window.location.replace("/iniciar-partida");
+    stompClient.onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
     };
 </script>
 
