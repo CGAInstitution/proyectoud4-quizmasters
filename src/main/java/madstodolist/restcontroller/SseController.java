@@ -1,5 +1,6 @@
 package madstodolist.restcontroller;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.SessionScope;
@@ -14,6 +15,7 @@ public class SseController {
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     @GetMapping("/sse/start")
+    @Async
     public SseEmitter stream() {
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE); // Keeps connection open
         emitters.add(emitter);
@@ -35,6 +37,14 @@ public class SseController {
             } catch (IOException | IllegalStateException e) {
                 emitter.complete();
                 emitters.remove(emitter); // Remove emitter if it fails
+            }
+        }
+    }
+
+    public void cleanEmitters() {
+        for (SseEmitter emitter : emitters) {
+            if (emitter != null) {
+                emitter.complete();
             }
         }
     }

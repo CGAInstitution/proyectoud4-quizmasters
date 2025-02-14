@@ -28,7 +28,6 @@
     eventSource.onmessage = function(event) {
         console.log("Update received: " + event.data);
         eventSource.close();
-        eventSource.url
         window.location.replace("/iniciar-partida");
     };
 </script>
