@@ -38,6 +38,11 @@ public class PartidaController {
         return "redirect:/partida/list";
     }
 
+    @GetMapping("/login/adminToUser")
+    public String deAdminAUser (){
+        return "redirect:/partida/unirse";
+    }
+
     @GetMapping("/partida/edit/{id}")
     public String editarPartida(@PathVariable("id") Long id, Model model){
         Partida partida = partidaService.findPartidaById(id);
