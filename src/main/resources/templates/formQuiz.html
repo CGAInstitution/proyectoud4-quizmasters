@@ -12,14 +12,25 @@
         <div class="col-6">
         <div class="form-group">
         </div>
-
-        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>
-        <a class="btn btn-link" th:href="@{/login}">Cancelar</a>
+            <p th:text="'Hola ' + ${jugador}"></p>
+            Esperando al resto de jugadores y el administrador inicie la partida
+<!--        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>-->
+            <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
         </div>
     </form>
 </div>
 
 <div th:replace="~{fragments::javascript}"/>
+
+<script>
+    var eventSource = new EventSource('/sse/start');
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/iniciar-partida");
+    };
+</script>
 
 </body>
 </html>

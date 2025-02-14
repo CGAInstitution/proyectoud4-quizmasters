@@ -16,9 +16,6 @@
                 </select>
             </div>
             <div class="form-group">
-                <input class="checkboxes" id="Unible" type="checkbox" th:text="'Es Unible:'" th:field="*{joinable}">
-            </div>
-            <div class="form-group">
                 <label>Lista de Preguntas</label>
                 <a class="btn btn-primary" th:method="'post'" th:href="@{/partida/regenerate/{id}(id = ${partida.getId()})}">
                     Regenerar

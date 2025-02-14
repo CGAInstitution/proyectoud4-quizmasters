@@ -23,6 +23,18 @@ public class ManagerUserSession {
         return (Long) session.getAttribute("idUsuarioLogeado");
     }
 
+    public void addPartida(Long idPartida){
+        session.setAttribute("idPartida", idPartida);
+    }
+
+    public Long getPartida(){
+        return (Long) session.getAttribute("idPartida");
+    }
+
+    public void leavePartida(){
+        session.setAttribute("idPartida", null);
+    }
+
     public void logout() {
         session.setAttribute("idUsuarioLogeado", null);
     }

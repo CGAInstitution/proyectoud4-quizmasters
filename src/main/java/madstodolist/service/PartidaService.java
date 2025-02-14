@@ -7,6 +7,7 @@ import madstodolist.model.*;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.PartidaRepository;
 import madstodolist.repository.PreguntaRepository;
+import madstodolist.restcontroller.SseController;
 import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class PartidaService {
     private ModoDeJuegoRepository modoDeJuegoRepository;
     @Autowired
     private PreguntaRepository preguntaRepository;
+    @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
+    private SseController sseController;
 
     @Transactional
     public Partida guardarPartida(PartidaForm partidaForm){
@@ -50,7 +55,24 @@ public class PartidaService {
 
     @Transactional
     public Partida addUsuarioPartida(Partida partida, Usuario usuario){
+        if (partida.getUsuarios().contains(usuario)){
+            return null;
+        }
         partida.addUsuario(usuario);
+        partidaRepository.save(partida);
+        return partida;
+    }
+
+    @Transactional
+    public void deleteUsuarioPartida(Partida partida, Long id){
+        Usuario usuario = modelMapper.map(usuarioService.findById(id), Usuario.class);
+        partida.deleteUsuario(usuario);
+        partidaRepository.save(partida);
+    }
+
+    @Transactional
+    public Partida cleanUsuariosPartida(Partida partida){
+        partida.setUsuarios(new ArrayList<>());
         partidaRepository.save(partida);
         return partida;
     }
@@ -79,6 +101,7 @@ public class PartidaService {
 
     @Transactional
     public Partida addUsuarioPartida(Partida partida, UsuarioData usuario){
+
         return addUsuarioPartida(partida, modelMapper.map(usuario, Usuario.class));
     }
 
@@ -90,5 +113,11 @@ public class PartidaService {
     @Transactional
     public List<Partida> findJoinable(){
         return partidaRepository.findByJoinable(true);
+    }
+
+    @Transactional
+    public void setJoinable(Partida partida, boolean joinable){
+        partida.setJoinable(joinable);
+        partidaRepository.save(partida);
     }
 }
