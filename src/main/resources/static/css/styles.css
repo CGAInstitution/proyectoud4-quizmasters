@@ -1,0 +1,161 @@
+/* Estilo global */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #333333; /* Gris oscuro de fondo */
+    color: #fff; /* Texto blanco */
+    padding: 20px;
+}
+
+h2 {
+    color: #009CDE; /* Azul vibrante para los títulos */
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor principal */
+.container-fluid {
+    background-color: #2C3E50; /* Gris oscuro para el fondo del contenedor */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #009CDE; /* Azul vibrante */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0078A0; /* Azul más oscuro */
+}
+
+.btn-link {
+    color: #F7D03C; /* Amarillo dorado para el enlace */
+    font-size: 1rem;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+/* Estilo de la tabla */
+.table {
+    background-color: #34495E; /* Gris azulado */
+    border-radius: 8px;
+    color: #fff;
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: 12px;
+}
+
+.table th {
+    background-color: #009CDE; /* Azul vibrante para encabezados */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #2C3E50; /* Fondo oscuro para filas impares */
+}
+
+/* Estilo para las alertas */
+.alert {
+    background-color: #F39C12; /* Color dorado de alerta */
+    border-color: #F39C12; /* Mismo color para el borde */
+    color: white;
+    font-size: 1.2rem;
+}
+
+.alert-success {
+    background-color: #27AE60; /* Verde para mensajes de éxito */
+}
+
+.alert .close {
+    color: white;
+}
+
+input.form-group{
+    background-color: #34495E; /* Gris azulado de fondo */
+    color: white;
+    border: 1px solid #009CDE;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    -webkit-appearance: none;  /* Para eliminar el estilo predeterminado en algunos navegadores */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Selección de categoría */
+select.form-control {
+    background-color: #34495E; /* Gris azulado de fondo */
+    color: white;
+    border: 1px solid #009CDE;
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: 1rem;
+    -webkit-appearance: none;  /* Para eliminar el estilo predeterminado en algunos navegadores */
+    -moz-appearance: none;
+    appearance: none; /* Modern browsers */
+}
+
+select.form-control:focus {
+    border-color: #F7D03C; /* Amarillo dorado al enfocar el campo */
+}
+
+/* Añadido para estilizar el dropdown del select */
+select.form-control::-ms-expand {
+    display: none;  /* Quita el icono del dropdown en IE */
+}
+
+select.form-control option {
+    background-color: #34495E; /* Color de fondo de las opciones */
+    color: white;
+}
+
+/* Estilo de los inputs (text, email, etc.) */
+input[type="text"], input[type="email"], input[type="password"] {
+    background-color: #34495E; /* Gris azulado de fondo */
+    color: white;
+    border: 1px solid #009CDE;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #F7D03C; /* Amarillo dorado al enfocar */
+}
+
+/* Diseño de los botones para borrar y editar */
+.btn-xs {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #E74C3C; /* Rojo brillante para el botón de borrar */
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #C0392B; /* Rojo más oscuro al pasar el ratón */
+}
+
+.btn-primary.btn-xs {
+    background-color: #FF6F20; /* Naranja brillante para editar */
+}
+
+.btn-primary.btn-xs:hover {
+    background-color: #E65C00; /* Naranja más oscuro al pasar el ratón */
+}
