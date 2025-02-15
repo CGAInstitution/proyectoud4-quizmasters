@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments :: head (titulo='QUIZ')}"></head>
+<head th:replace="~{fragments :: head (titulo='Esperando')}"></head>
 
 <body>
 <div class="container-fluid">
 
-    <h2 th:text="'QUIZ'"></h2>
+    <h2 th:text="'Configurando partida'"></h2>
 
     <form method="get" th:object="${idPartida}" th:action="@{/iniciar-partida/{id}(id = ${idPartida})}">
         <div class="col-6">
         <div class="form-group">
         </div>
             <p th:text="'Hola ' + ${jugador}"></p>
-            Esperando al resto de jugadores y el administrador inicie la partida
+            Esperando al resto de jugadores y que el administrador inicie la partida
 <!--        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>-->
             <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
         </div>

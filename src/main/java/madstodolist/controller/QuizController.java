@@ -1,13 +1,11 @@
 package madstodolist.controller;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 import madstodolist.authentication.ManagerUserSession;
 import madstodolist.dto.QuizData;
 import madstodolist.dto.UsuarioData;
 import madstodolist.model.Partida;
 import madstodolist.model.Pregunta;
-import madstodolist.model.Usuario;
 import madstodolist.restcontroller.SseController;
 import madstodolist.service.PartidaService;
 import madstodolist.service.PreguntaService;
@@ -53,7 +51,7 @@ public class QuizController {
         managerUserSession.addPartida(id);
         model.addAttribute("idPartida", id);
         model.addAttribute("jugador", usuarioData.getNombre());
-        return "formQuiz";
+        return "salaEspera";
     }
 
     @GetMapping("/quiz/salir/{id}")
@@ -72,7 +70,7 @@ public class QuizController {
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, true);
         model.addAttribute("jugadores", partida.getUsuarios());
-        return "quizPrepare";
+        return "menuPrepararPartida";
     }
 
     @GetMapping("/quiz/prepare/cancel/{id}")
@@ -125,7 +123,7 @@ public class QuizController {
             return "redirect:/resultado";
         }
         model.addAttribute("quiz", quiz);
-        return "formResponder";
+        return "formResponderPregunta";
     }
 
     @PostMapping("/responder")
@@ -143,6 +141,6 @@ public class QuizController {
         QuizData quiz = (QuizData) session.getAttribute("quiz");
         Float puntuacion = quiz.getPuntuaciones().get(1l);
         model.addAttribute("puntuacion", puntuacion);
-        return "resultado";
+        return "salaResultados";
     }
 }

@@ -28,6 +28,43 @@ h2 {
     overflow: auto;
 }
 
+.partidas {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva fila cuando no haya espacio */
+    justify-content: center; /* Centra los elementos dentro del div */
+    gap: 15px; /* Espacio entre los elementos */
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px; /* Añade un poco de espacio interno */
+}
+
+.partidas > div {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos verticalmente */
+    justify-content: space-between; /* Asegura que el contenido se distribuya de manera uniforme */
+    align-items: center; /* Centra el contenido dentro de cada cuadro */
+    width: auto; /* Ajusta el ancho automáticamente según el contenido */
+    min-width: 150px; /* El ancho mínimo de cada cuadro (ajústalo si es necesario) */
+    max-width: 200px; /* El ancho máximo de cada cuadro */
+    height: auto; /* La altura se ajustará al contenido */
+    background-color: lightblue; /* Fondo para los cuadros */
+    border-radius: 5px;
+    padding: 10px; /* Espacio interno dentro de cada cuadro */
+}
+
+.partidas p, .partidas a {
+    margin: 5px 0; /* Espacio entre los elementos de texto y los botones */
+    padding: 0;
+    text-align: center;
+}
+
+.partidas a {
+    display: block;
+    width: 100%;
+    margin-top: 10px; /* Espacio entre los elementos de texto y el botón */
+    text-align: center;
+}
+
 /* Botones */
 .btn-primary {
     background-image: linear-gradient(150deg, #F39C12 40%, #e36409);

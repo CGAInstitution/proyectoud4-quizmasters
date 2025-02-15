@@ -40,7 +40,7 @@ public class UsuarioController {
     public String getAllUsuario(Model model){
         comprobarUsuarioAdministrador();
         model.addAttribute("usuarios", usuarioService.findAll());
-        return "listUsuarios";
+        return "listaUsuarios";
     }
 
     @GetMapping("/usuarios/new")

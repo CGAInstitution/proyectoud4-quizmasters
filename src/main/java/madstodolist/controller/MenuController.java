@@ -30,6 +30,6 @@ public class MenuController {
     @GetMapping("/menu")
     public String showMenu(){
         comprobarUsuarioAdministrador();
-        return "index";
+        return "menuAdministrador";
     }
 }
