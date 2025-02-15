@@ -100,7 +100,7 @@ public class QuizController {
     public String arrancarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         sseController.sendUpdate("empezar");
         sseController.cleanEmitters();
-        return "Partida Empezada";
+        return "/partida/list";
     }
 
     @GetMapping("/iniciar-partida")

@@ -15,7 +15,7 @@
     <div class="row mt-3">
         <div class="col">
             <p><a class="btn btn-primary" th:href="@{/preguntas/nueva}"> Crear nueva pregunta</a>
-                <a class="btn btn-link" href="/logout">Salir</a></p>
+                <a class="btn btn-link" href="/menu">Volver</a></p>
             <form method="post" th:action="@{/preguntas}">
                 <label for="categoriaSelect">Filtra por categoría:</label>
                 <select id="categoriaSelect" name="categoria" class="form-control" onchange="this.form.submit()">
