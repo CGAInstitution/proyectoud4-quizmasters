@@ -1,10 +1,14 @@
 package madstodolist.controller;
 
+import jakarta.servlet.http.HttpSession;
 import madstodolist.dto.PartidaForm;
 import madstodolist.model.Partida;
+import madstodolist.model.Usuario;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.PartidaRepository;
+import madstodolist.repository.UsuarioRepository;
 import madstodolist.service.PartidaService;
+import madstodolist.service.UsuarioService;
 import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -23,6 +27,10 @@ public class PartidaController {
     private PartidaService partidaService;
     @Autowired
     private ModoDeJuegoRepository modoDeJuegoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
@@ -36,6 +44,11 @@ public class PartidaController {
         partidaForm.setDateTime(LocalDateTime.now());
         partidaService.guardarPartida(partidaForm);
         return "redirect:/partida/list";
+    }
+
+    @GetMapping("/login/adminToUser")
+    public String deAdminAUser (){
+        return "redirect:/partida/unirse";
     }
 
     @GetMapping("/partida/edit/{id}")
@@ -67,8 +80,21 @@ public class PartidaController {
     }
 
     @GetMapping("/partida/unirse")
-    public String showJoinablePartidas(Model model){
+    public String showJoinablePartidas(Model model, HttpSession session) {
+        Long usuarioLoggeado = (Long) session.getAttribute("idUsuarioLogeado");
+
+        if (usuarioLoggeado == null) {
+            return "redirect:/login";
+        }
+        Usuario usuario = usuarioRepository.findById(usuarioLoggeado).orElse(null);
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("usuario", usuario);
         model.addAttribute("partidas", partidaService.findJoinable());
+
         return "unirsePartida";
     }
 
