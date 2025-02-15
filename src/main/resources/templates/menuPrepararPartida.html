@@ -11,8 +11,8 @@
         <li th:each="jugador:${jugadores}" th:text="${jugador.getNombre()}"/>
     </ul>
 
-    <a class="btn btn-link" th:href="@{/quiz/start/{id}(id = ${idPartida})}">Empezar</a></p>
-    <a class="btn btn-link" th:href="@{/quiz/prepare/cancel/{id}(id = ${idPartida})}">Cancelar</a></p>
+    <a class="btn btn-link" th:href="@{/partida/start/{id}(id = ${idPartida})}">Empezar</a></p>
+    <a class="btn btn-link" th:href="@{/partida/cancel/{id}(id = ${idPartida})}">Cancelar</a></p>
 
 </div>
 

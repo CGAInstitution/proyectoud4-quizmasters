@@ -18,7 +18,7 @@
             <p><a class ="btn btn-primary" th:href="@{/partida/new}">
                 Crear Partida
             </a>
-                <a class="btn btn-link" href="/menu">Volver</a></p>
+                <a class="btn btn-link" href="/menuAdmin">Volver</a></p>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -37,7 +37,7 @@
                             <a class ="btn btn-primary" th:href="@{/partida/edit/{id}(id = ${partida.id})}">
                                 Editar
                             </a>
-                            <a class ="btn btn-primary" th:href="@{/quiz/prepare/{id}(id = ${partida.id})}">
+                            <a class ="btn btn-primary" th:href="@{/partida/prepare/{id}(id = ${partida.id})}">
                                 Iniciar
                             </a>
                         </td>

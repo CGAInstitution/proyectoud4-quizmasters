@@ -8,7 +8,7 @@
 
     <h2 th:text="'Configurando partida'"></h2>
 
-    <form method="get" th:object="${idPartida}" th:action="@{/iniciar-partida/{id}(id = ${idPartida})}">
+    <form method="get" th:object="${idPartida}" th:action="@{/quiz/iniciar/{id}(id = ${idPartida})}">
         <div class="col-6">
         <div class="form-group">
         </div>
@@ -28,7 +28,7 @@
     eventSource.onmessage = function(event) {
         console.log("Update received: " + event.data);
         eventSource.close();
-        window.location.replace("/iniciar-partida");
+        window.location.replace("/quiz/iniciar");
     };
 </script>
 

@@ -27,7 +27,7 @@ public class MenuController {
         }
     }
 
-    @GetMapping("/menu")
+    @GetMapping("/menuAdmin")
     public String showMenu(){
         comprobarUsuarioAdministrador();
         return "menuAdministrador";

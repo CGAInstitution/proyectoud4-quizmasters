@@ -48,9 +48,9 @@ public class LoginController {
             managerUserSession.logearUsuario(usuario.getId());
 
             if (usuario.isAdmin()){
-                return "redirect:/menu";
+                return "redirect:/menuAdmin";
             } else
-                return "redirect:/partida/unirse";
+                return "redirect:/menuJuegos";
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
