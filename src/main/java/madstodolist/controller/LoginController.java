@@ -48,9 +48,9 @@ public class LoginController {
             managerUserSession.logearUsuario(usuario.getId());
 
             if (usuario.isAdmin()){
-                return "redirect:/menu";
+                return "redirect:/menuAdmin";
             } else
-                return "redirect:/partida/unirse";
+                return "redirect:/menuJuegos";
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
@@ -64,19 +64,19 @@ public class LoginController {
     @GetMapping("/registro")
     public String registroForm(Model model) {
         model.addAttribute("registroData", new RegistroData());
-        return "formRegistro";
+        return "formRegistroUsuario";
     }
 
    @PostMapping("/registro")
    public String registroSubmit(@Valid RegistroData registroData, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "formRegistro";
+            return "formRegistroUsuario";
         }
 
         if (usuarioService.findByEmail(registroData.getEmail()) != null) {
             model.addAttribute("registroData", registroData);
             model.addAttribute("error", "El usuario " + registroData.getEmail() + " ya existe");
-            return "formRegistro";
+            return "formRegistroUsuario";
         }
 
         UsuarioData usuario = new UsuarioData();

@@ -5,21 +5,18 @@ import madstodolist.dto.PartidaForm;
 import madstodolist.model.Partida;
 import madstodolist.model.Usuario;
 import madstodolist.repository.ModoDeJuegoRepository;
-import madstodolist.repository.PartidaRepository;
 import madstodolist.repository.UsuarioRepository;
+import madstodolist.restcontroller.SseController;
 import madstodolist.service.PartidaService;
 import madstodolist.service.UsuarioService;
 import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Controller
 public class PartidaController {
@@ -31,12 +28,14 @@ public class PartidaController {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private SseController sseController;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
         model.addAttribute("partidaForm", new PartidaForm());
         model.addAttribute("modosDeJuego", modoDeJuegoRepository.findAll());
-        return "formPartida";
+        return "formNuevaPartida";
     }
 
     @PostMapping("/partida/new")
@@ -48,7 +47,7 @@ public class PartidaController {
 
     @GetMapping("/login/adminToUser")
     public String deAdminAUser (){
-        return "redirect:/partida/unirse";
+        return "redirect:/menuJuegos";
     }
 
     @GetMapping("/partida/edit/{id}")
@@ -56,7 +55,7 @@ public class PartidaController {
         Partida partida = partidaService.findPartidaById(id);
         model.addAttribute("partida", partida);
         model.addAttribute("modosDeJuego", modoDeJuegoRepository.findAll());
-        return "formPartidaEdit";
+        return "formEditarPartida";
     }
 
     @RequestMapping("/partida/regenerate/{id}")
@@ -79,23 +78,28 @@ public class PartidaController {
         return "listaPartidas";
     }
 
-    @GetMapping("/partida/unirse")
-    public String showJoinablePartidas(Model model, HttpSession session) {
-        Long usuarioLoggeado = (Long) session.getAttribute("idUsuarioLogeado");
+    @GetMapping("/partida/prepare/{id}")
+    public String prepareQuiz(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("idPartida", id);
+        Partida partida = partidaService.findPartidaById(id);
+        partidaService.setJoinable(partida, true);
+        model.addAttribute("jugadores", partida.getUsuarios());
+        return "menuPrepararPartida";
+    }
 
-        if (usuarioLoggeado == null) {
-            return "redirect:/login";
-        }
-        Usuario usuario = usuarioRepository.findById(usuarioLoggeado).orElse(null);
+    @GetMapping("/partida/cancel/{id}")
+    public String cancelarQuiz(@PathVariable("id") Long id, Model model) {
+        Partida partida = partidaService.findPartidaById(id);
+        partidaService.setJoinable(partida, false);
+        partidaService.cleanUsuariosPartida(partida);
+        return "redirect:/partida/list";
+    }
 
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("partidas", partidaService.findJoinable());
-
-        return "unirsePartida";
+    @GetMapping("/partida/start/{id}")
+    public String arrancarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        sseController.sendUpdate("empezar");
+        sseController.cleanEmitters();
+        return "redirect:/partida/list";
     }
 
 }

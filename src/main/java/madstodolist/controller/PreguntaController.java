@@ -22,7 +22,7 @@ public class PreguntaController {
         List<Pregunta> preguntas = preguntaService.findAll();
         model.addAttribute("preguntas", preguntas);
         model.addAttribute("categorias", Categoria.values());
-        return "preguntas";
+        return "listaPreguntas";
     }
 
     @PostMapping("/preguntas")
@@ -36,7 +36,7 @@ public class PreguntaController {
         model.addAttribute("preguntas", preguntasFiltradas);
         model.addAttribute("categorias", Categoria.values());
         model.addAttribute("selectedCategoria", categoria);
-        return "preguntas";
+        return "listaPreguntas";
     }
 
     @GetMapping("/preguntas/nueva")

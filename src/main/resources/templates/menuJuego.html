@@ -15,7 +15,7 @@
     </div>
     <div class="row mt-3">
         <div class="col">
-            <div th:each="partida: ${partidas}">
+            <div class="partidas" th:each="partida: ${partidas}">
                 <p th:text="${partida.id}"/>
                 <p th:text="${partida.modoDeJuego.nombre}"/>
                 <a class="btn btn-primary" th:href="@{/quiz/join/{id}(id = ${partida.id})}">
@@ -23,8 +23,8 @@
                 </a>
             </div>
             <p>
-                <a class="btn btn-link" href="/logout">Salir</a>
-                <a class="btn btn-link" href="/menu" th:if="${usuario.isAdmin == true}">Ir al panel de administrador</a>
+                <a class="btn btn-link" href="/logout">Log out</a>
+                <a class="btn btn-link" href="/menuAdmin" th:if="${usuario.isAdmin == true}">Ir al panel de administrador</a>
             </p>
         </div>
     </div>

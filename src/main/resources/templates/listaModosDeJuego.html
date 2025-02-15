@@ -3,8 +3,11 @@
 <head th:replace="fragments :: head (titulo='Modos De Juego')"></head>
 <body>
 <a>Modos de juego existentes</a>
+<div class="container-fluid">
 <div class="row mt-3">
     <div class="col">
+        <a class="btn btn-primary" th:href="@{/modosDeJuego/nuevo}">Nuevo modo de juego</a>
+        <a class="btn btn-link" href="/menuAdmin">Volver</a>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -12,6 +15,7 @@
                 <th>Nombre</th>
                 <th>Numero De Preguntas</th>
                 <th>Categorias</th>
+                <th>Gestión</th>
             </tr>
             </thead>
             <tbody>
@@ -29,8 +33,7 @@
             </tr>
             </tbody>
         </table>
-        <a class="btn btn-primary" th:href="@{/modosDeJuego/nuevo}">Nuevo modo de juego</a>
-        <a class="btn btn-link" href="/menu">Volver</a>
+
     </div>
 </div>
 
@@ -53,6 +56,6 @@
         }
     }
 </script>
-
+</div>
 </body>
 </html>

@@ -1,0 +1,263 @@
+/* Estilo global */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: linear-gradient(#D5D8DC, #9866a6);
+
+    color: #fff; /* Texto blanco */
+    padding: 20px;
+    height:100vh;
+}
+
+h2 {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor principal */
+.container-fluid{
+    display: grid;
+    margin: auto;
+    width: 80%;
+    background: radial-gradient(circle at 70% 70%, #8a48a2 20%, #4c1d62 90%);
+    /*background-color: #2C3E50; /* Gris oscuro para el fondo del contenedor */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+.partidas {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva fila cuando no haya espacio */
+    justify-content: center; /* Centra los elementos dentro del div */
+    gap: 15px; /* Espacio entre los elementos */
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px; /* Añade un poco de espacio interno */
+}
+
+.partidas > div {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos verticalmente */
+    justify-content: space-between; /* Asegura que el contenido se distribuya de manera uniforme */
+    align-items: center; /* Centra el contenido dentro de cada cuadro */
+    width: auto; /* Ajusta el ancho automáticamente según el contenido */
+    min-width: 150px; /* El ancho mínimo de cada cuadro (ajústalo si es necesario) */
+    max-width: 200px; /* El ancho máximo de cada cuadro */
+    height: auto; /* La altura se ajustará al contenido */
+    background-color: lightblue; /* Fondo para los cuadros */
+    border-radius: 5px;
+    padding: 10px; /* Espacio interno dentro de cada cuadro */
+}
+
+.partidas p, .partidas a {
+    margin: 5px 0; /* Espacio entre los elementos de texto y los botones */
+    padding: 0;
+    text-align: center;
+}
+
+.partidas a {
+    display: block;
+    width: 100%;
+    margin-top: 10px; /* Espacio entre los elementos de texto y el botón */
+    text-align: center;
+}
+
+/* Botones */
+.btn-primary {
+    background-image: linear-gradient(150deg, #F39C12 40%, #e36409);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.7); /* Resplandor naranja */
+    transform: scale(1.05);
+}
+
+.btn-link {
+    color: #efa537;
+    font-size: 1rem;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+    color: #c45009;
+}
+
+/* Estilo de la tabla */
+.table {
+    background-color: #a882b4;
+    border-radius: 8px;
+    color: white;
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: 12px;
+}
+
+.table th {
+    background-color: #421757;
+    color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #895c96; /* Fondo oscuro para filas impares */
+}
+
+.table-no-striped{
+    width: 40%;
+    margin: auto;
+    border-collapse: collapse;
+}
+.table-no-striped td {
+    padding: 5px;
+    margin: 0;
+    border: none;
+    width: 100%;
+}
+
+/* Estilo para los botones dentro de las celdas */
+.table-no-striped .btn {
+    width: 100%;
+    display: inline-block;
+    padding: 10px 0;
+    text-align: center;
+}
+
+
+/* Estilo para las alertas */
+.alert {
+    background-color: #F39C12; /* Color dorado de alerta */
+    border-color: #F39C12; /* Mismo color para el borde */
+    color: white;
+    font-size: 1.2rem;
+}
+
+.alert-success {
+    background-color: #27AE60; /* Verde para mensajes de éxito */
+}
+
+.alert .close {
+    color: white;
+}
+
+input.form-group{
+    background-color: #9866a6;
+    color: white;
+    border: 1px solid #F39C12;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    -webkit-appearance: none;  /* Para eliminar el estilo predeterminado en algunos navegadores */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+input.form-control{
+    background-color: #D5D8DC; /* Gris azulado de fondo */
+    color: black;
+    border: 1px solid #F39C12;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+input.form-control:hover{
+    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+}
+
+
+input.form-control:focus{
+    border-color: #F39C12; /* Naranja dorado al enfocar */
+    background-color: #9866a6;
+    color: white;
+    outline: none; /* Elimina el resplandor azul por defecto */
+    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+}
+
+input.form-control:focus::placeholder{
+    color: white;
+    opacity: 0.5;
+}
+
+/* Selección de categoría */
+select.form-control {
+    background-color: #D5D8DC;
+    color: white;
+    border: 1px solid #F39C12;
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: 1rem;
+
+}
+
+select.form-control:focus {
+    border-color: #F39C12;
+    background-color: #9866a6;
+    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+}
+select.form-control:hover{
+    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+}
+
+option:hover{
+    background-color:red;
+}
+
+select.form-control option {
+    background-color: #9866a6; /* Color de fondo de las opciones */
+    color: white;
+}
+
+
+input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px #4c1d62 inset !important;
+    -webkit-text-fill-color: white !important;
+}
+
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    background-color: red;
+}
+
+
+/* Diseño de los botones para borrar y editar */
+.btn-xs {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    border: none;
+    background-image: linear-gradient(150deg, #E74C3C 40%, #C0392B);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger:hover {
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.7);
+    transform: scale(1.05);
+}
+
+.btn-primary.btn-xs {
+    background-color: #FF6F20; /* Naranja brillante para editar */
+}
+
+.btn-primary.btn-xs:hover {
+    background-color: #E65C00; /* Naranja más oscuro al pasar el ratón */
+}

@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -34,7 +35,9 @@ public class PartidaServiceGenerarPreguntasTest {
         Pregunta pregunta2 = preguntaService.crearPregunta("Capital de Francia","París", Categoria.GEOGRAFIA, 15f);
         Pregunta pregunta3 = preguntaService.crearPregunta("Capital de Estonia","Tallín", Categoria.GEOGRAFIA, 15f);
         Pregunta pregunta4 = preguntaService.crearPregunta("Capital de Portugal","Lisboa", Categoria.GEOGRAFIA, 15f);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         List<Pregunta> preguntas = partidaService.getMatchingPreguntas(partida);
@@ -52,7 +55,9 @@ public class PartidaServiceGenerarPreguntasTest {
         Pregunta pregunta2 = preguntaService.crearPregunta("Capital de Francia","París", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta3 = preguntaService.crearPregunta("Capital de Estonia","Tallín", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta4 = preguntaService.crearPregunta("Capital de Portugal","Lisboa", Categoria.CIENCIA_Y_NATURALEZA, 15f);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         List<Pregunta> preguntas = partidaService.getMatchingPreguntas(partida);
@@ -70,7 +75,9 @@ public class PartidaServiceGenerarPreguntasTest {
         Pregunta pregunta2 = preguntaService.crearPregunta("Capital de Francia","París", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta3 = preguntaService.crearPregunta("Capital de Estonia","Tallín", Categoria.GEOGRAFIA, 15f);
         Pregunta pregunta4 = preguntaService.crearPregunta("Capital de Portugal","Lisboa", Categoria.CIENCIA_Y_NATURALEZA, 15f);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         List<Pregunta> preguntas = partidaService.getMatchingPreguntas(partida);
@@ -87,7 +94,9 @@ public class PartidaServiceGenerarPreguntasTest {
     @Transactional
     public void GenerarUnaPreguntaTest() throws NotEnoughQuestionsException{
         preguntaService.crearPregunta("Capital de España","Madrid", Categoria.GEOGRAFIA, 15f);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         partidaService.generarPreguntasPartida(partida);
@@ -101,7 +110,9 @@ public class PartidaServiceGenerarPreguntasTest {
     @Test
     @Transactional
     public void GenerarUnaPreguntaTest_SinPreguntasSuficientes(){
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         assertThatThrownBy(() -> partidaService.generarPreguntasPartida(partida)).isInstanceOf(NotEnoughQuestionsException.class).hasMessageContaining("recuperado 0").hasMessageContaining("de 1");
@@ -117,7 +128,9 @@ public class PartidaServiceGenerarPreguntasTest {
         Pregunta pregunta3 = preguntaService.crearPregunta("Capital de Estonia","Tallín", Categoria.GEOGRAFIA, 15f);
         Pregunta pregunta4 = preguntaService.crearPregunta("Capital de Portugal","Lisboa", Categoria.GEOGRAFIA, 15f);
         List<Pregunta> allPreguntas = List.of(pregunta1,pregunta2, pregunta3, pregunta4);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         partidaService.generarPreguntasPartida(partida);
@@ -134,7 +147,9 @@ public class PartidaServiceGenerarPreguntasTest {
         Pregunta pregunta2 = preguntaService.crearPregunta("Capital de Francia","París", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta3 = preguntaService.crearPregunta("Capital de Estonia","Tallín", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta4 = preguntaService.crearPregunta("Capital de Portugal","Lisboa", Categoria.CIENCIA_Y_NATURALEZA, 15f);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(1, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         partidaService.generarPreguntasPartida(partida);
@@ -151,7 +166,9 @@ public class PartidaServiceGenerarPreguntasTest {
         Pregunta pregunta2 = preguntaService.crearPregunta("Capital de Francia","París", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta3 = preguntaService.crearPregunta("Capital de Estonia","Tallín", Categoria.CIENCIA_Y_NATURALEZA, 15f);
         Pregunta pregunta4 = preguntaService.crearPregunta("Capital de Portugal","Lisboa", Categoria.CIENCIA_Y_NATURALEZA, 15f);
-        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(2, "Geo", "GEOGRAFIA");
+        List<Categoria> categorias = new ArrayList<Categoria>();
+        categorias.add(Categoria.GEOGRAFIA);
+        ModoDeJuego modoDeJuego = modoDeJuegoService.crateModoDeJuego(2, "Geo", categorias);
         PartidaForm partidaForm = new PartidaForm(modoDeJuego.getId(), LocalDateTime.now(), true);
         Partida partida = partidaService.guardarPartida(partidaForm);
         assertThatThrownBy(() -> partidaService.generarPreguntasPartida(partida)).isInstanceOf(NotEnoughQuestionsException.class).hasMessageContaining("recuperado 0").hasMessageContaining("de 2");
