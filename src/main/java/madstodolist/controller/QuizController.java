@@ -1,5 +1,7 @@
 package madstodolist.controller;
 
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import madstodolist.authentication.ManagerUserSession;
 import madstodolist.dto.QuizData;
@@ -43,6 +45,8 @@ public class QuizController {
     private ModelMapper modelMapper;
     @Autowired
     private SseController sseController;
+    @Autowired
+    private ServletContext servletContext;
 
     @GetMapping("/menuJuegos")
     public String showJoinablePartidas(Model model, HttpSession session) {
@@ -86,34 +90,24 @@ public class QuizController {
     }
 
 
-    @GetMapping("/quiz/iniciar/{id}")
-    public String empezarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+    /*@GetMapping("/quiz/iniciar/{id}")
+    public String empezarPartida(@PathVariable("id") Long id, ServletContext context, RedirectAttributes redirectAttributes, Model model) {
         Partida partida = partidaService.findPartidaById(id);
         List<Pregunta> preguntas = partida.getPreguntas();
-        List<Long> idUsuarios = new ArrayList<>();
-        idUsuarios.add(1l);
 
-        QuizData quiz = quizService.iniciarQuiz(partida.getId(),idUsuarios,preguntas);
-        session.setAttribute("quiz", quiz);
         return "redirect:/quiz/mostrar-pregunta";
-    }
+    }*/
 
 
     @GetMapping("/quiz/iniciar")
-    public String iniciarPartida(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-        Partida partida = partidaService.findPartidaById(managerUserSession.getPartida());
-        List<Pregunta> preguntas = partida.getPreguntas();
-        List<Long> idUsuarios = new ArrayList<>();
-        idUsuarios.add(1l);
+    public String iniciarPartida() {
 
-        QuizData quiz = quizService.iniciarQuiz(partida.getId(),idUsuarios,preguntas);
-        session.setAttribute("quiz", quiz);
         return "redirect:/quiz/mostrar-pregunta";
     }
 
     @GetMapping("/quiz/mostrar-pregunta")
     public String mostrarPregunta(HttpSession session, Model model) {
-        QuizData quiz = (QuizData) session.getAttribute("quiz");
+        QuizData quiz = (QuizData) servletContext.getAttribute("quiz");
         if (quiz == null) {
             return "redirect:/quiz";
         }
@@ -126,18 +120,16 @@ public class QuizController {
 
     @PostMapping("/quiz/responder")
     public String responder(String respuesta,HttpSession session) {
-        QuizData quiz = (QuizData) session.getAttribute("quiz");
+        QuizData quiz = (QuizData) servletContext.getAttribute("quiz");
         Pregunta preguntaActual = quiz.getPreguntaActual();
-        quiz = quizService.responderPregunta(quiz,preguntaActual,1L, respuesta);
-        quiz = quizService.avanzarPregunta(quiz);
-        session.setAttribute("quiz", quiz);
-        return "redirect:/quiz/mostrar-pregunta";
+        quizService.responderPregunta(quiz,preguntaActual, managerUserSession.usuarioLogeado(), respuesta);
+        return "salaEsperaQuiz";
     }
 
     @GetMapping("/quiz/resultado")
     public String mostrarResultado(HttpSession session, Model model) {
-        QuizData quiz = (QuizData) session.getAttribute("quiz");
-        Float puntuacion = quiz.getPuntuaciones().get(1l);
+        QuizData quiz = (QuizData) servletContext.getAttribute("quiz");
+        Float puntuacion = quiz.getPuntuaciones().get(managerUserSession.usuarioLogeado());
         model.addAttribute("puntuacion", puntuacion);
         return "salaResultados";
     }

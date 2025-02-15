@@ -82,6 +82,10 @@ public class QuizData {
         }
     }
 
+    synchronized public void actualizarPuntuacion(Float puntuacion, Long idJugador) {
+        getPuntuaciones().computeIfPresent(idJugador,(k, v) -> v + puntuacion);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof QuizData quizData)) return false;

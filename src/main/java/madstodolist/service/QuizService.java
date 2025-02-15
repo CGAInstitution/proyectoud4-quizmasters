@@ -3,11 +3,13 @@ package madstodolist.service;
 import madstodolist.dto.QuizData;
 import madstodolist.model.Partida;
 import madstodolist.model.Pregunta;
+import madstodolist.model.Usuario;
 import madstodolist.repository.PartidaRepository;
 import madstodolist.repository.PreguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +25,7 @@ public class QuizService {
         this.preguntaRepository = preguntaRepository;
     }
 
-    public QuizData iniciarQuiz(Long idPartida, List<Long> idsJugadores, List<Pregunta> preguntas) {
+    public QuizData iniciarQuiz(Long idPartida, List<Usuario> jugadores, List<Pregunta> preguntas) {
         Optional<Partida> optPartida = partidaRepository.findById(idPartida);
         if(optPartida.isEmpty()) {
             throw new RuntimeException("Partida no encontrada");
@@ -34,7 +36,11 @@ public class QuizService {
         Partida partida = optPartida.get();
         partida.setJoinable(false);
         partidaRepository.save(partida);
-        QuizData quiz = new QuizData(idPartida, idsJugadores, preguntas);
+        List<Long> idJugadores = new ArrayList<>();
+        for (Usuario jugador : jugadores) {
+            idJugadores.add(jugador.getId());
+        }
+        QuizData quiz = new QuizData(idPartida, idJugadores, preguntas);
 
         return quiz;
     }
@@ -53,10 +59,12 @@ public class QuizService {
             throw new RuntimeException("Se ha producido un error en la respuesta.");
         }
         if(respuesta.equals(pregunta.getRespuestaCorrecta())){
-            quizActual.getPuntuaciones().computeIfPresent(idJugador,(k,v) -> v + pregunta.getPuntuacion());
+            quizActual.actualizarPuntuacion(pregunta.getPuntuacion(), idJugador);
         }
         return quizActual;
     }
+
+
 
     public QuizData avanzarPregunta(QuizData quizActual){
         if(quizActual == null) {

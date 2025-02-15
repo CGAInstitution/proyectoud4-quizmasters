@@ -1,13 +1,17 @@
 package madstodolist.controller;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import madstodolist.dto.PartidaForm;
+import madstodolist.dto.QuizData;
 import madstodolist.model.Partida;
+import madstodolist.model.Pregunta;
 import madstodolist.model.Usuario;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.UsuarioRepository;
 import madstodolist.restcontroller.SseController;
 import madstodolist.service.PartidaService;
+import madstodolist.service.QuizService;
 import madstodolist.service.UsuarioService;
 import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class PartidaController {
@@ -30,6 +35,10 @@ public class PartidaController {
     private UsuarioService usuarioService;
     @Autowired
     private SseController sseController;
+    @Autowired
+    private ServletContext servletContext;
+    @Autowired
+    private QuizService quizService;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
@@ -97,9 +106,24 @@ public class PartidaController {
 
     @GetMapping("/partida/start/{id}")
     public String arrancarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        Partida partida = partidaService.findPartidaById(id);
+        List<Pregunta> preguntas = partida.getPreguntas();
+        QuizData quiz = quizService.iniciarQuiz(partida.getId(), partida.getUsuarios() ,preguntas);
+        servletContext.setAttribute("quiz", quiz);
         sseController.sendUpdate("empezar");
         sseController.cleanEmitters();
-        return "redirect:/partida/list";
+        model.addAttribute("idPartida", id);
+        return "menuSiguientePregunta";
+    }
+
+    @GetMapping("/partida/avanzarPregunta/{id}")
+    public String avanzarPregunta(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        QuizData quizData = (QuizData) servletContext.getAttribute("quiz");
+        quizService.avanzarPregunta(quizData);
+        sseController.sendUpdatePreguntas("empezar");
+        sseController.cleanEmittersPreguntas();
+        model.addAttribute("idPartida", id);
+        return "menuSiguientePregunta";
     }
 
 }
