@@ -9,7 +9,6 @@
     <h2 th:text="'Modificación de la pregunta'"></h2>
 
     <form method="post" th:action="@{/preguntas/editar/{id}(id=${pregunta.id})}" th:object="${pregunta}">
-        <div class="col-6">
         <div class="form-group">
             <label for="enunciado">Enunciado de la pregunta:</label>
             <input class="form-control" id="enunciado" name="enunciado" required th:field="*{enunciado}" type="text"/>
@@ -25,7 +24,6 @@
 
         <button class="btn btn-primary" type="submit">Modificar pregunta</button>
         <a class="btn btn-link" th:href="@{/preguntas}">Volver</a>
-        </div>
     </form>
 </div>
 <footer th:replace="fragments::footer"/>
