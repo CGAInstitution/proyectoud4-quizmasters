@@ -5,26 +5,30 @@
 
 <body>
 <div class="container-fluid">
-
     <h2 th:text="'Modificación de la pregunta'"></h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <form method="post" th:action="@{/preguntas/editar/{id}(id=${pregunta.id})}" th:object="${pregunta}">
 
-    <form method="post" th:action="@{/preguntas/editar/{id}(id=${pregunta.id})}" th:object="${pregunta}">
-        <div class="form-group">
-            <label for="enunciado">Enunciado de la pregunta:</label>
-            <input class="form-control" id="enunciado" name="enunciado" required th:field="*{enunciado}" type="text"/>
-            <label for="respuesta">Respuesta correcta:</label>
-            <input class="form-control" id="respuesta" name="respuesta" required th:field="*{respuestaCorrecta}" type="text"/>
-            <label for="categorias">Categoría:</label>
-            <select th:field="*{categoria}" class="form-control" id="categorias">
-                <option th:each="categoria:${categorias}" th:value="${categoria}" th:text="${categoria}"/>
-            </select>
-            <label for="puntuacion">Puntuación:</label>
-            <input class="form-control" id="puntuacion" name="puntuacion" required th:field="*{puntuacion}" type="text"/>
+                <div class="form-group">
+                    <label for="enunciado">Enunciado de la pregunta:</label>
+                    <input class="form-control" id="enunciado" name="enunciado" required th:field="*{enunciado}" type="text"/>
+                    <label for="respuesta">Respuesta correcta:</label>
+                    <input class="form-control" id="respuesta" name="respuesta" required th:field="*{respuestaCorrecta}" type="text"/>
+                    <label for="categorias">Categoría:</label>
+                    <select th:field="*{categoria}" class="form-control" id="categorias">
+                        <option th:each="categoria:${categorias}" th:value="${categoria}" th:text="${categoria}"/>
+                    </select>
+                    <label for="puntuacion">Puntuación:</label>
+                    <input class="form-control" id="puntuacion" name="puntuacion" required th:field="*{puntuacion}" type="text"/>
+                </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" type="submit">Modificar pregunta</button>
+                    <a class="btn btn-link" th:href="@{/preguntas}">Volver</a>
+                </div>
         </div>
-
-        <button class="btn btn-primary" type="submit">Modificar pregunta</button>
-        <a class="btn btn-link" th:href="@{/preguntas}">Volver</a>
-    </form>
+        </form>
+    </div>
 </div>
 <footer th:replace="fragments::footer"/>
 <div th:replace="fragments::javascript"/>

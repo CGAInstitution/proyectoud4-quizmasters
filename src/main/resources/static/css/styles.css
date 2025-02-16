@@ -218,8 +218,8 @@ input.form-control:focus{
 /* Selección de categoría */
 select.form-control {
     background-color: var(--fondo-claro);
-    color: white;
     border: 1px solid var(--azul-marino);
+    color: black;
     border-radius: 5px;
     padding: 6px 10px;
     font-size: 1rem;
