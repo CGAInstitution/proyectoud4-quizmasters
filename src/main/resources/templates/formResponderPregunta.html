@@ -21,5 +21,15 @@
 
 <div th:replace="~{fragments::javascript}"/>
 
+<script>
+    var eventSource = new EventSource('/sse/pasarPregunta');
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/quiz/mostrar-pregunta");
+    };
+</script>
+
 </body>
 </html>

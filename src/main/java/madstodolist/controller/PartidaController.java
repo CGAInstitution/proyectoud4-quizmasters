@@ -129,7 +129,7 @@ public class PartidaController {
             model.addAttribute("pregunta", quizData.getPreguntaActual().getEnunciado());
             return "menuSiguientePregunta";
         } else {
-            model.addAttribute("puntuaciones", quizData.getPuntuaciones().entrySet().stream().sorted(Map.Entry.comparingByValue()).toList());
+            model.addAttribute("puntuaciones", quizService.getPuntuacionesFinales(quizData));
             return "salaResultados";
         }
 

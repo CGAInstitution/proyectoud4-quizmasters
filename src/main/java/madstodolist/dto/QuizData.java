@@ -1,13 +1,14 @@
 package madstodolist.dto;
 
 import madstodolist.model.Pregunta;
+import madstodolist.model.Usuario;
+import madstodolist.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class QuizData {
+
     private Long idPartida;
     private List<Long> idsJugadores;
     private List<Pregunta> preguntasRestantes;
@@ -85,6 +86,8 @@ public class QuizData {
     synchronized public void actualizarPuntuacion(Float puntuacion, Long idJugador) {
         getPuntuaciones().computeIfPresent(idJugador,(k, v) -> v + puntuacion);
     }
+
+
 
     @Override
     public boolean equals(Object o) {

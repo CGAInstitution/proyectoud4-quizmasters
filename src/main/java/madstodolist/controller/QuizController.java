@@ -131,7 +131,7 @@ public class QuizController {
     @GetMapping("/quiz/resultado")
     public String mostrarResultado(HttpSession session, Model model) {
         QuizData quiz = (QuizData) servletContext.getAttribute("quiz");
-        model.addAttribute("puntuaciones", quiz.getPuntuaciones().entrySet().stream().sorted(Map.Entry.comparingByValue()).toList());
+        model.addAttribute("puntuaciones", quizService.getPuntuacionesFinales(quiz));
         return "salaResultados";
     }
 

@@ -9,20 +9,20 @@ import madstodolist.repository.PreguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class QuizService {
 
+    private final UsuarioService usuarioService;
     PartidaRepository partidaRepository;
     PreguntaRepository preguntaRepository;
 
     @Autowired
-    public QuizService(PartidaRepository partidaRepository, PreguntaRepository preguntaRepository) {
+    public QuizService(PartidaRepository partidaRepository, PreguntaRepository preguntaRepository, UsuarioService usuarioService) {
         this.partidaRepository = partidaRepository;
         this.preguntaRepository = preguntaRepository;
+        this.usuarioService = usuarioService;
     }
 
     public QuizData iniciarQuiz(Long idPartida, List<Usuario> jugadores, List<Pregunta> preguntas) {
@@ -77,6 +77,16 @@ public class QuizService {
             quizActual.setEsFinalizado(true);
         }
         return quizActual;
+    }
+
+    public List<Map.Entry<String, Float>> getPuntuacionesFinales(QuizData quizData){
+        List<Map.Entry<Long, Float>> puntuaciones = quizData.getPuntuaciones().entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue)).toList();
+        List<Map.Entry<String, Float>> puntuacionesUsuarios = new ArrayList<>();
+        for (Map.Entry<Long, Float> puntuacion :  puntuaciones){
+            puntuacionesUsuarios.add(Map.entry(usuarioService.findById(puntuacion.getKey()).getNombre(), puntuacion.getValue()));
+        }
+        Collections.reverse(puntuacionesUsuarios);
+        return puntuacionesUsuarios;
     }
 
 }
