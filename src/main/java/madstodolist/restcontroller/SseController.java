@@ -1,7 +1,9 @@
 package madstodolist.restcontroller;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -14,20 +16,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RestController
 public class SseController {
 
-//    private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-//    private final CopyOnWriteArrayList<SseEmitter> emittersPasarPregunta = new CopyOnWriteArrayList<>();
     private final Map<String, CopyOnWriteArrayList<SseEmitter>> emitters = new HashMap<>();
 
-    @GetMapping("/sse/start")
+    @GetMapping("/sse/start/{id}")
     @Async
-    public SseEmitter streamEmpezarPartida() {
-        return addEmitter("start");
+    public SseEmitter streamEmpezarPartida(@PathVariable("id") Long id) {
+        return addEmitter("start" + id);
     }
 
-    @GetMapping("/sse/pasarPregunta")
+    @GetMapping("/sse/pasarPregunta/{id}")
     @Async
-    public SseEmitter streamPasarPregunta() {
-        return addEmitter("pregunta");
+    public SseEmitter streamPasarPregunta(@PathVariable("id") Long id) {
+        return addEmitter("pregunta" + id);
     }
 
     @GetMapping("/sse/joinable")
@@ -36,16 +36,16 @@ public class SseController {
         return addEmitter("joinable");
     }
 
-    @GetMapping("/sse/jugadores")
+    @GetMapping("/sse/jugadores/{id}")
     @Async
-    public SseEmitter streamRecargarJugadores() {
-        return addEmitter("jugadores");
+    public SseEmitter streamRecargarJugadores(@PathVariable("id") Long id) {
+        return addEmitter("jugadores" + id);
     }
 
-    @GetMapping("/sse/cancel")
+    @GetMapping("/sse/cancel/{id}")
     @Async
-    public SseEmitter streamCancelarPArtida() {
-        return addEmitter("cancel");
+    public SseEmitter streamCancelarPartida(@PathVariable("id") Long id) {
+        return addEmitter("cancel" + id);
     }
 
     public SseEmitter addEmitter(String type){

@@ -8,38 +8,42 @@
 
     <h2 th:text="'Configurando partida'"></h2>
 
-    <form method="get" th:object="${idPartida}" th:action="@{/quiz/iniciar/{id}(id = ${idPartida})}">
-        <div class="col-6">
-        <div class="form-group">
-        </div>
-            <p th:text="'Hola ' + ${jugador}"></p>
-            Esperando al resto de jugadores y que el administrador inicie la partida
-<!--        <button class="btn btn-primary" type="submit">INICIAR QUIZ</button>-->
-            <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
-        </div>
-    </form>
+    <div class="col-6">
+    <div class="form-group">
+    </div>
+        <p th:text="'Hola ' + ${jugador}"></p>
+        Esperando al resto de jugadores y que el administrador inicie la partida
+        <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
+    </div>
 </div>
 
 <div th:replace="~{fragments::javascript}"/>
 
-<script>
-    var eventSource = new EventSource('/sse/start');
+<script th:inline="javascript">
+
+    var idPartida = /*[[${idPartida}]]*/ null;
+    console.log(idPartida);
+    var eventSource = new EventSource('/sse/start/' + idPartida);
 
     eventSource.onmessage = function(event) {
         console.log("Update received: " + event.data);
         eventSource.close();
-        window.location.replace("/quiz/iniciar");
+        window.location.replace("/quiz/iniciar/" +idPartida);
     };
-</script>
 
-<script>
-    var eventSource = new EventSource('/sse/cancel');
+    var eventSource2 = new EventSource('/sse/cancel/' + idPartida);
 
-    eventSource.onmessage = function(event) {
+    eventSource2.onmessage = function(event) {
         console.log("Update received: " + event.data);
-        eventSource.close();
+        eventSource2.close();
         window.location.replace("/menuJuegos");
     };
+
+    window.addEventListener("beforeunload", function() {
+        eventSource.close();
+        eventSource2.close();
+    });
+
 </script>
 
 </body>

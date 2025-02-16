@@ -2,6 +2,7 @@ package madstodolist.controller;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
+import madstodolist.authentication.ManagerUserSession;
 import madstodolist.dto.PartidaForm;
 import madstodolist.dto.QuizData;
 import madstodolist.model.Partida;
@@ -41,6 +42,7 @@ public class PartidaController {
     private ServletContext servletContext;
     @Autowired
     private QuizService quizService;
+    private ManagerUserSession managerUserSession;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
@@ -104,7 +106,7 @@ public class PartidaController {
         partidaService.setJoinable(partida, false);
         partidaService.cleanUsuariosPartida(partida);
         sseController.completeSignal("joinable");
-        sseController.completeSignal("cancel");
+        sseController.completeSignal("cancel"+id);
         return "redirect:/partida/list";
     }
 
@@ -112,9 +114,17 @@ public class PartidaController {
     public String arrancarPartida(@PathVariable("id") Long id, Model model) {
         Partida partida = partidaService.findPartidaById(id);
         List<Pregunta> preguntas = partida.getPreguntas();
+        if (preguntas.isEmpty()){
+            try {
+                partidaService.generarPreguntasPartida(partida);
+                preguntas = partida.getPreguntas();
+            } catch (NotEnoughQuestionsException e){
+                return "redirect:/partida/cancel/" + id;
+            }
+        }
         QuizData quiz = quizService.iniciarQuiz(partida.getId(), partida.getUsuarios() ,preguntas);
-        servletContext.setAttribute("quiz", quiz);
-        sseController.completeSignal("start");
+        servletContext.setAttribute("quiz" +id, quiz);
+        sseController.completeSignal("start" + id);
         model.addAttribute("idPartida", id);
         model.addAttribute("pregunta", quiz.getPreguntaActual().getEnunciado());
         return "menuSiguientePregunta";
@@ -122,9 +132,9 @@ public class PartidaController {
 
     @GetMapping("/partida/avanzarPregunta/{id}")
     public String avanzarPregunta(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-        QuizData quizData = (QuizData) servletContext.getAttribute("quiz");
+        QuizData quizData = (QuizData) servletContext.getAttribute("quiz" +id);
         quizService.avanzarPregunta(quizData);
-        sseController.completeSignal("pregunta");
+        sseController.completeSignal("pregunta"+ id);
         if (!quizData.getEsFinalizado()){
             model.addAttribute("idPartida", id);
             model.addAttribute("pregunta", quizData.getPreguntaActual().getEnunciado());
