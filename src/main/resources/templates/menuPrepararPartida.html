@@ -18,6 +18,15 @@
 
 <div th:replace="~{fragments::javascript}"/>
 
+<script>
+    var eventSource = new EventSource('/sse/jugadores');
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.reload();
+    };
+</script>
 
 </body>
 </html>

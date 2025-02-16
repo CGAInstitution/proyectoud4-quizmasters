@@ -65,6 +65,7 @@ public class QuizController {
         model.addAttribute("usuario", usuario);
         model.addAttribute("partidas", partidaService.findJoinable());
 
+
         return "menuJuego";
     }
 
@@ -77,6 +78,7 @@ public class QuizController {
         managerUserSession.addPartida(id);
         model.addAttribute("idPartida", id);
         model.addAttribute("jugador", usuarioData.getNombre());
+        sseController.completeSignal("jugadores");
         return "salaEspera";
     }
 
@@ -87,6 +89,7 @@ public class QuizController {
         partidaService.deleteUsuarioPartida(partida, idUsuario);
         managerUserSession.leavePartida();
         model.addAttribute("idPartida", id);
+        sseController.completeSignal("jugadores");
         return "redirect:/menuJuegos";
     }
 

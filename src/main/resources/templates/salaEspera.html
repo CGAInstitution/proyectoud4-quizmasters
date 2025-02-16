@@ -32,5 +32,15 @@
     };
 </script>
 
+<script>
+    var eventSource = new EventSource('/sse/cancel');
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/menuJuegos");
+    };
+</script>
+
 </body>
 </html>

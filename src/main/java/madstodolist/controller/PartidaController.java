@@ -94,6 +94,7 @@ public class PartidaController {
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, true);
         model.addAttribute("jugadores", partida.getUsuarios());
+        sseController.completeSignal("joinable");
         return "menuPrepararPartida";
     }
 
@@ -102,6 +103,8 @@ public class PartidaController {
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, false);
         partidaService.cleanUsuariosPartida(partida);
+        sseController.completeSignal("joinable");
+        sseController.completeSignal("cancel");
         return "redirect:/partida/list";
     }
 
@@ -111,8 +114,7 @@ public class PartidaController {
         List<Pregunta> preguntas = partida.getPreguntas();
         QuizData quiz = quizService.iniciarQuiz(partida.getId(), partida.getUsuarios() ,preguntas);
         servletContext.setAttribute("quiz", quiz);
-        sseController.sendUpdate("empezar");
-        sseController.cleanEmitters();
+        sseController.completeSignal("start");
         model.addAttribute("idPartida", id);
         model.addAttribute("pregunta", quiz.getPreguntaActual().getEnunciado());
         return "menuSiguientePregunta";
@@ -122,8 +124,7 @@ public class PartidaController {
     public String avanzarPregunta(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         QuizData quizData = (QuizData) servletContext.getAttribute("quiz");
         quizService.avanzarPregunta(quizData);
-        sseController.sendUpdatePreguntas("empezar");
-        sseController.cleanEmittersPreguntas();
+        sseController.completeSignal("pregunta");
         if (!quizData.getEsFinalizado()){
             model.addAttribute("idPartida", id);
             model.addAttribute("pregunta", quizData.getPreguntaActual().getEnunciado());
