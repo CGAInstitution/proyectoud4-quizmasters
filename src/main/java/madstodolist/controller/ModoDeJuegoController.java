@@ -69,6 +69,9 @@ public class ModoDeJuegoController {
 
     @GetMapping("/modosDeJuego/editar/{id}")
     public String editarPregunta(@PathVariable(value="id") Long id, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         ModoDeJuego modoDeJuegoActual = modoDeJuegoService.findById(id);
         model.addAttribute("modoDeJuego", modoDeJuegoActual);
         model.addAttribute("categorias", Categoria.values());
