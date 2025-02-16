@@ -6,12 +6,12 @@
 <body>
 <div class="container-fluid" th:object="${quiz}">
 
-    <h2 th:text="'RESULTADO'"></h2>
-    <h3 th:text="'¡El jugador ha conseguido un total de '+ ${puntuacion} + ' puntos!'"></h3>
+    <h2 th:text="'RESULTADOS DE LA PARTIDA'"></h2>
+    <div th:each="puntuacion : ${puntuaciones}">
+        <span th:text="'El jugador ' + ${puntuacion.getKey()} + ' ha conseguido ' + ${puntuacion.getValue()} + ' punto(s)'"/>
+    </div>
     <form method="get" th:action="@{/quiz}">
         <div class="col-6">
-        <div class="form-group">
-        </div>
         <a class="btn btn-link" th:href="@{/menuJuegos}">Volver al menú de partidas</a>
         </div>
     </form>

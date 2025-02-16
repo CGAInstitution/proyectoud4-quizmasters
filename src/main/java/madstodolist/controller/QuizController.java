@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class QuizController {
@@ -112,6 +113,7 @@ public class QuizController {
             return "redirect:/quiz";
         }
         if(quiz.getEsFinalizado()){
+
             return "redirect:/quiz/resultado";
         }
         model.addAttribute("quiz", quiz);
@@ -129,8 +131,7 @@ public class QuizController {
     @GetMapping("/quiz/resultado")
     public String mostrarResultado(HttpSession session, Model model) {
         QuizData quiz = (QuizData) servletContext.getAttribute("quiz");
-        Float puntuacion = quiz.getPuntuaciones().get(managerUserSession.usuarioLogeado());
-        model.addAttribute("puntuacion", puntuacion);
+        model.addAttribute("puntuaciones", quiz.getPuntuaciones().entrySet().stream().sorted(Map.Entry.comparingByValue()).toList());
         return "salaResultados";
     }
 

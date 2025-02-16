@@ -58,7 +58,7 @@ public class QuizService {
         if(respuesta == null) {
             throw new RuntimeException("Se ha producido un error en la respuesta.");
         }
-        if(respuesta.equals(pregunta.getRespuestaCorrecta())){
+        if(respuesta.equalsIgnoreCase(pregunta.getRespuestaCorrecta())){
             quizActual.actualizarPuntuacion(pregunta.getPuntuacion(), idJugador);
         }
         return quizActual;

@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PartidaController {
@@ -73,7 +75,6 @@ public class PartidaController {
         try{
             if (partida != null){
                 partidaService.generarPreguntasPartida(partida);
-                partida.getPreguntas().forEach(System.out::println);
             }
         } catch (NotEnoughQuestionsException e){
             redirectAttributes.addFlashAttribute("mensaje", e.getMessage());
@@ -105,7 +106,7 @@ public class PartidaController {
     }
 
     @GetMapping("/partida/start/{id}")
-    public String arrancarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+    public String arrancarPartida(@PathVariable("id") Long id, Model model) {
         Partida partida = partidaService.findPartidaById(id);
         List<Pregunta> preguntas = partida.getPreguntas();
         QuizData quiz = quizService.iniciarQuiz(partida.getId(), partida.getUsuarios() ,preguntas);
@@ -113,6 +114,7 @@ public class PartidaController {
         sseController.sendUpdate("empezar");
         sseController.cleanEmitters();
         model.addAttribute("idPartida", id);
+        model.addAttribute("pregunta", quiz.getPreguntaActual().getEnunciado());
         return "menuSiguientePregunta";
     }
 
@@ -122,8 +124,15 @@ public class PartidaController {
         quizService.avanzarPregunta(quizData);
         sseController.sendUpdatePreguntas("empezar");
         sseController.cleanEmittersPreguntas();
-        model.addAttribute("idPartida", id);
-        return "menuSiguientePregunta";
+        if (!quizData.getEsFinalizado()){
+            model.addAttribute("idPartida", id);
+            model.addAttribute("pregunta", quizData.getPreguntaActual().getEnunciado());
+            return "menuSiguientePregunta";
+        } else {
+            model.addAttribute("puntuaciones", quizData.getPuntuaciones().entrySet().stream().sorted(Map.Entry.comparingByValue()).toList());
+            return "salaResultados";
+        }
+
     }
 
 }
