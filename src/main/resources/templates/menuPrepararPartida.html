@@ -18,6 +18,16 @@
 
 <div th:replace="~{fragments::javascript}"/>
 
+<script th:inline="javascript">
+    var idPartida = /*[[${idPartida}]]*/ null;
+    var eventSource = new EventSource('/sse/jugadores/' + idPartida);
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/partida/prepare/" + idPartida);
+    };
+</script>
 
 </body>
 </html>
