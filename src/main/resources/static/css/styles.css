@@ -1,11 +1,35 @@
+:root {
+    --fondo-claro: #d2e3ef;
+    --fondo-oscuro: #7a92b4;
+    --azul-oscuro: #1a1f3d;
+    --azul-marino: #3b4a8c;
+    --azul-medio: #587ebb;
+    --azul-claro: #87b8e8;
+    --celeste: #c6e9f1;
+    --celeste-claro: #e2f4f8;
+    --naranja-claro: #FF6F20;
+    --naranja-oscuro: #e36409;
+    --rojo-claro: #E74C3C;
+    --rojo-oscuro: #C0392B;
+    --enlaces: white;
+    --enlaces-hover: #c45009;
+    --fondo-enlaces-claro: #3b4a8c;
+    --fondo-enlaces-oscuro: #1a1f3d;
+}
+
+
 /* Estilo global */
 body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     font-family: 'Arial', sans-serif;
-    background-image: linear-gradient(#D5D8DC, #9866a6);
-
+    background-image: linear-gradient(var(--fondo-claro),var(--fondo-oscuro));
     color: #fff; /* Texto blanco */
     padding: 20px;
-    height:100vh;
+    min-height: 100vh;
 }
 
 h2 {
@@ -20,11 +44,10 @@ h2 {
     display: grid;
     margin: auto;
     width: 80%;
-    background: radial-gradient(circle at 70% 70%, #8a48a2 20%, #4c1d62 90%);
-    /*background-color: #2C3E50; /* Gris oscuro para el fondo del contenedor */
-    border-radius: 10px;
+    background-image: radial-gradient(circle at 20% 20%, var(--celeste), var(--azul-claro), var(--azul-medio), var(--azul-marino));
+    border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.3);
     overflow: auto;
 }
 
@@ -67,7 +90,7 @@ h2 {
 
 /* Botones */
 .btn-primary {
-    background-image: linear-gradient(150deg, #F39C12 40%, #e36409);
+    background-image: linear-gradient(150deg, var(--naranja-claro)  40%, var(--naranja-oscuro));
     border: none;
     color: white;
     padding: 10px 20px;
@@ -79,25 +102,31 @@ h2 {
 }
 
 .btn-primary:hover {
-    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.7); /* Resplandor naranja */
-    transform: scale(1.05);
+    box-shadow: 0 0 7px rgba(255, 165, 0, 0.7); /* Resplandor naranja */
+    transform: scale(1.02);
 }
 
 .btn-link {
-    color: #efa537;
+    background-image: linear-gradient(150deg, var(--fondo-enlaces-claro)  40%, var(--fondo-enlaces-oscuro));
+    padding: 10px 20px;
+    color: var(--enlaces);
     font-size: 1rem;
+
+
 }
 
 .btn-link:hover {
-    text-decoration: underline;
-    color: #c45009;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7); /* Resplandor naranja */
+    transform: scale(1.02);
 }
 
 /* Estilo de la tabla */
 .table {
-    background-color: #a882b4;
+    background-color: var(--azul-medio);
     border-radius: 8px;
     color: white;
+    box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.7);
 }
 
 .table th, .table td {
@@ -106,12 +135,12 @@ h2 {
 }
 
 .table th {
-    background-color: #421757;
+    background-color: var(--azul-oscuro);
     color: white;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #895c96; /* Fondo oscuro para filas impares */
+    background-color: var(--azul-marino); /* Fondo oscuro para filas impares */
 }
 
 .table-no-striped{
@@ -152,7 +181,7 @@ h2 {
 }
 
 input.form-group{
-    background-color: #9866a6;
+    background-color: var(--fondo-oscuro);
     color: white;
     border: 1px solid #F39C12;
     border-radius: 5px;
@@ -165,7 +194,7 @@ input.form-group{
 
 
 input.form-control{
-    background-color: #D5D8DC; /* Gris azulado de fondo */
+    background-color: var(--fondo-claro);
     color: black;
     border: 1px solid #F39C12;
     border-radius: 5px;
@@ -180,8 +209,8 @@ input.form-control:hover{
 
 
 input.form-control:focus{
-    border-color: #F39C12; /* Naranja dorado al enfocar */
-    background-color: #9866a6;
+    border-color: var(--naranja-claro); /* Naranja dorado al enfocar */
+    background-color: var(--azul-medio);
     color: white;
     outline: none; /* Elimina el resplandor azul por defecto */
     box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
@@ -194,9 +223,9 @@ input.form-control:focus::placeholder{
 
 /* Selección de categoría */
 select.form-control {
-    background-color: #D5D8DC;
+    background-color: var(--fondo-claro);
     color: white;
-    border: 1px solid #F39C12;
+    border: 1px solid var(--azul-marino);
     border-radius: 5px;
     padding: 6px 10px;
     font-size: 1rem;
@@ -204,8 +233,8 @@ select.form-control {
 }
 
 select.form-control:focus {
-    border-color: #F39C12;
-    background-color: #9866a6;
+    border-color: var(--azul-marino);
+    background-color: var(--azul-medio);
     box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
 }
 select.form-control:hover{
@@ -217,13 +246,13 @@ option:hover{
 }
 
 select.form-control option {
-    background-color: #9866a6; /* Color de fondo de las opciones */
+    background-color: var(--azul-medio); /* Color de fondo de las opciones */
     color: white;
 }
 
 
 input:-webkit-autofill {
-    box-shadow: 0 0 0 1000px #4c1d62 inset !important;
+    box-shadow: 0 0 0 1000px var(--azul-oscuro) inset !important;
     -webkit-text-fill-color: white !important;
 }
 
@@ -244,7 +273,7 @@ input:-webkit-autofill:focus {
 
 .btn-danger {
     border: none;
-    background-image: linear-gradient(150deg, #E74C3C 40%, #C0392B);
+    background-image: linear-gradient(150deg, var(--rojo-claro) 40%, var(--rojo-oscuro));
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -255,9 +284,53 @@ input:-webkit-autofill:focus {
 }
 
 .btn-primary.btn-xs {
-    background-color: #FF6F20; /* Naranja brillante para editar */
+    background-color: var(--naranja-claro); /* Naranja brillante para editar */
 }
 
 .btn-primary.btn-xs:hover {
     background-color: #E65C00; /* Naranja más oscuro al pasar el ratón */
 }
+
+.btn-primary {
+    background-image: linear-gradient(150deg, #F39C12 40%, var(--naranja-oscuro));
+}
+
+.contenedor-partidas{
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+    gap: 30px;
+}
+
+.partida-card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-image: linear-gradient(var(--azul-marino), var(--azul-oscuro));
+    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.4);
+    color: white;
+    min-width: 200px;
+    max-width: 200px;
+    align-items: center;
+    border-radius: 20px;
+}
+
+
+.partida-card:hover{
+    transform: scale(1.05);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.footer{
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.footer a{
+    color: var(--fondo-claro);
+}
+
+
+
+
