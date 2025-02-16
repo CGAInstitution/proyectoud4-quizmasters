@@ -26,7 +26,7 @@
                 <td th:text="${modo.categorias}"></td>
 
                 <td>
-                    <a class="btn btn-primary btn-xs" th:href="@{/modosDeJuego/{id}/editar(id=${modo.id})}">Editar</a>
+                    <a class="btn btn-primary btn-xs" th:href="@{/modosDeJuego/editar/{id}(id=${modo.id})}">Editar</a>
                     <button class="btn btn-danger btn-xs" style="cursor: pointer;"
                             th:onclick="'del(\'/modosDeJuego/' + ${modo.id}+'\')'">Borrar</button>
                 </td>
