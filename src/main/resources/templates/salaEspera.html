@@ -8,12 +8,13 @@
 
     <h2 th:text="'Configurando partida'"></h2>
 
-    <div class="col-6">
-    <div class="form-group">
-    </div>
+    <div class="contenedor-secundario">
+    <div class="card-espera">
+
         <p th:text="'Hola ' + ${jugador}"></p>
-        Esperando al resto de jugadores y que el administrador inicie la partida
+        <p>Esperando al resto de jugadores y que el administrador inicie la partida</p>
         <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
+    </div>
     </div>
 </div>
 <footer th:replace="fragments::footer"/>

@@ -210,15 +210,9 @@ input.form-control:hover{
 
 input.form-control:focus{
     border-color: var(--naranja-claro); /* Naranja dorado al enfocar */
-    background-color: var(--azul-medio);
-    color: white;
+    background-color: var(--celeste);
     outline: none; /* Elimina el resplandor azul por defecto */
     box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
-}
-
-input.form-control:focus::placeholder{
-    color: white;
-    opacity: 0.5;
 }
 
 /* Selección de categoría */
@@ -295,14 +289,14 @@ input:-webkit-autofill:focus {
     background-image: linear-gradient(150deg, #F39C12 40%, var(--naranja-oscuro));
 }
 
-.contenedor-partidas{
+.contenedor-secundario{
     display: flex;
     justify-content: center;
     flex-flow: wrap;
     gap: 30px;
 }
 
-.partida-card {
+.card-secundario {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -316,10 +310,22 @@ input:-webkit-autofill:focus {
 }
 
 
-.partida-card:hover{
+.card-secundario:hover{
     transform: scale(1.05);
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.card-espera {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-image: linear-gradient(var(--azul-marino), var(--azul-oscuro));
+    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.4);
+    color: white;
+    align-items: center;
+    border-radius: 20px;
 }
 
 .footer{

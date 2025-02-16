@@ -15,8 +15,8 @@
     </div>
     <div class="row mt-3">
         <div class="col">
-            <div class="contenedor-partidas">
-                <div class="partida-card" th:each="partida: ${partidas}">
+            <div class="contenedor-secundario">
+                <div class="card-secundario" th:each="partida: ${partidas}">
                     <p class="fw-bold mb-1" th:text="${partida.id}"/>
                     <p th:text="${partida.modoDeJuego.nombre}"/>
                     <a class="btn btn-primary btn-sm" th:href="@{/quiz/join/{id}(id = ${partida.id})}">
