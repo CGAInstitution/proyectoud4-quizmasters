@@ -16,7 +16,7 @@
         <a class="btn btn-link" th:href="@{/quiz/salir/{id}(id = ${idPartida})}">Cancelar</a>
     </div>
 </div>
-
+<footer th:replace="fragments::footer"/>
 <div th:replace="~{fragments::javascript}"/>
 
 <script th:inline="javascript">
