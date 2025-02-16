@@ -32,5 +32,15 @@
 
 <div th:replace="fragments::javascript"/>
 
+<script>
+    var eventSource = new EventSource('/sse/joinable');
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/menuJuegos");
+    };
+</script>
+
 </body>
 </html>
