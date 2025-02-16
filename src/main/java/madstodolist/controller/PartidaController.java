@@ -1,13 +1,18 @@
 package madstodolist.controller;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
+import madstodolist.authentication.ManagerUserSession;
 import madstodolist.dto.PartidaForm;
+import madstodolist.dto.QuizData;
 import madstodolist.model.Partida;
+import madstodolist.model.Pregunta;
 import madstodolist.model.Usuario;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.UsuarioRepository;
 import madstodolist.restcontroller.SseController;
 import madstodolist.service.PartidaService;
+import madstodolist.service.QuizService;
 import madstodolist.service.UsuarioService;
 import madstodolist.service.exception.NotEnoughQuestionsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PartidaController {
@@ -30,6 +38,11 @@ public class PartidaController {
     private UsuarioService usuarioService;
     @Autowired
     private SseController sseController;
+    @Autowired
+    private ServletContext servletContext;
+    @Autowired
+    private QuizService quizService;
+    private ManagerUserSession managerUserSession;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
@@ -64,7 +77,6 @@ public class PartidaController {
         try{
             if (partida != null){
                 partidaService.generarPreguntasPartida(partida);
-                partida.getPreguntas().forEach(System.out::println);
             }
         } catch (NotEnoughQuestionsException e){
             redirectAttributes.addFlashAttribute("mensaje", e.getMessage());
@@ -84,6 +96,7 @@ public class PartidaController {
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, true);
         model.addAttribute("jugadores", partida.getUsuarios());
+        sseController.completeSignal("joinable");
         return "menuPrepararPartida";
     }
 
@@ -92,14 +105,45 @@ public class PartidaController {
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, false);
         partidaService.cleanUsuariosPartida(partida);
+        sseController.completeSignal("joinable");
+        sseController.completeSignal("cancel"+id);
         return "redirect:/partida/list";
     }
 
     @GetMapping("/partida/start/{id}")
-    public String arrancarPartida(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-        sseController.sendUpdate("empezar");
-        sseController.cleanEmitters();
-        return "redirect:/partida/list";
+    public String arrancarPartida(@PathVariable("id") Long id, Model model) {
+        Partida partida = partidaService.findPartidaById(id);
+        List<Pregunta> preguntas = partida.getPreguntas();
+        if (preguntas.isEmpty()){
+            try {
+                partidaService.generarPreguntasPartida(partida);
+                preguntas = partida.getPreguntas();
+            } catch (NotEnoughQuestionsException e){
+                return "redirect:/partida/cancel/" + id;
+            }
+        }
+        QuizData quiz = quizService.iniciarQuiz(partida.getId(), partida.getUsuarios() ,preguntas);
+        servletContext.setAttribute("quiz" +id, quiz);
+        sseController.completeSignal("start" + id);
+        model.addAttribute("idPartida", id);
+        model.addAttribute("pregunta", quiz.getPreguntaActual().getEnunciado());
+        return "menuSiguientePregunta";
+    }
+
+    @GetMapping("/partida/avanzarPregunta/{id}")
+    public String avanzarPregunta(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        QuizData quizData = (QuizData) servletContext.getAttribute("quiz" +id);
+        quizService.avanzarPregunta(quizData);
+        sseController.completeSignal("pregunta"+ id);
+        if (!quizData.getEsFinalizado()){
+            model.addAttribute("idPartida", id);
+            model.addAttribute("pregunta", quizData.getPreguntaActual().getEnunciado());
+            return "menuSiguientePregunta";
+        } else {
+            model.addAttribute("puntuaciones", quizService.getPuntuacionesFinales(quizData));
+            return "salaResultados";
+        }
+
     }
 
 }
