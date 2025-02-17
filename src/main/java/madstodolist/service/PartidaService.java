@@ -116,8 +116,26 @@ public class PartidaService {
     }
 
     @Transactional
+    public List<Partida> findPlayable(){
+        return partidaRepository.findByFinished(false);
+    }
+
+    @Transactional
     public void setJoinable(Partida partida, boolean joinable){
         partida.setJoinable(joinable);
+        partidaRepository.save(partida);
+    }
+
+    @Transactional
+    public void setFinished(Partida partida, boolean finished){
+        partida.setFinished(finished);
+        partidaRepository.save(partida);
+    }
+
+    @Transactional
+    public void setGanador(Partida partida, Usuario usuario){
+        partida.setGanador(usuario);
+        partida.setFinished(true);
         partidaRepository.save(partida);
     }
 }

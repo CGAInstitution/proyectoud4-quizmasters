@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PartidaRepository extends JpaRepository<Partida, Long> {
     List<Partida> findByJoinable(boolean joinable);
+    List<Partida> findByFinished(boolean finished);
 }
