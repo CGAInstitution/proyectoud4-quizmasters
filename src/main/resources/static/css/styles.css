@@ -15,6 +15,7 @@
     --enlaces-hover: #c45009;
     --fondo-enlaces-claro: #3b4a8c;
     --fondo-enlaces-oscuro: #1a1f3d;
+    --gris-oscuro: #333
 }
 
 
@@ -44,7 +45,7 @@ h2 {
     display: grid;
     margin: auto;
     width: 80%;
-    background-image: radial-gradient(circle at 20% 20%, var(--celeste), var(--azul-claro), var(--azul-medio), var(--azul-marino));
+    background-image: radial-gradient(circle at 20% 20%, var(--azul-claro), var(--azul-medio), var(--azul-marino));
     border-radius: 20px;
     padding: 30px;
     box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.3);
@@ -90,9 +91,9 @@ h2 {
 
 /* Botones */
 .btn-primary {
-    background-image: linear-gradient(150deg, var(--naranja-claro)  40%, var(--naranja-oscuro));
+    background-color: var(--celeste);
     border: none;
-    color: white;
+    color: var(--gris-oscuro);
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 1rem;
@@ -102,22 +103,33 @@ h2 {
 }
 
 .btn-primary:hover {
-    box-shadow: 0 0 7px rgba(255, 165, 0, 0.7); /* Resplandor naranja */
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+    background-color: var(--celeste);
     transform: scale(1.02);
+    color: var(--gris-oscuro)
+}
+
+.btn-primary:active{
+    background-color: var(--celeste) !important;
+    color: var(--gris-oscuro) !important;
+}
+.btn-primary:focus {
+    background-color: var(--celeste) !important;
+    color: var(--gris-oscuro) !important;
+    outline: none;
 }
 
 .btn-link {
-    background-image: linear-gradient(150deg, var(--fondo-enlaces-claro)  40%, var(--fondo-enlaces-oscuro));
+    background-color: var(--fondo-enlaces-oscuro);
     padding: 10px 20px;
     color: var(--enlaces);
     font-size: 1rem;
-
-
+    text-underline: none;
 }
 
 .btn-link:hover {
     color: white;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7); /* Resplandor naranja */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
     transform: scale(1.02);
 }
 
@@ -166,8 +178,8 @@ h2 {
 
 /* Estilo para las alertas */
 .alert {
-    background-color: #F39C12; /* Color dorado de alerta */
-    border-color: #F39C12; /* Mismo color para el borde */
+    background-color: var(--azul-oscuro);
+    border-color: var(--celeste);
     color: white;
     font-size: 1.2rem;
 }
@@ -183,7 +195,7 @@ h2 {
 input.form-group{
     background-color: var(--fondo-oscuro);
     color: white;
-    border: 1px solid #F39C12;
+    border: 1px solid var(--celeste);
     border-radius: 5px;
     padding: 10px;
     font-size: 1rem;
@@ -196,7 +208,7 @@ input.form-group{
 input.form-control{
     background-color: var(--fondo-claro);
     color: black;
-    border: 1px solid #F39C12;
+    border: 1px solid var(--celeste);
     border-radius: 5px;
     padding: 10px;
     font-size: 1rem;
@@ -204,15 +216,15 @@ input.form-control{
 }
 
 input.form-control:hover{
-    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+    box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.7);
 }
 
 
 input.form-control:focus{
-    border-color: var(--naranja-claro); /* Naranja dorado al enfocar */
+    border-color: var(--celeste);
     background-color: var(--celeste);
     outline: none; /* Elimina el resplandor azul por defecto */
-    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+    box-shadow: 0 0 5px 2px rgba(243, 255, 255, 0.7);
 }
 
 /* Selección de categoría */
@@ -229,14 +241,10 @@ select.form-control {
 select.form-control:focus {
     border-color: var(--azul-marino);
     background-color: var(--azul-medio);
-    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
+    box-shadow: 0 0 5px 2px rgba(243, 255, 255, 0.8);
 }
 select.form-control:hover{
-    box-shadow: 0 0 5px 2px rgba(243, 156, 18, 0.8);
-}
-
-option:hover{
-    background-color:red;
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.8);
 }
 
 select.form-control option {
@@ -251,11 +259,6 @@ input:-webkit-autofill {
 }
 
 
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-    background-color: red;
-}
-
 
 /* Diseño de los botones para borrar y editar */
 .btn-xs {
@@ -267,27 +270,27 @@ input:-webkit-autofill:focus {
 
 .btn-danger {
     border: none;
-    background-image: linear-gradient(150deg, var(--rojo-claro) 40%, var(--rojo-oscuro));
+    background: var(--azul-oscuro);
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-danger:hover {
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.7);
+    background: var(--azul-oscuro);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.7);
     transform: scale(1.05);
 }
 
 .btn-primary.btn-xs {
-    background-color: var(--naranja-claro); /* Naranja brillante para editar */
+    background-color: var(--celeste-claro);
+    color: var(--gris-oscuro)
 }
 
 .btn-primary.btn-xs:hover {
-    background-color: #E65C00; /* Naranja más oscuro al pasar el ratón */
+    background-color: var(--celeste);
+    color: var(--gris-oscuro)
 }
 
-.btn-primary {
-    background-image: linear-gradient(150deg, #F39C12 40%, var(--naranja-oscuro));
-}
 
 .contenedor-secundario{
     display: flex;
