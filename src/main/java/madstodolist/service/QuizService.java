@@ -1,11 +1,13 @@
 package madstodolist.service;
 
 import madstodolist.dto.QuizData;
+import madstodolist.dto.UsuarioData;
 import madstodolist.model.Partida;
 import madstodolist.model.Pregunta;
 import madstodolist.model.Usuario;
 import madstodolist.repository.PartidaRepository;
 import madstodolist.repository.PreguntaRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,16 @@ import java.util.*;
 public class QuizService {
 
     private final UsuarioService usuarioService;
+    private final ModelMapper modelMapper;
     PartidaRepository partidaRepository;
     PreguntaRepository preguntaRepository;
 
     @Autowired
-    public QuizService(PartidaRepository partidaRepository, PreguntaRepository preguntaRepository, UsuarioService usuarioService) {
+    public QuizService(PartidaRepository partidaRepository, PreguntaRepository preguntaRepository, UsuarioService usuarioService, ModelMapper modelMapper) {
         this.partidaRepository = partidaRepository;
         this.preguntaRepository = preguntaRepository;
         this.usuarioService = usuarioService;
+        this.modelMapper = modelMapper;
     }
 
     public QuizData iniciarQuiz(Long idPartida, List<Usuario> jugadores, List<Pregunta> preguntas) {
@@ -87,6 +91,12 @@ public class QuizService {
         }
         Collections.reverse(puntuacionesUsuarios);
         return puntuacionesUsuarios;
+    }
+
+    public Usuario getGanador(QuizData quizData){
+        List<Map.Entry<Long, Float>> puntuaciones = quizData.getPuntuaciones().entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue)).toList();
+        UsuarioData usuario = usuarioService.findById(puntuaciones.get(0).getKey());
+        return modelMapper.map(usuario, Usuario.class);
     }
 
 }
