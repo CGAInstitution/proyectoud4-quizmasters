@@ -381,7 +381,13 @@ Como en todo proyecto, existen numerosas características que por tiempo o recur
 se han podido perfeccionar. En nuestro caso hemos considerado las siguientes posibilidades de mejora, aunque siempre
 abiertos a la posibilidad de otras que no hemos detectado:
 
-- TODO
+- Implementar distintos tipos de preguntas (de respuesta múltiple, verdadero/falso)
+- Mejorar el sistema de corrección de pregunta, de modo que la respuesta del jugador sea válida si hay un % de acierto o si se acerca lo suficiente a la respuesta correcta (para evitar que las faltas de ortografía o errores de teclado cuenten como respuestas fallidas)
+- Filtrar las partidas que todavía no están finaliadas de las que sí.
+- Permitir la creación de categorías
+- Permitir partida de un solo jugador
+- Añadir más configuración customizable a los modos de juego (que el paso de preguntas sea por tiempo o por administrador, que se preconfiguren las pausas, que se muestren las respuestas correctas...)
+- Refactorizar la comunicación entre usuarios en el desarollo del quiz para implementar una metodología más eficiente que los emitters con vista a tener mayor control y escalabilidad de la aplicación.
 
 ## Conclusiones
 
