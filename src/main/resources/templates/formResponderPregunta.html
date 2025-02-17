@@ -9,16 +9,19 @@
     <h2 th:text="*{preguntaActual.getEnunciado()}"></h2>
 
     <form method="post" autocomplete="off" th:action="@{/quiz/responder/{id}(id = ${idPartida})}">
-        <div class="col-6">
-        <div class="form-group">
-            <label for="respuesta">Respuesta: </label>
-            <input id="respuesta" type="text" required="required" name="respuesta"/>
+
+        <div class="contenedor-secundario">
+            <div class="card-espera">
+                <label for="respuesta">Respuesta: </label>
+                <input class="form-control" id="respuesta" type="text" required="required" name="respuesta"/>
+                <button class="btn btn-primary" type="submit">Responder</button>
+            </div>
         </div>
-        <button class="btn btn-primary" type="submit">Responder</button>
-        </div>
+
+
     </form>
 </div>
-
+<footer th:replace="fragments::footer"/>
 <div th:replace="~{fragments::javascript}"/>
 
 <script th:inline="javascript">

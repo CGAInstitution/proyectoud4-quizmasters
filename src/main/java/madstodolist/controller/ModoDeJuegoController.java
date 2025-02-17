@@ -1,9 +1,11 @@
 package madstodolist.controller;
 
 
+import madstodolist.controller.exception.UsuarioSinPermisosException;
 import madstodolist.model.Categoria;
 import madstodolist.model.ModoDeJuego;
 import madstodolist.model.Pregunta;
+import madstodolist.service.AuthService;
 import madstodolist.service.ModoDeJuegoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,14 @@ public class ModoDeJuegoController {
 
     @Autowired
     ModoDeJuegoService modoDeJuegoService;
+    @Autowired
+    AuthService authService;
 
     @GetMapping("/modosDeJuego")
     public String listadoTareas(Model model) {
-
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
 
         List<ModoDeJuego> modosDeJuego = modoDeJuegoService.findAllModosDeJuego();
         model.addAttribute("modosDeJuego", modosDeJuego);
@@ -34,7 +40,9 @@ public class ModoDeJuegoController {
     @DeleteMapping("/modosDeJuego/{id}")
     @ResponseBody
     public String eliminarTarea (@PathVariable(value = "id") Long id) {
-
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         modoDeJuegoService.deleteModoDeJuego(id);
 
         return "ok";
@@ -43,6 +51,9 @@ public class ModoDeJuegoController {
 
     @GetMapping("/modosDeJuego/nuevo")
     public String nuevaPregunta(Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         model.addAttribute("modoDeJuego", new ModoDeJuego());
         model.addAttribute("listaDeCategoria", Categoria.values());
         return "formNuevoModoDeJuego";
@@ -58,10 +69,13 @@ public class ModoDeJuegoController {
 
     @GetMapping("/modosDeJuego/editar/{id}")
     public String editarPregunta(@PathVariable(value="id") Long id, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         ModoDeJuego modoDeJuegoActual = modoDeJuegoService.findById(id);
-        model.addAttribute("pregunta", modoDeJuegoActual);
+        model.addAttribute("modoDeJuego", modoDeJuegoActual);
         model.addAttribute("categorias", Categoria.values());
-        return "formEditarPregunta";
+        return "formEditarModoDeJuego";
     }
 
 

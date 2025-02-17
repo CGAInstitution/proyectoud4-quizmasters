@@ -7,15 +7,17 @@
 <div class="container-fluid">
 
     <h2 th:text="'Preparando Quiz'"></h2>
-    <ul>
-        <li th:each="jugador:${jugadores}" th:text="${jugador.getNombre()}"/>
-    </ul>
+    <div class="contenedor-secundario">
+        <div class="card-secundario" th:each="jugador:${jugadores}" th:text="${jugador.getNombre}"/>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <a class="btn btn-primary" th:href="@{/partida/start/{id}(id = ${idPartida})}">Empezar</a></p>
+        <a class="btn btn-link" th:href="@{/partida/cancel/{id}(id = ${idPartida})}">Cancelar</a></p>
+    </div>
 
-    <a class="btn btn-link" th:href="@{/partida/start/{id}(id = ${idPartida})}">Empezar</a></p>
-    <a class="btn btn-link" th:href="@{/partida/cancel/{id}(id = ${idPartida})}">Cancelar</a></p>
 
 </div>
-
+<footer th:replace="fragments::footer"/>
 <div th:replace="~{fragments::javascript}"/>
 
 <script th:inline="javascript">

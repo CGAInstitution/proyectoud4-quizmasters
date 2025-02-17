@@ -1,7 +1,9 @@
 package madstodolist.controller;
 
+import madstodolist.controller.exception.UsuarioSinPermisosException;
 import madstodolist.model.Categoria;
 import madstodolist.model.Pregunta;
+import madstodolist.service.AuthService;
 import madstodolist.service.PreguntaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,15 @@ import java.util.List;
 public class PreguntaController {
 
     @Autowired
+    AuthService authService;
+    @Autowired
     private PreguntaService preguntaService;
 
     @GetMapping("/preguntas")
     public String mostrarPreguntas(Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         List<Pregunta> preguntas = preguntaService.findAll();
         model.addAttribute("preguntas", preguntas);
         model.addAttribute("categorias", Categoria.values());
@@ -41,6 +48,9 @@ public class PreguntaController {
 
     @GetMapping("/preguntas/nueva")
     public String nuevaPregunta(Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         model.addAttribute("pregunta", new Pregunta());
         model.addAttribute("categorias", Categoria.values());
         return "formNuevaPregunta";
@@ -66,6 +76,9 @@ public class PreguntaController {
 
     @GetMapping("/preguntas/editar/{id}")
     public String editarPregunta(@PathVariable(value="id") Long id, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         Pregunta preguntaActual = preguntaService.findById(id);
         model.addAttribute("pregunta", preguntaActual);
         model.addAttribute("categorias", Categoria.values());

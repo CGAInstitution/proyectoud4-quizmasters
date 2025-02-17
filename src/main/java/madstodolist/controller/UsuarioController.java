@@ -6,6 +6,7 @@ import madstodolist.controller.exception.UltimoAdministradorException;
 import madstodolist.controller.exception.UsuarioNoLogeadoException;
 import madstodolist.controller.exception.UsuarioSinPermisosException;
 import madstodolist.dto.UsuarioData;
+import madstodolist.service.AuthService;
 import madstodolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,38 +23,35 @@ import java.util.Map;
 public class UsuarioController {
 
     @Autowired
-    ManagerUserSession managerUserSession;
+    AuthService authService;
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    ManagerUserSession managerUserSession;
 
-    private void comprobarUsuarioAdministrador() {
-        Long idUsuarioLogeado = managerUserSession.usuarioLogeado();
-        UsuarioData usuarioData = usuarioService.findById(idUsuarioLogeado);
-        if (usuarioData == null)
-            throw new UsuarioNoLogeadoException();
-        else if (!usuarioData.isAdmin()) {
-            throw new UsuarioSinPermisosException();
-        }
-    }
 
     @GetMapping("/usuarios")
     public String getAllUsuario(Model model){
-        comprobarUsuarioAdministrador();
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioNoLogeadoException();
+        }
         model.addAttribute("usuarios", usuarioService.findAll());
         return "listaUsuarios";
     }
 
     @GetMapping("/usuarios/new")
     public String toNewUsuarioForm(Model model){
-        comprobarUsuarioAdministrador();
-        model.addAttribute("usuarioData", new UsuarioData());
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioNoLogeadoException();
+        }        model.addAttribute("usuarioData", new UsuarioData());
         return "formNuevoUsuario";
     }
 
     @GetMapping("/usuarios/edit/{id}")
     public String toEditUsuario(@PathVariable("id") Long id, Model model){
-        comprobarUsuarioAdministrador();
-        UsuarioData usuarioData = usuarioService.findById(id);
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioNoLogeadoException();
+        }        UsuarioData usuarioData = usuarioService.findById(id);
         model.addAttribute("usuarioData", usuarioData);
         return "formEditarUsuario";
     }
@@ -78,15 +76,18 @@ public class UsuarioController {
         if (result.hasErrors()){
             return "formEditarUsuario";
         }
-        comprobarUsuarioAdministrador();
-        usuarioService.updateUsuario(id, usuarioData);
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioNoLogeadoException();
+        }        usuarioService.updateUsuario(id, usuarioData);
         redirectAttributes.addFlashAttribute("resultado", "Usuario modificado correctamente");
         return "redirect:/usuarios";
     }
 
     @GetMapping("usuarios/cambiarPermisos/{id}")
     public String giveAdmin(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
-        comprobarUsuarioAdministrador();
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioNoLogeadoException();
+        }
         if (managerUserSession.usuarioLogeado() == id){
             redirectAttributes.addFlashAttribute("mensaje", "Un administrador no se puede quitar permisos de administrador");
             return "redirect:/usuarios";
@@ -101,8 +102,9 @@ public class UsuarioController {
 
     @DeleteMapping("/usuarios/{id}")
     public ResponseEntity<Map<String, String>> deleteUsuario(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
-        comprobarUsuarioAdministrador();
-        if (managerUserSession.usuarioLogeado() == id ){
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioNoLogeadoException();
+        }        if (managerUserSession.usuarioLogeado() == id ){
             redirectAttributes.addFlashAttribute("mensaje", "Un administrador no se puede eliminar a sí mismo");
         } else {
             usuarioService.deleteUsuario(id);

@@ -3,6 +3,8 @@ package madstodolist.controller;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import madstodolist.authentication.ManagerUserSession;
+import madstodolist.controller.exception.UsuarioSinPermisosException;
+import madstodolist.controller.exception.UsuarioSinPermisosException;
 import madstodolist.dto.PartidaForm;
 import madstodolist.dto.QuizData;
 import madstodolist.model.Partida;
@@ -11,6 +13,7 @@ import madstodolist.model.Usuario;
 import madstodolist.repository.ModoDeJuegoRepository;
 import madstodolist.repository.UsuarioRepository;
 import madstodolist.restcontroller.SseController;
+import madstodolist.service.AuthService;
 import madstodolist.service.PartidaService;
 import madstodolist.service.QuizService;
 import madstodolist.service.UsuarioService;
@@ -42,10 +45,16 @@ public class PartidaController {
     private ServletContext servletContext;
     @Autowired
     private QuizService quizService;
+    @Autowired
     private ManagerUserSession managerUserSession;
+    @Autowired
+    AuthService authService;
 
     @GetMapping("/partida/new")
     public String newPartida(Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         model.addAttribute("partidaForm", new PartidaForm());
         model.addAttribute("modosDeJuego", modoDeJuegoRepository.findAll());
         return "formNuevaPartida";
@@ -60,11 +69,17 @@ public class PartidaController {
 
     @GetMapping("/login/adminToUser")
     public String deAdminAUser (){
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         return "redirect:/menuJuegos";
     }
 
     @GetMapping("/partida/edit/{id}")
     public String editarPartida(@PathVariable("id") Long id, Model model){
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         Partida partida = partidaService.findPartidaById(id);
         model.addAttribute("partida", partida);
         model.addAttribute("modosDeJuego", modoDeJuegoRepository.findAll());
@@ -73,6 +88,9 @@ public class PartidaController {
 
     @RequestMapping("/partida/regenerate/{id}")
     public String regenrarPreguntas(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         Partida partida = partidaService.findPartidaById(id);
         try{
             if (partida != null){
@@ -86,12 +104,18 @@ public class PartidaController {
 
     @GetMapping("/partida/list")
     public String showAllPartidas(Model model){
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         model.addAttribute("partidas", partidaService.findAll());
         return "listaPartidas";
     }
 
     @GetMapping("/partida/prepare/{id}")
     public String prepareQuiz(@PathVariable("id") Long id, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         model.addAttribute("idPartida", id);
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, true);
@@ -102,6 +126,9 @@ public class PartidaController {
 
     @GetMapping("/partida/cancel/{id}")
     public String cancelarQuiz(@PathVariable("id") Long id, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         Partida partida = partidaService.findPartidaById(id);
         partidaService.setJoinable(partida, false);
         partidaService.cleanUsuariosPartida(partida);
@@ -112,6 +139,9 @@ public class PartidaController {
 
     @GetMapping("/partida/start/{id}")
     public String arrancarPartida(@PathVariable("id") Long id, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         Partida partida = partidaService.findPartidaById(id);
         List<Pregunta> preguntas = partida.getPreguntas();
         if (preguntas.isEmpty()){
@@ -132,6 +162,9 @@ public class PartidaController {
 
     @GetMapping("/partida/avanzarPregunta/{id}")
     public String avanzarPregunta(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
+        if(!authService.esUsuarioAdmin()){
+            throw new UsuarioSinPermisosException();
+        }
         QuizData quizData = (QuizData) servletContext.getAttribute("quiz" +id);
         quizService.avanzarPregunta(quizData);
         sseController.completeSignal("pregunta"+ id);

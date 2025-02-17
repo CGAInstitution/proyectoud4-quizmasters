@@ -7,16 +7,21 @@
 <div class="container-fluid" th:object="${quiz}">
 
     <h2 th:text="'RESULTADOS DE LA PARTIDA'"></h2>
-    <div th:each="puntuacion : ${puntuaciones}">
-        <span th:text="'El jugador ' + ${puntuacion.getKey()} + ' ha conseguido ' + ${puntuacion.getValue()} + ' punto(s)'"/>
+    <table class="table table-striped">
+        <tbody>
+            <tr th:each="puntuacion : ${puntuaciones}">
+                <td th:text="'El jugador ' + ${puntuacion.getKey()} + ' ha conseguido ' + ${puntuacion.getValue()} + ' punto(s)'" ></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row mt-3 justify-content-center">
+        <form method="get" th:action="@{/quiz}">
+            <a class="btn btn-link" th:href="@{/menuJuegos}">Volver al menú de partidas</a>
+        </form>
     </div>
-    <form method="get" th:action="@{/quiz}">
-        <div class="col-6">
-        <a class="btn btn-link" th:href="@{/menuJuegos}">Volver al menú de partidas</a>
-        </div>
-    </form>
-</div>
 
+</div>
+<footer th:replace="fragments::footer"/>
 <div th:replace="~{fragments::javascript}"/>
 
 </body>
