@@ -3,10 +3,7 @@ package quizmasters.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "usuarios")
@@ -31,6 +28,9 @@ public class Usuario implements Serializable {
     // es necesario acceder a la lista de tareas para que se carguen
     @OneToMany(mappedBy = "usuario")
     Set<Tarea> tareas = new HashSet<>();
+
+    @OneToMany(mappedBy = "ganador", fetch = FetchType.EAGER)
+    private List<Partida> partidasGanadas = new ArrayList<>();
 
     // Constructor vacío necesario para JPA/Hibernate.
     // No debe usarse desde la aplicación.
@@ -89,6 +89,14 @@ public class Usuario implements Serializable {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public List<Partida> getPartidasGanadas() {
+        return partidasGanadas;
+    }
+
+    public void setPartidasGanadas(List<Partida> partidasGanadas) {
+        this.partidasGanadas = partidasGanadas;
     }
 
     // Getters y setters de la relación

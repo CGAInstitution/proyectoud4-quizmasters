@@ -25,6 +25,7 @@
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Email</th>
+                        <th>Nº Victorias</th>
                         <th>Administrador</th>
                         <th>Gestión</th>
                     </tr>
@@ -34,6 +35,7 @@
                             <td th:text="${usuario.id}"></td>
                             <td th:text="${usuario.nombre}"></td>
                             <td th:text="${usuario.email}"></td>
+                            <td th:text="${usuario.getPartidasGanadas().size()}"></td>
                             <td>
                                 <span th:if="${usuario.isAdmin}">
                                     Sí
