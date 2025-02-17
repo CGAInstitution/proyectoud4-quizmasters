@@ -14,7 +14,7 @@
         </div>
     </div>
 </div>
-<footer th:replace="fragments::footer"/>
+
 <div th:replace="~{fragments::javascript}"/>
 
 <script th:inline="javascript">
@@ -27,6 +27,6 @@
         window.location.replace("/quiz/mostrar-pregunta/" +idPartida);
     };
 </script>
-
+<footer th:replace="fragments::footer"/>
 </body>
 </html>

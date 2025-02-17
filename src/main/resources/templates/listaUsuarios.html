@@ -37,7 +37,7 @@
                             <td>
                                 <span th:if="${usuario.isAdmin}">
                                     Sí
-                                    <a class="btn btn-primary" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Quitar Permisos'"/>
+                                    <a class="btn btn-primary btn-xs" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Quitar Permisos'"/>
                                 </span>
                                 <span th:if="${!usuario.isAdmin}">
                                     No
@@ -45,7 +45,7 @@
                                 </span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" th:href="@{/usuarios/edit/{id}(id = ${usuario.getId()})}">
+                                <a class="btn btn-primary btn-xs" th:href="@{/usuarios/edit/{id}(id = ${usuario.getId()})}">
                                     Editar
                                 </a>
                                 <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
