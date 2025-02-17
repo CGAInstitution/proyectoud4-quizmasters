@@ -41,7 +41,7 @@
                                 </span>
                                 <span th:if="${!usuario.isAdmin}">
                                     No
-                                    <a class="btn btn-primary" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Dar Permisos'"/>
+                                    <a class="btn btn-primary btn-xs" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Dar Permisos'"/>
                                 </span>
                             </td>
                             <td>

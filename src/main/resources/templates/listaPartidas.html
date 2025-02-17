@@ -33,13 +33,16 @@
                         <td th:text="${partida.id}"></td>
                         <td th:text="${partida.modoDeJuego.nombre}"></td>
                         <td th:text="${partida.joinable}"></td>
-                        <td>
+                        <td th:if="${!partida.finished}">
                             <a class ="btn btn-primary" th:href="@{/partida/edit/{id}(id = ${partida.id})}">
                                 Editar
                             </a>
                             <a class ="btn btn-primary" th:href="@{/partida/prepare/{id}(id = ${partida.id})}">
                                 Iniciar
                             </a>
+                        </td>
+                        <td th:if="${partida.finished}">
+                            <span th:text="'Ya finalizada'"/>
                         </td>
                     </tr>
                 </tbody>

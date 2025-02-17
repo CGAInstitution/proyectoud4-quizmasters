@@ -7,6 +7,7 @@ import madstodolist.controller.exception.UsuarioSinPermisosException;
 import madstodolist.controller.exception.UsuarioSinPermisosException;
 import madstodolist.dto.PartidaForm;
 import madstodolist.dto.QuizData;
+import madstodolist.dto.UsuarioData;
 import madstodolist.model.Partida;
 import madstodolist.model.Pregunta;
 import madstodolist.model.Usuario;
@@ -173,7 +174,9 @@ public class PartidaController {
             model.addAttribute("pregunta", quizData.getPreguntaActual().getEnunciado());
             return "menuSiguientePregunta";
         } else {
+            Partida partida = partidaService.findPartidaById(id);
             model.addAttribute("puntuaciones", quizService.getPuntuacionesFinales(quizData));
+            partidaService.setGanador(partida, quizService.getGanador(quizData));
             return "salaResultados";
         }
 

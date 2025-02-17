@@ -20,12 +20,12 @@ public class Partida {
     @Column(name = "joinable")
     private boolean joinable;
 
+    @Column(name = "finished")
+    private boolean finished = false;
+
     @ManyToOne
     @JoinColumn(name = "modo_juego")
     private ModoDeJuego modoDeJuego;
-
-    private boolean start = false;
-    private boolean next = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "preguntas_partidas", joinColumns = @JoinColumn(name = "partida_id"), inverseJoinColumns = @JoinColumn(name = "pregunta_id"))
@@ -81,6 +81,14 @@ public class Partida {
         this.joinable = joinable;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
     public ModoDeJuego getModoDeJuego() {
         return modoDeJuego;
     }
@@ -113,21 +121,7 @@ public class Partida {
         this.ganador = ganador;
     }
 
-    public boolean isStart() {
-        return start;
-    }
 
-    public void setStart(boolean start) {
-        this.start = start;
-    }
-
-    public boolean isNext() {
-        return next;
-    }
-
-    public void setNext(boolean next) {
-        this.next = next;
-    }
 
     public List<Pregunta> getPreguntas() {
         return preguntas;

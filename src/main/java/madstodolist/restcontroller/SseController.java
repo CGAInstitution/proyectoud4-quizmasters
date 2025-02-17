@@ -66,15 +66,19 @@ public class SseController {
                     emitter.send(SseEmitter.event().data(""));
                 }
             } catch (IOException | IllegalStateException e) {
-                emitter.complete();
                 emitters.get(type).remove(emitter); // Remove emitter if it fails
             }
         }
     }
     public void cleanEmitters(String type) {
         for (SseEmitter emitter : emitters.get(type)) {
+            try{
             if (emitter != null) {
                 emitter.complete();
+                }
+            }
+            catch (IllegalStateException e) {
+                emitters.get(type).remove(emitter);
             }
         }
     }
