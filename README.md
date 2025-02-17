@@ -148,7 +148,7 @@ la vista cuando los datos han cambiado para que se actualice la presentación.
 
 Nuestra aplicación cuenta con los siguientes paquetes:
 
-- **<u>java.madstodolist.model</u>**: Contiene las clases de acceso a base de datos. En este, se encuentran los
+- **<u>java.quizmasters.model</u>**: Contiene las clases de acceso a base de datos. En este, se encuentran los
   siguientes paquetes: `Categoria`, `ModoDeJuego`, `Partida`, `Pregunta`, `Usuario`y `Tarea`, este ultimo como una clase
   vestigial del proyecto base ofrecido por el tutor.
 
@@ -159,7 +159,7 @@ ___
 El controlador recibe las entradas del usuario desde la vista y las traduce en acciones que el modelo debe ejecutar. Se
 encarga de interpretar las acciones del usuario, manejar los eventos, y de actualizar tanto el modelo como la vista.
 
-- **<u>java.madstodolist.controller</u>**: Coordina la interacción entre los diferentes componentes. Para cada clase del
+- **<u>java.quizmasters.controller</u>**: Coordina la interacción entre los diferentes componentes. Para cada clase del
   modelo de la aplicación existe un controlador que la maneja y estructura los datos del modelo: `ModoDeJuego` es
   controlado por `ModoDeJuegoController`, `citas.fxml` por `CitasController.java` etc. En total tenemos 8 controladores
   en nuestra aplicación, pero solo 7 que usemos como tal, dado que `TareaController` es una clase vestigial como su
@@ -226,7 +226,7 @@ aislados, con lo cual se pueden producir errores en la automatización. Luego la
 de datos de AWS.
 
 En esta versión (1.0) tan solo está testeada la parte de acceso a datos del modelo (preguntas y modo de juego). Los
-casos test referidos al modelo se encuentran en las clases dentro del paquete `src.test.madstodolist.`, dividiendo los
+casos test referidos al modelo se encuentran en las clases dentro del paquete `src.test.quizmasters.`, dividiendo los
 test del mismo modo que se hizo con el modelo, usando directorios con los nombres de la parte que se desea testear,
 siendo `controller`, `repository` y `service`.
 
