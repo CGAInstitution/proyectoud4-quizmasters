@@ -2,6 +2,7 @@ package quizmasters.service;
 
 import quizmasters.controller.exception.UltimoAdministradorException;
 import quizmasters.dto.UsuarioData;
+import quizmasters.model.Partida;
 import quizmasters.model.Usuario;
 import quizmasters.repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,4 +117,14 @@ public class UsuarioService {
         usuario.ifPresent(value -> usuarioRepository.delete(value));
     }
 
+
+    public Integer getNumeroPartidasGanadas(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()) {
+            return usuario.get().getPartidasGanadas().size();
+        }
+        else{
+            return 0;
+        }
+    }
 }
