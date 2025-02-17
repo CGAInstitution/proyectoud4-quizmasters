@@ -1,6 +1,32 @@
+## Índice
+- [Introducción](#introducción)
+  - [Supuesto](#supuesto-a-resolver)
+    - [Usuarios](#usuarios)
+    - [Preguntas](#preguntas)
+    - [Modos de Juego](#modos-de-juego)
+    - [Partidas](#partidas)
+    - [Categorías](#categoría)
+  - [Modelo de la Base de Datos](#Modelo-de-la-Base-de-Datos)
+- [Manual técnico para desarrolladores](#manual-técnico-para-desarrolladores)
+    - [Requisitos Previos](#requisitos-previos)
+    - [Estructura del proyecto](#estructura)
+    - [Ejecución del proyecto](#ejecución-del-proyecto)
+    - [Testing](#testing)
+    - [Manejo de errores](#manejo-de-errores)
+- [Manual de usuario](#manual-de-usuario)
+- [Metodología de Desarrollo en Equipo](#metodología-de-desarrollo-en-equipo)
+  - [Git](#uso-de-git)
+  - [Reparto de tareas](#reparto-de-tareas)
+- [Extras Realizados](#extras)
+- [Mejoras](#mejoras)
+- [Conclusiones](#conclusiones)
+- [Autores](#autores)
+
 ## Introducción
 
 [Volver al índice](#índice)
+
+Trabajo realizado por Yelko Veiga Quintas, Evan Silva González y David Búa Teijeiro como proyecto correspondiente a la unidad 4: Creación de Aplicaciones Web, de la asignatura de Acceso a Datos de 2ºDAM.
 
 ### Supuesto a resolver
 
@@ -105,6 +131,12 @@ Cada pregunta dentro de la base de datos puede estar asociada a una de estas cat
 filtrar las preguntas según su temática.
 ___
 
+### Modelo de la Base de Datos
+
+A continuación se muestra el esquema Crow's Foot de la base de datos diseñada para implementar el supuesto comentado en el apartado anterior
+
+![](img/modelo_sin_tareas.png)
+
 ## Manual técnico para desarrolladores
 
 [Volver al índice](#índice)
@@ -120,16 +152,6 @@ ___
   cualquier otro IDE compatible con Java. ([descargar](https://www.jetbrains.com/idea/download/?section=windows))
 - **SpringBoot** : Se ha usado SpringBoot para la creación de la aplicación
   web. ([documentacion](https://spring.io/projects/spring-boot))
-
-### Despliegue (Yelko time)
-
-
-### Base de datos. Modelo Entidad-Relación (CFM)
-
-[Volver al índice](#índice)
-
-![10.diagramaCRM.PNG](media%2F10.diagramaCRM.PNG)
-[esquemaBDCrow.pdf](media/esquemaBDCrow.pdf)
 
 ### Estructura
 
@@ -151,6 +173,7 @@ Nuestra aplicación cuenta con los siguientes paquetes:
 - **<u>java.quizmasters.model</u>**: Contiene las clases de acceso a base de datos. En este, se encuentran los
   siguientes paquetes: `Categoria`, `ModoDeJuego`, `Partida`, `Pregunta`, `Usuario`y `Tarea`, este ultimo como una clase
   vestigial del proyecto base ofrecido por el tutor.
+
 
 
 #### Controlador
@@ -178,36 +201,26 @@ envía al controlador, en Springboot, a veces se tramitan en la propia página.
 - **<u>resources.templates</u>**: Es el principal paqiete del paquete de vista, con los archivos `*.html`, que es
   utilizada para almacenar la estructura de las paginas que se visualizan a lo largo de la aplicación.
 
-### Metodología
+### Código Destacado
 
-[Volver al índice](#índice)
+A continuación destacamos los puntos que consideramos más relevantes de nuestro código
 
-**Uso de Git**
+#### Sse Controller y SseEmitters
+Para que la aplicación cumpla con nuestros propósitos, es necesario que las vistas de unos usuarios cambien de acuerdo a eventos que generan otros (por ejemplo, el adminstrador podrá empezar una partida, y automáticamente todos los jugadores verán en sus pantallas la primera pregunta). Para este tipo de situaciones, Spring Boot cuenta con WebSockets, una herramienta muy potente para la comunicación. No obstante, por tiempo limitado y por ser las comunicaciones que necesitamos más rudimentarias, optamos por implementar un método más sencillo, el uso de SseEmitters gestionado por un SseController. De forma simplificada, se podría considerar que esta clase ayuda a implementar listeners para dar respuesto a los eventos ya mencionados.
 
-Este proyecto sigue una metodología de desarrollo incremental basado en ramas y pull request, lo que facilita la gestión
-de versiones y la colaboración entre desarrolladores. Cada grupo de tareas que se requieren para completar una seccion
-de la aplicacion se engloba en una **issue**. Las ramas principales del proyecto son `main` y `develop`, mientras que el
-desarrollo se llevó a cabo en paralelo en las ramas que tienen un nombre acorde a la tarea.
+![](img/ssecontroller.png)
 
-El flujo de trabajo del desarrollo es el siguiente:
+La Clase SseController, que es un Bean de tipo RestController, dispondrá de una serie de endpoints, cada uno asociado a un evento en concreto que se quiere escuchar. En la imagen se muestran los que hemos incluído en nuestro caso. Algunos ejemplos son el cambio de las partidas a las que se puede unir el jugador, o la señal de que una partida en concreto ha empezado. Los métodos correspondientes se llaman desde los html que contienen un fragmento de javascript con la definición conexión a uno o varios de estos endpoints. En la siguiente imagen se muestra como ejemplo el código de la sala de espera antes de iniciar una partida, que escucha si la partida que se está esperando empieza o se cancela, redireccionando la vista al endpoint correspondiente en cada caso.
 
-1. **Diseñar el issue**: Cuando se desea implementar una nueva funcionalidad, se trabaja en la rama relacionada con la
-   propia funcionalidad que hemos creado a traves delissue.
+![](img/listenEmitter.png)
 
-2. **Testeo**: Una vez que se ha completado la funcionalidad, se realizan pruebas para asegurar que todo funciona
-   correctamente y cumple con los requisitos establecidos.
+De esta forma, cada vez que se cargue un html que contenga un código similar a este, se ejecutará el método que crea un emitter con destino al cliente que hizo la solicitud. Dado que tenemos emitters para distintos eventos, los clasificamos en listas, agrupadas en un map, cuya clave refleja sus respectivas funciones. Cuando ocurra el evento que queremos que desencadene la acción, simplemente se tendrá que llamar al método completeSignal, que enviará los emitters del tipo indicado por parámetro. Puesto que solo queremos indicar la ocurrencia de un evento, no es relevante el mensaje que estos incluyan.
 
+![](img/addemitter.png)
 
-3. **Pull request**: Después de las pruebas exitosas, se realiza un "pull request" de la rama de funcionalidad a
-   `develop`. Este paso es crucial para comprobar la integración de la nueva funcionalidad con el resto del código del
-   proyecto, los otros colaboradores revisan y aceptan el codigo proporcionado.
+El mayor problema que surge de esta implementación es que los emitters son propensos a fallar, ya que el usuario que estaba escuchando puede realizar cualquier acción que cambia la vista, perdiéndose la comunicación. Cuando esto ocurre lanzan una excecpión que impide el correcto funcionamiento de la aplicación. Es por ello que hay que gestionar adecuadamente estas situaciones. En la imagen anterior se muestra como definimos que se borre un emitter de la lista correspondiente si se ha completado (ya ha cumplido su misión y el cliente que lo creó ya no está escuchando ese evento) o ha fallado. Además, en la siguiente imagen se muestra también como capturamos errores tanto al enviarlos como al setearlos como completados, eliminado de la lista cualquier emitter que haya perdido la conexión.
 
-
-4. **Merge a Main**: Finalmente, cuando la versión en `develop` ha sido probada y se confirma que es estable, se realiza
-   un "merge" a la rama `develop`, cuando una version del código llega a un estado útil, el "merge" se lleva a `main`.
-
-Este enfoque permite una colaboración fluida entre los dos desarrolladores, asegurando que el código sea de alta calidad
-y esté bien integrado antes de ser lanzado.
+![](img/sendUpdate.png)
 
 ### Testing
 
@@ -230,7 +243,6 @@ casos test referidos al modelo se encuentran en las clases dentro del paquete `s
 test del mismo modo que se hizo con el modelo, usando directorios con los nombres de la parte que se desea testear,
 siendo `controller`, `repository` y `service`.
 
-![10.test.PNG](media%2F10.test.PNG)
 
 ### Configuración de Maven
 
@@ -287,24 +299,6 @@ El archivo `pom.xml` incluye las siguientes dependencias importantes:
 </dependencies>
 ```
 
-### Configuración de JavaFX
-
-[Volver al índice](#índice)
-
-Para ejecutar el proyecto con JavaFX, tras [descargar el SDK]((https://gluonhq.com/products/javafx/)) se necesitan
-añadir los módulos de javaFx en el proyecto.
-
-Para ejecutar el programa directamente en el IDE partiendo del JAR, es preciso añadir las librerías en *File>Project
-Structure>Global Libraries>New Global Library>Java* y a continuación cargar los .jar del directorio lib donde se haya
-guardado javaFx.
-
-También es posible preparar la ejecución del .jar del programa creando un *Artifact* (*File>Project Structure>Artifact>
-Add>JAR>From modules with dependencies...*) y añadiendo en *VM options* las líneas siguientes (recuerde cambiar la ruta
-por el directorio donde se descargó javaFX):
-
-```bash
---module-path="ruta\directorio\javaFx\lib" --add-modules="javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.swing,javafx.media"
-```
 
 ### Ejecución del proyecto
 
@@ -328,6 +322,8 @@ java --module-path="/ruta/al/javafx/lib" --add-modules="javafx.base,javafx.contr
 
 En la siguiente captura mostramos la ejecución del JAR desde el terminal.
 
+### Despliegue (Yelko time)
+
 ### Log in
 
 [Volver al índice](#índice)
@@ -347,22 +343,44 @@ El log in de la aplicación se realiza mediante un correo electrónico y una con
 
 [Volver al índice](#índice)
 
+Cambiar el enlace al nuevo vídeo.
+
 [Vídeo tutorial en Google drive](https://drive.google.com/drive/folders/1WzihyfGQkL56N75eXA3xjHCwqtfAH2ga)
 
-## Reparto de tareas
+## Metodología de Desarrollo en Equipo
 
 [Volver al índice](#índice)
 
-El trabajo en equipo para el desarrollo de esta aplicación se realizó mediante trabajo en paralelo en git trabajando con
-diversas ramas, según fuese más apropiado en cada parte del proyecto. Para las etapas iniciales de creación de la base
-de datos e interfaz principal del programa, se usó el pair programming, de forma que ambos integrantes acuerden las
-funcionalidades básicas. Asimismo, durante todo el proceso de desarrollo se empleó esta técnica también para corregir
-errores y realizar algunas refactorizaciones, pues permite detectar fallos más fácilmente.
+### Uso de Git
 
-El log-in, la configuración de RDS en AWS y las escenas `home`, `citas` y `trabajadores` fué desarrollada por Yelko
-Veiga Quintas. Las escenas `cabinas`, `productos` y `clientes` fueron desarrolladas por Evan Silva.
-En cuanto al desarrollo de las entidades (mapeo, los DAO y el Service), Yelko desarrolló la parte de citas,
-trabajadores, cabinas y clientes. Evan se encargó de productos, stock y agujas.
+Este proyecto sigue una metodología de desarrollo incremental basado en ramas y pull request, lo que facilita la gestión
+de versiones y la colaboración entre desarrolladores. Cada grupo de tareas que se requieren para completar una seccion
+de la aplicacion fue englobada en una **issue**. Tratando de seguir la metodología de git-flow, las ramas principales del proyecto son `main` y `develop`, que contienen, respectivamente, versiones listas para producción e implementaciones correctas de las funcionalidades, mientras que el
+desarrollo se llevó a cabo en paralelo en las ramas que tienen un nombre acorde a la tarea.
+
+El flujo de trabajo del desarrollo es el siguiente:
+
+1. **Diseñar el issue**: Cuando se desea implementar una nueva funcionalidad, se trabaja en la rama relacionada con la
+   propia funcionalidad que hemos creado a traves delissue.
+
+2. **Testeo**: Una vez que se ha completado la funcionalidad, se realizan pruebas para asegurar que todo funciona
+   correctamente y cumple con los requisitos establecidos.
+
+
+3. **Pull request**: Después de las pruebas exitosas, se realiza un "pull request" de la rama de funcionalidad a
+   `develop`. Este paso es crucial para comprobar la integración de la nueva funcionalidad con el resto del código del
+   proyecto, los otros colaboradores revisan y aceptan el codigo proporcionado.
+
+
+4. **Merge a Main**: Finalmente, cuando la versión en `develop` ha sido probada y se confirma que es estable, se realiza
+   un "merge" a la rama `develop`, cuando una version del código llega a un estado útil, el "merge" se lleva a `main`.
+
+Este enfoque permite una colaboración fluida entre los dos desarrolladores, asegurando que el código sea de alta calidad
+y esté bien integrado antes de ser lanzado.
+
+### Reparto de tareas
+
+TODO
 
 ## Extras
 
@@ -373,6 +391,9 @@ destacables son los siquientes:
 
 - Despliegue con Docker: la aplicación estará publicada en una instancia dockerizada EC2 de AWS o Azure, conectándose a una base de datos MySQL publicada en Azure o AWS-RDS. (10%)
 - Dashboard para el administrador de usuarios que acceden a nuestra aplicación (podrá crear, modificar, bloquear y borrar usuarios) (3%)
+- Utilización de SseController y SseEmitter para enviar señales entre clientes: aunque no forma parte de los extras propuestos, la dedicación temporal necesaria para desarrollar esta parte es, cuanto menos, digna de mención.
+
+
 ## Mejoras
 
 [Volver al índice](#índice)
@@ -393,7 +414,12 @@ abiertos a la posibilidad de otras que no hemos detectado:
 
 [Volver al índice](#índice)
 
-- TODO
+Durante este proyecto hemos sido capaces de desarrollar un aplicación funcional que cumpliese los requisitos que nos habíamos propuesto: poder realizar partidas multijugador de un juego tipo trivial de forma sincronizada, con alta customización de las mismas. Esto supone una gran satisfacción para nosotros porque es una base sobre la que podemos construir un producto más ambicioso (con más funcionalidades, más eficiente, etc.) con el que llevamos tiempo soñando. Evidentemente, debido al tiempo limitado para realizar este proyecto, la aplicación aquí presentada constituye solamente un prototipo, pero resulta muy gratificante ver que con las herramientas que estamos adquiriendo podemos convertir estas ideas en realidades.
+
+Dicho esto, cabe mencionar que Spring Boot era una novedad para nosotros, por lo que el desarrollo fue, ante todo, una puesta en práctica de los conceptos básicos que hemos aprendido. Por ello, somos conscientes de que todavía tenemos mucho que aprender para dominar su uso y que hay muchas mejoras que podemos implementar, no solo a nivel de funcionalidades, sino también a nivel de estructura y eficiencia. Además, las particularidades de nuestra aplicación supusieron tener que investigar de forma autónoma cómo llevar a cabo una comunicación entre los clientes, funcionalidad cuya implementación, al ser novedosa para nosotros, puede ser también optimizada.
+
+No obstante, consideramos que hemos cumplido todos los requisitos exigidos para esta actividad de forma satisfactoria, reflejándose en el código y en este documento que hemos adquirido no solo los conocimiento correspondientes al nivel en el que nos hallamos, sino que las investigaciones a mayores nos han hecho crecer todavía más como programadores. Este trabajo supuso una dedicación temporal en horas superior a 20 horas por persona y, por lo todo lo ya expuesto, estimamos que es digno de un sobresaliente.
+
 
 ## Autores
 

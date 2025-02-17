@@ -48,13 +48,21 @@ public class SseController {
 
     public SseEmitter addEmitter(String type){
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-        emitters.putIfAbsent(type, new CopyOnWriteArrayList<>());// Keeps connection open
+        emitters.putIfAbsent(type, new CopyOnWriteArrayList<>());
         emitters.get(type).add(emitter);
 
-        // Remove emitter when completed
         emitter.onCompletion(() -> emitters.get(type).remove(emitter));
         emitter.onTimeout(() -> emitters.get(type).remove(emitter));
         return emitter;
+    }
+
+    public void completeSignal(String type){
+        try {
+            sendUpdate(type);
+            cleanEmitters(type);
+        } catch (NullPointerException ne){
+
+        }
     }
 
     public void sendUpdate(String type) {
@@ -64,7 +72,7 @@ public class SseController {
                     emitter.send(SseEmitter.event().data(""));
                 }
             } catch (IOException | IllegalStateException e) {
-                emitters.get(type).remove(emitter); // Remove emitter if it fails
+                emitters.get(type).remove(emitter);
             }
         }
     }
@@ -81,12 +89,5 @@ public class SseController {
         }
     }
 
-    public void completeSignal(String type){
-        try {
-            sendUpdate(type);
-            cleanEmitters(type);
-        } catch (NullPointerException ne){
 
-        }
-    }
 }
