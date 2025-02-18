@@ -1,7 +1,11 @@
+# Quizmasters
+
+Trabajo realizado por Yelko Veiga Quintas, Evan Silva González y David Búa Teijeiro como proyecto correspondiente a la unidad 4: Creación de Aplicaciones Web con SpringBoot, de la asignatura de Acceso a Datos de 2ºDAM 24/25.
+
 
 ## Índice
-- [Introducción](#introducción)
-  - [Supuesto](#supuesto-a-resolver)
+- [Supuesto a resolver](#supuesto-a-resolver-)
+  - [Introducción](#introducción)
   - [Usuarios](#usuarios)
   - [Preguntas](#preguntas)
   - [Modos de Juego](#modos-de-juego)
@@ -11,9 +15,12 @@
 - [Manual técnico para desarrolladores](#manual-técnico-para-desarrolladores)
   - [Requisitos Previos](#requisitos-previos)
   - [Estructura del proyecto](#estructura)
-  - [Despliegue](#despliegue-en-aws-ec2)
-  - [Ejecución del proyecto](#ejecución-del-proyecto)
+  - [Código destacado](#código-destacado)
   - [Testing](#testing)
+  - [Configuración de Maven](#configuración-de-maven)
+  - [Ejecución del proyecto](#ejecución-del-proyecto-)
+  - [Despliegue](#despliegue-en-aws-ec2-)
+  - [Login](#log-in)
 - [Manual de usuario](#manual-de-usuario)
 - [Metodología de Desarrollo en Equipo](#metodología-de-desarrollo-en-equipo)
   - [Git](#uso-de-git)
@@ -23,13 +30,11 @@
 - [Conclusiones](#conclusiones)
 - [Autores](#autores)
 
-## Introducción
+## Supuesto a resolver 
 
 [Volver al índice](#índice)
 
-Trabajo realizado por Yelko Veiga Quintas, Evan Silva González y David Búa Teijeiro como proyecto correspondiente a la unidad 4: Creación de Aplicaciones Web, de la asignatura de Acceso a Datos de 2ºDAM.
-
-### Supuesto a resolver
+### Introducción
 
 ___
 Deseamos diseñar un juego tipo quiz, dónde varios usuarios se conecten a diferentes partidas, respondiendo a una serie de preguntas, donde la velocidad va marcada por un gameMaster (un usuario de tipo administrador).
@@ -138,6 +143,7 @@ Se encarga de la visualización de los datos del modelo de manera que el usuario
 - **<u>resources.templates</u>**: Es el principal paquete de la vista, con los archivos `*.html`, que es utilizada para almacenar la estructura de las paginas que se visualizan a lo largo de la aplicación. Utilizamos thymeleaf para gestionar la presentación a través de html.
 
 ### Código Destacado
+[Volver al índice](#índice)
 
 A continuación destacamos los puntos que consideramos más relevantes de nuestro código
 
@@ -157,6 +163,22 @@ De esta forma, cada vez que se cargue un html que contenga un código similar a 
 El mayor problema que surge de esta implementación es que los emitters son propensos a fallar, ya que el usuario que estaba escuchando puede realizar cualquier acción que cambia la vista, perdiéndose la comunicación. Cuando esto ocurre lanzan una excecpión que impide el correcto funcionamiento de la aplicación. Es por ello que hay que gestionar adecuadamente estas situaciones. En la imagen anterior se muestra como definimos que se borre un emitter de la lista correspondiente si se ha completado (ya ha cumplido su misión y el cliente que lo creó ya no está escuchando ese evento) o ha fallado. Además, en la siguiente imagen se muestra también como capturamos errores tanto al enviarlos como al setearlos como completados, eliminado de la lista cualquier emitter que haya perdido la conexión.
 
 ![](img/sendUpdate.png)
+
+#### Filtrado dinámico en select
+
+Se ha implementado, en el apartado de preguntas, un opción de filtrado por categoría dinámico al cambiar de opción en el select.
+Esto se lleva a cabo con una consulta simple utilizando a la base de datos para traer las preguntas de una determinada categoría y realizando una petición de tipo post en la vista.
+Se muestra el código en los siguientes imágenes. En el servicio se implementa la consulta: 
+
+![consulta_filtro](img/consulta.png)
+
+En la vista listPreguntas, donde se implementa el select, se realiza una petición de tipo post con un atributo onchange de modo que cada vez que cambie la selección se realice la petición. Si la opción es `TODAS` el valor es null (para que no se filtre ninguna pregunta): 
+
+![html_select](img/vista_submit.png)
+
+Finalmente, en el controlador se maneja la petición POST y se hace la consulta utilizando el servicio:
+
+![controlador_preguntas](img/controlador_preguntas.png)
 
 ### Testing
 
@@ -225,7 +247,7 @@ El archivo `pom.xml` incluye las siguientes dependencias importantes:
   
 La aplicación está configurada para escuchar en el puerto 8080 una vez ejecutada. Además, en la versión 1.0 están presentes dos configuraciones de base de datos:  
 - aws: **application-aws.properties** cuenta con la configuración de una base de datos MySql que utiliza el servicio RDS de Amazon Web Service. Es la configuración predeterminada de la app.  
-- local: **application-local.properties** donde está configurada una base de datos MySql pensada para funcionar localmente.  
+- local: **application-local.properties** donde está configurada una base de datos MySql pensada para funcionar localmente. Es necesario que exista esta base de datos en local para que el proyecto pueda funcionar.
   
   
 ### Despliegue en AWS EC2  
@@ -309,11 +331,11 @@ El log in de la aplicación se realiza mediante un correo electrónico y una con
 #### **Características**
 
 - **Registro de usuarios**: Permite a los usuarios registrarse en la aplicación proporcionando un correo electrónico y    
-  una contraseña. La contraseña se almacena en la base de datos como un hash seguro.
+  una contraseña.
 
 - **Inicio de sesión de usuarios**: Permite a los usuarios iniciar sesión en la aplicación proporcionando su correo.
 
-- **Inicio de sesion de administrador**: Permite a los usuarios con privilegios de administrador iniciar sesión en la    
+- **Inicio de sesión de administrador**: Permite a los usuarios con privilegios de administrador iniciar sesión en la    
   aplicación y acceder a funciones adicionales.
 
 ## Manual de usuario
@@ -346,7 +368,7 @@ Este enfoque permite una colaboración fluida entre los desarrolladores, asegura
 
 ### Reparto de tareas
 
-De acuerdo con lo explicado en el apartado anterior, el desarrollo de la aplicación fue llevado a cabo en paralelo en distintas ramas. Por ello, tratamos de dividir las tareas de forma que pudiésemos trabajar de manera lo más independiente posible. Como nuestro proyecto consta de tres entidades principales: pregunta, modo de juego y partida, cada uno de nosotros se encargó, en un principio, de realizar tanto el back como el front para el CRUD de cada una de ellas. Yelko desarrolló la parte correspondiente a pregunta, Evan de modo de juego (incluyendo el atributo multievaluado categoría) y David de partida. Al terminar este apartado, David pudo imlementar ya las relaciones que partida tiene con pregunta, modo de juego y usuario, añadiendo además de añadir la diferenciación entre usuarios administradores y los que no lo son. Mientras tanto Yelko elaboró el desarollo de una partida individual y Evan integró y coordinó las vistas entre sí, asegurándose de que el flow de uso fuese el adecuado tanto para administradores como para usuarios. A continuación Evan investigó sobre los métodos para comunicarse entre los clientes, David implementó dicha comunicación mediante SseEmitters, Yelko diseño los estilos de la interfaz y todos colaboramos en el cálculo de la puntuación de una partida para poder llevar a cabo partidas multijugador. Finalmente los últimos detalles y mejoras fueron realizados por todos en "pair programming", y esta documentación fue también producto de todos los integrantes.
+De acuerdo con lo explicado en el apartado anterior, el desarrollo de la aplicación fue llevado a cabo en paralelo en distintas ramas. Por ello, tratamos de dividir las tareas de forma que pudiésemos trabajar de manera lo más independiente posible. Como nuestro proyecto consta de tres entidades principales: pregunta, modo de juego y partida, cada uno de nosotros se encargó, en un principio, de realizar tanto el back como el front para el CRUD de cada una de ellas. Yelko desarrolló la parte correspondiente a pregunta, Evan de modo de juego (incluyendo el atributo multievaluado categoría) y David de partida. Al terminar este apartado, David pudo implementar ya las relaciones que partida tiene con pregunta, modo de juego y usuario, añadiendo además la diferenciación entre usuarios administradores y los que no lo son. Mientras tanto Yelko elaboró el desarollo de una partida individual y Evan integró y coordinó las vistas entre sí, asegurándose de que el flow de uso fuese el adecuado tanto para administradores como para usuarios. A continuación Evan investigó sobre los métodos para comunicarse entre los clientes, David implementó dicha comunicación mediante SseEmitters, Yelko diseño los estilos de la interfaz y todos colaboramos en el cálculo de la puntuación de una partida para poder llevar a cabo partidas multijugador. Finalmente los últimos detalles y mejoras fueron realizados por todos en "pair programming", y esta documentación fue también producto de todos los integrantes.
 
 ## Extras
 
@@ -372,6 +394,7 @@ Como en todo proyecto, existen numerosas características que por tiempo o recur
 - Permitir partida de un solo jugador
 - Añadir más configuración customizable a los modos de juego (que el paso de preguntas sea por tiempo o por administrador, que se preconfiguren las pausas, que se muestren las respuestas correctas...)
 - Refactorizar la comunicación entre usuarios en el desarollo del quiz para implementar una metodología más eficiente que los emitters con vista a tener mayor control y escalabilidad de la aplicación.
+- Hacer una diferenciación entre usuarios administradores que puedan modificar toda la base de datos y usuarios que puedan gestionar partidas, añadiendo o modificando datos en su perfil pero sin permisos de control total.
 
 ## Conclusiones
 
