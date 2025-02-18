@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head (titulo='Partida Nueva')"></head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h2 th:text="'Nueva Partida'"/>
+    <form th:object="${partidaForm}" th:action="@{/partida/new}" method="post">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="cmbModo">Modo de Juego:</label>
+                <select class="form-control" id="cmbModo" th:field="*{modoDeJuegoId}">
+                    <option th:each="mododeJuego: ${modosDeJuego}" th:value="${mododeJuego.id}" th:text="${mododeJuego.nombre}"/>
+                </select>
+            </div>
+            <button class="btn btn-primary" th:text="'Guardar'" type="submit"/>
+            <a class="btn btn-link" th:href="@{/partida/list}">Volver</a>
+        </div>
+    </form>
+</div>
+<footer th:replace="fragments::footer"/>
+<div th:replace="fragments::javascript"/>
+
+</body>
+</html>

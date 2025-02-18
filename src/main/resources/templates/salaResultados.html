@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='RESULTADO')}"></head>
+
+<body>
+<div class="container-fluid" th:object="${quiz}">
+
+    <h2 th:text="'RESULTADOS DE LA PARTIDA'"></h2>
+    <table class="table table-striped">
+        <tbody>
+            <tr th:each="puntuacion : ${puntuaciones}">
+                <td th:text="'El jugador ' + ${puntuacion.getKey()} + ' ha conseguido ' + ${puntuacion.getValue()} + ' punto(s)'" ></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row mt-3 justify-content-center">
+        <form method="get" th:action="@{/quiz}">
+            <a class="btn btn-link" th:href="@{/menuJuegos}">Volver al menú de partidas</a>
+        </form>
+    </div>
+
+</div>
+<footer th:replace="fragments::footer"/>
+<div th:replace="~{fragments::javascript}"/>
+
+</body>
+</html>

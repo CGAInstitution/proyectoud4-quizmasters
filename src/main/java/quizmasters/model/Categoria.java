@@ -1,0 +1,5 @@
+package quizmasters.model;
+
+public enum Categoria {
+    GEOGRAFIA, HISTORIA, ARTE_Y_LITERATURA, DEPORTES_Y_OCIO, CIENCIA_Y_NATURALEZA, ENTRETENIMIENTO
+}

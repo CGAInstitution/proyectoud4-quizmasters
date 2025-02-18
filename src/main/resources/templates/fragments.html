@@ -5,6 +5,7 @@
     <meta charset="UTF-8"/>
     <title th:text="${titulo}"></title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
 <div th:fragment="javascript">
@@ -12,5 +13,19 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
 </div>
+
+<footer th:fragment="footer" class="footer">
+    <p>Creado por
+        <a href="https://github.com/BuaTeijeiro" target="_blank">David Búa</a> &
+        <a href="https://github.com/EvanSilva" target="_blank">Evan Silva</a> &
+        <a href="https://github.com/yelkov" target="_blank">Yelko Veiga</a>
+    </p>
+    <p>
+        <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="rickroll">
+            © 2025 - Todos los derechos reservados
+        </a>
+    </p>
+</footer>
+
 
 </html>

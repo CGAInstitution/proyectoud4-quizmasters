@@ -1,0 +1,353 @@
+:root {
+    --fondo-claro: #d2e3ef;
+    --fondo-oscuro: #7a92b4;
+    --azul-oscuro: #1a1f3d;
+    --azul-marino: #3b4a8c;
+    --azul-medio: #587ebb;
+    --azul-claro: #87b8e8;
+    --celeste: #c6e9f1;
+    --celeste-claro: #e2f4f8;
+    --naranja-claro: #FF6F20;
+    --naranja-oscuro: #e36409;
+    --rojo-claro: #E74C3C;
+    --rojo-oscuro: #C0392B;
+    --enlaces: white;
+    --enlaces-hover: #c45009;
+    --fondo-enlaces-claro: #3b4a8c;
+    --fondo-enlaces-oscuro: #1a1f3d;
+    --gris-oscuro: #333
+}
+
+
+/* Estilo global */
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background-image: linear-gradient(var(--fondo-claro),var(--fondo-oscuro));
+    color: #fff; /* Texto blanco */
+    padding: 20px;
+    min-height: 100vh;
+}
+
+h2 {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor principal */
+.container-fluid{
+    display: grid;
+    margin: auto;
+    width: 80%;
+    background-image: radial-gradient(circle at 20% 20%, var(--azul-claro), var(--azul-medio), var(--azul-marino));
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+}
+
+.partidas {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva fila cuando no haya espacio */
+    justify-content: center; /* Centra los elementos dentro del div */
+    gap: 15px; /* Espacio entre los elementos */
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px; /* Añade un poco de espacio interno */
+}
+
+.partidas > div {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos verticalmente */
+    justify-content: space-between; /* Asegura que el contenido se distribuya de manera uniforme */
+    align-items: center; /* Centra el contenido dentro de cada cuadro */
+    width: auto; /* Ajusta el ancho automáticamente según el contenido */
+    min-width: 150px; /* El ancho mínimo de cada cuadro (ajústalo si es necesario) */
+    max-width: 200px; /* El ancho máximo de cada cuadro */
+    height: auto; /* La altura se ajustará al contenido */
+    background-color: lightblue; /* Fondo para los cuadros */
+    border-radius: 5px;
+    padding: 10px; /* Espacio interno dentro de cada cuadro */
+}
+
+.partidas p, .partidas a {
+    margin: 5px 0; /* Espacio entre los elementos de texto y los botones */
+    padding: 0;
+    text-align: center;
+}
+
+.partidas a {
+    display: block;
+    width: 100%;
+    margin-top: 10px; /* Espacio entre los elementos de texto y el botón */
+    text-align: center;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--celeste);
+    border: none;
+    color: var(--gris-oscuro);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+    background-color: var(--celeste);
+    transform: scale(1.02);
+    color: var(--gris-oscuro)
+}
+
+.btn-primary:active{
+    background-color: var(--celeste) !important;
+    color: var(--gris-oscuro) !important;
+}
+.btn-primary:focus {
+    background-color: var(--celeste) !important;
+    color: var(--gris-oscuro) !important;
+    outline: none;
+}
+
+.btn-link {
+    background-color: var(--fondo-enlaces-oscuro);
+    padding: 10px 20px;
+    color: var(--enlaces);
+    font-size: 1rem;
+    text-underline: none;
+}
+
+.btn-link:hover {
+    color: white;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+    transform: scale(1.02);
+}
+
+/* Estilo de la tabla */
+.table {
+    background-color: var(--azul-medio);
+    border-radius: 8px;
+    color: white;
+    box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.7);
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: 12px;
+}
+
+.table th {
+    background-color: var(--azul-oscuro);
+    color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--azul-marino); /* Fondo oscuro para filas impares */
+}
+
+.table-no-striped{
+    width: 40%;
+    margin: auto;
+    border-collapse: collapse;
+}
+.table-no-striped td {
+    padding: 5px;
+    margin: 0;
+    border: none;
+    width: 100%;
+}
+
+/* Estilo para los botones dentro de las celdas */
+.table-no-striped .btn {
+    width: 100%;
+    display: inline-block;
+    padding: 10px 0;
+    text-align: center;
+}
+
+
+/* Estilo para las alertas */
+.alert {
+    background-color: var(--azul-oscuro);
+    border-color: var(--celeste);
+    color: white;
+    font-size: 1.2rem;
+}
+
+.alert-success {
+    background-color: #27AE60; /* Verde para mensajes de éxito */
+}
+
+.alert .close {
+    color: white;
+}
+
+input.form-group{
+    background-color: var(--fondo-oscuro);
+    color: white;
+    border: 1px solid var(--celeste);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    -webkit-appearance: none;  /* Para eliminar el estilo predeterminado en algunos navegadores */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+input.form-control{
+    background-color: var(--fondo-claro);
+    color: black;
+    border: 1px solid var(--celeste);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+input.form-control:hover{
+    box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.7);
+}
+
+
+input.form-control:focus{
+    border-color: var(--celeste);
+    background-color: var(--celeste);
+    outline: none; /* Elimina el resplandor azul por defecto */
+    box-shadow: 0 0 5px 2px rgba(243, 255, 255, 0.7);
+}
+
+/* Selección de categoría */
+select.form-control {
+    background-color: var(--fondo-claro);
+    border: 1px solid var(--azul-marino);
+    color: black;
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: 1rem;
+
+}
+
+select.form-control:focus {
+    border-color: var(--azul-marino);
+    background-color: var(--azul-medio);
+    box-shadow: 0 0 5px 2px rgba(243, 255, 255, 0.8);
+}
+select.form-control:hover{
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.8);
+}
+
+select.form-control option {
+    background-color: var(--azul-medio); /* Color de fondo de las opciones */
+    color: white;
+}
+
+
+input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px var(--azul-oscuro) inset !important;
+    -webkit-text-fill-color: white !important;
+}
+
+
+
+/* Diseño de los botones para borrar y editar */
+.btn-xs {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    border: none;
+    background: var(--azul-oscuro);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger:hover {
+    background: var(--azul-oscuro);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
+}
+
+.btn-primary.btn-xs {
+    background-color: var(--celeste-claro);
+    color: var(--gris-oscuro)
+}
+
+.btn-primary.btn-xs:hover {
+    background-color: var(--celeste);
+    color: var(--gris-oscuro)
+}
+
+
+.contenedor-secundario{
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+    gap: 30px;
+}
+
+.card-secundario {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-image: linear-gradient(var(--azul-marino), var(--azul-oscuro));
+    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.4);
+    color: white;
+    min-width: 200px;
+    max-width: 200px;
+    align-items: center;
+    border-radius: 20px;
+}
+
+
+.card-secundario:hover{
+    transform: scale(1.05);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.card-espera {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-image: linear-gradient(var(--azul-marino), var(--azul-oscuro));
+    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.4);
+    color: white;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.footer{
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.footer a{
+    color: var(--fondo-claro);
+}
+
+
+form{
+    margin:auto;
+    width: auto;
+    max-width: 100%;
+}
+
+
+
+
+

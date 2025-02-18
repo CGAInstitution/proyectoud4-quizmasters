@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='QUIZ')}"></head>
+
+<body>
+<div class="container-fluid">
+
+    <h2 th:text="${pregunta}"></h2>
+
+    <a class="btn btn-link" th:href="@{/partida/avanzarPregunta/{id}(id = ${idPartida})}">Siguiente Pregunta</a></p>
+
+</div>
+<footer th:replace="fragments::footer"/>
+<div th:replace="~{fragments::javascript}"/>
+
+
+</body>
+</html>

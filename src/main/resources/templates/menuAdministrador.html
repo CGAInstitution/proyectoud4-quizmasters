@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head th:replace="fragments :: head (titulo='Menu')"></head>
+
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<div class="container-fluid">
+    <h2 th:text="'Bienvenido'"/>
+    <table class="table table-no-striped">
+        <tr>
+            <td>
+                <a class="btn btn-primary w-100" th:href="@{/preguntas}">Gestionar Preguntas</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-primary w-100" th:href="@{/modosDeJuego}">Gestionar Modos de Juego</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-primary w-100" th:href="@{/partida/list}">Gestionar Partidas</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-primary w-100" th:href="@{/usuarios}">Gestionar Usuarios</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-primary w-100" th:href="@{/login/adminToUser}">Jugar</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-primary w-100" th:href="@{/logout}">Log out</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<footer th:replace="fragments::footer"/>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: head (titulo='Lista de Usuarios')"></head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <div class="row mt-3">
+        <div class="col">
+            <h2 th:text="'Listado de usuarios'"></h2>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <p>
+                <a class="btn btn-primary" href="/usuarios/new">Crear Usuario</a>
+                <a class="btn btn-link" href="/menuAdmin">Volver</a>
+            </p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Nº Victorias</th>
+                        <th>Administrador</th>
+                        <th>Gestión</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario: ${usuarios}">
+                            <td th:text="${usuario.id}"></td>
+                            <td th:text="${usuario.nombre}"></td>
+                            <td th:text="${usuario.email}"></td>
+                            <td th:text="${usuario.getPartidasGanadas().size()}"></td>
+                            <td>
+                                <span th:if="${usuario.isAdmin}">
+                                    Sí
+                                    <a class="btn btn-primary btn-xs" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Quitar Permisos'"/>
+                                </span>
+                                <span th:if="${!usuario.isAdmin}">
+                                    No
+                                    <a class="btn btn-primary btn-xs" th:href="@{/usuarios/cambiarPermisos/{id}(id = ${usuario.id})}" th:text="'Dar Permisos'"/>
+                                </span>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" th:href="@{/usuarios/edit/{id}(id = ${usuario.getId()})}">
+                                    Editar
+                                </a>
+                                <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
+                                        th:onclick="'del(\'/usuarios/' + ${usuario.id} + '\')'">Borrar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(resultado)}">
+                <span th:text="${resultado}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments::footer"/>
+<div th:replace="fragments::javascript"/>
+
+<script type="text/javascript">
+    function del(urlBorrar) {
+        if (confirm('¿Estás seguro/a de que quieres borrar el usuario?')) {
+            fetch(urlBorrar, {
+                method: 'DELETE'
+            }).then((res) => res.json())
+                .then(data => window.location.href = data.redirectUrl);
+        }
+    }
+</script>
+
+</body>
+</html>

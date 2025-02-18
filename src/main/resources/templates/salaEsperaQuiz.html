@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='Esperando')}"></head>
+
+<body>
+<div class="container-fluid">
+
+    <h2 th:text="'Ya has respondido'"></h2>
+
+    <div class="contenedor-secundario">
+        <div class="card-espera">
+            <p>Esperando a que el resto de jugadores respondan la pregunta</p>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments::javascript}"/>
+
+<script th:inline="javascript">
+    var idPartida = /*[[${idPartida}]]*/ null;
+    var eventSource = new EventSource('/sse/pasarPregunta/' + idPartida);
+
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/quiz/mostrar-pregunta/" +idPartida);
+    };
+</script>
+<footer th:replace="fragments::footer"/>
+</body>
+</html>

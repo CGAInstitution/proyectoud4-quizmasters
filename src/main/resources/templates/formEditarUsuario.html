@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Crear Usuario')"></head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row justify-content-center mb-3">
+        <div class="col-auto">
+            <h2>Crear nuevo usuario</h2>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <form method="post" th:object="${usuarioData}" th:action="@{/usuarios/edit/{id}(id = ${usuarioData.getId()})}" >
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre" class="form-control" name="nombre" placeholder="Nombre" type="text"
+                                   th:field="*{nombre}" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaNacimiento">Fecha de nacimiento</label>
+                            <input id="fechaNacimiento" class="form-control" name="fechaNacimiento"
+                                   placeholder="01-12-2019" th:field="*{fechaNacimiento}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a class="btn btn-link" href="/usuarios">Cancelar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-9">
+            <div th:object="${usuarioData}">
+                <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <ul th:if="${error != null}" class="alert alert-danger">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments::footer"/>
+<div th:replace="fragments::javascript"/>
+
+</body>
+</html>

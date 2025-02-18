@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Oops')"></head>
+
+<body>
+
+<center>
+    <h1>Algo ha pasado</h1>
+    <img src="https://i.pinimg.com/736x/0a/4f/03/0a4f03bde83c9fcc6a28cdcd4157c035.jpg" alt="Error">
+    <p><a class="btn btn-link" href="/login">Volver al login</a></p>
+</center>
+<footer th:replace="fragments::footer"/>
+</body>
+</html>

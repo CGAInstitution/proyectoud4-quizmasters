@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head (titulo='Responder')}"></head>
+
+<body>
+<div class="container-fluid" th:object="${quiz}">
+
+    <h2 th:text="*{preguntaActual.getEnunciado()}"></h2>
+
+    <form method="post" autocomplete="off" th:action="@{/quiz/responder/{id}(id = ${idPartida})}">
+
+        <div class="contenedor-secundario">
+            <div class="card-espera">
+                <label for="respuesta">Respuesta: </label>
+                <input class="form-control" id="respuesta" type="text" required="required" name="respuesta"/>
+                <button class="btn btn-primary" type="submit">Responder</button>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<footer th:replace="fragments::footer"/>
+<div th:replace="~{fragments::javascript}"/>
+
+<script th:inline="javascript">
+    var idPartida = /*[[${idPartida}]]*/ null;
+    var eventSource = new EventSource('/sse/pasarPregunta/'+idPartida);
+    eventSource.onmessage = function(event) {
+        console.log("Update received: " + event.data);
+        eventSource.close();
+        window.location.replace("/quiz/mostrar-pregunta/" +idPartida);
+    };
+</script>
+
+</body>
+</html>
