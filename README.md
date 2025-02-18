@@ -9,12 +9,11 @@
   - [Categorías](#categoría)
   - [Modelo de la Base de Datos](#Modelo-de-la-Base-de-Datos)
 - [Manual técnico para desarrolladores](#manual-técnico-para-desarrolladores)
-- [Requisitos Previos](#requisitos-previos)
-- [Estructura del proyecto](#estructura)
-- [Despliegue](#despliegue-en-aws-ec2)
-- [Ejecución del proyecto](#ejecución-del-proyecto)
-- [Testing](#testing)
-- [Manejo de errores](#manejo-de-errores)
+  - [Requisitos Previos](#requisitos-previos)
+  - [Estructura del proyecto](#estructura)
+  - [Despliegue](#despliegue-en-aws-ec2)
+  - [Ejecución del proyecto](#ejecución-del-proyecto)
+  - [Testing](#testing)
 - [Manual de usuario](#manual-de-usuario)
 - [Metodología de Desarrollo en Equipo](#metodología-de-desarrollo-en-equipo)
   - [Git](#uso-de-git)
@@ -32,7 +31,8 @@ Trabajo realizado por Yelko Veiga Quintas, Evan Silva González y David Búa Tei
 
 ### Supuesto a resolver
 
-___ Deseamos diseñar un juego tipo quiz, dónde varios usuarios se conecten a diferentes partidas, respondiendo a una serie de preguntas, donde la velocidad va marcada por un gameMaster (un usuario de tipo administrador).
+___
+Deseamos diseñar un juego tipo quiz, dónde varios usuarios se conecten a diferentes partidas, respondiendo a una serie de preguntas, donde la velocidad va marcada por un gameMaster (un usuario de tipo administrador).
 
 ___   
 #### *Usuarios*
@@ -107,7 +107,8 @@ El proyecto está planteado siguiendo el patrón [Modelo-Vista-Controlador.](htt
 
 #### Modelo
 
-___ El modelo contiene los datos del programa y define cómo estos deben ser manipulados, es decir, contiene la lógica que se necesita para gestionar el estado y las reglas del negocio. Interactúa respondiendo a las solicitudes del controlador para acceder o actualizar los datos. Notifica indirectamente a la vista cuando los datos han cambiado para que se actualice la presentación.
+___ 
+El modelo contiene los datos del programa y define cómo estos deben ser manipulados, es decir, contiene la lógica que se necesita para gestionar el estado y las reglas del negocio. Interactúa respondiendo a las solicitudes del controlador para acceder o actualizar los datos. Notifica indirectamente a la vista cuando los datos han cambiado para que se actualice la presentación.
 
 Nuestra aplicación cuenta con los siguientes paquetes:
 
@@ -122,13 +123,16 @@ Nuestra aplicación cuenta con los siguientes paquetes:
 
 #### Controlador
 
-___ El controlador recibe las entradas del usuario desde la vista y las traduce en acciones que el modelo debe ejecutar. Se encarga de interpretar las acciones del usuario, manejar los eventos, y de actualizar tanto el modelo como la vista.
+___ 
+El controlador recibe las entradas del usuario desde la vista y las traduce en acciones que el modelo debe ejecutar. Se encarga de interpretar las acciones del usuario, manejar los eventos, y de actualizar tanto el modelo como la vista.
 
 - **<u>java.quizmasters.controller</u>**: Coordina la interacción entre los diferentes componentes. Para cada clase del  modelo de la aplicación existe un controlador que la maneja y estructura los datos del modelo. Además de los controladores que manejan las entidades del modelo, también existe un controlador para gestionar el login, así como otro para gestionar el flujo del Quiz y uno más para manejar la gestión de los administradores en la aplicación.
+- **<u>java.quizmasters.restcontroller</u>**: Contiene los controladores de tipo Rest, en este caso solamente el SseController, que gestiona la comunicación entre distintos usuarios mediante la clase SseEmitters,
 
 #### Vista
 
-___ Se encarga de la visualización de los datos del modelo de manera que el usuario los entienda. No contiene lógica de  negocio, solo muestra lo que el modelo le proporciona.. La vista recibe entradas del usuario (clics, teclas, etc.) y las envía al controlador.
+___
+Se encarga de la visualización de los datos del modelo de manera que el usuario los entienda. No contiene lógica de  negocio, solo muestra lo que el modelo le proporciona.. La vista recibe entradas del usuario (clics, teclas, etc.) y las envía al controlador.
 
 - **<u>resources.static.css</u>**: en el directorio css se almacenan los recursos necesarios para definir los estilos de la interfaz.
 - **<u>resources.templates</u>**: Es el principal paquete de la vista, con los archivos `*.html`, que es utilizada para almacenar la estructura de las paginas que se visualizan a lo largo de la aplicación. Utilizamos thymeleaf para gestionar la presentación a través de html.
@@ -158,9 +162,9 @@ El mayor problema que surge de esta implementación es que los emitters son prop
 
 [Volver al índice](#índice)
 
-Este proyecto implementa un enfoque de Desarrollo Guiado por Pruebas (TDD) para la capa de acceso a datos (el modelo del patrón MVC). TDD nos permitió diseñar la funcionalidad necesaria enfocándonos en cumplir primero los requisitos a través de casos de prueba. Este enfoque garantiza que cada funcionalidad desarrollada no solo cumpla con las especificaciones iniciales, sino que también sea robusta y verificable.
+Este proyecto implementa un enfoque de Desarrollo Guiado por Pruebas (TDD) para algunas de las funcionalidades que implementamos. TDD nos permitió diseñar la funcionalidad necesaria enfocándonos en cumplir primero los requisitos a través de casos de prueba. Este enfoque garantiza que cada funcionalidad desarrollada no solo cumpla con las especificaciones iniciales, sino que también sea robusta y verificable.
 
-Al principio se utilizó una base de datos específica para realizar los test, **`quiz_test`**. Cada prueba se ejecuta en una base de datos aislada. Los tests se centran sobre todo en comprobar que las operaciones se realizan con éxito.
+Los Tests se realizan sobre una base de datos tipo h2 y están anotados con la notación transactional, de forma que no interfieren con la información almacenada en la base de datos y además se revierten después de cada uno, garantizando su independencia.
 
 En esta versión (1.0) tan solo está testeada la parte de acceso a datos del modelo (preguntas y partidas). También existen algunos test de la capa de presentación (preguntas). Los casos test referidos al modelo se encuentran en las clases dentro del paquete `src.test.quizmasters.`, dividiendo los test del mismo modo que se hizo con el modelo, usando directorios con los nombres de la parte que se desea testear, siendo `controller`, `repository` y `service`.
 
@@ -330,26 +334,19 @@ Este proyecto sigue una metodología de desarrollo incremental basado en ramas y
 
 El flujo de trabajo del desarrollo es el siguiente:
 
-1. **Diseñar el issue**: Cuando se desea implementar una nueva funcionalidad, se trabaja en la rama relacionada con la    
-   propia funcionalidad que hemos creado a traves delissue.
+1. **Diseñar el issue**: Cuando se desea implementar una nueva funcionalidad, se crea un nuevo issue describiendo la tarea, al que le asociamos una nueva rama donde se realizará su desarrollo.
 
-2. **Testeo**: Una vez que se ha completado la funcionalidad, se realizan pruebas para asegurar que todo funciona    
-   correctamente y cumple con los requisitos establecidos.
+2. **Testeo**: Una vez que se ha completado la funcionalidad, se realizan pruebas para asegurar que todo funciona correctamente y cumple con los requisitos establecidos.
 
+3. **Pull request**: Después de las pruebas exitosas, se realiza un "pull request" de la rama de funcionalidad a `develop`. Este paso es crucial para comprobar la integración de la nueva funcionalidad con el resto del proyecto, pues los otros colaboradores revisan y aceptan el código proporcionado.
 
-3. **Pull request**: Después de las pruebas exitosas, se realiza un "pull request" de la rama de funcionalidad a    
-   `develop`. Este paso es crucial para comprobar la integración de la nueva funcionalidad con el resto del código del    
-   proyecto, los otros colaboradores revisan y aceptan el codigo proporcionado.
+4. **Merge a Main**: Finalmente, cuando la versión en `develop` ya incluye todas las funcionalidades necesarias probadas correctamente y es estable, se realiza un "merge" a la rama `main`, que representa la versión que se lleva a producción.
 
-
-4. **Merge a Main**: Finalmente, cuando la versión en `develop` ha sido probada y se confirma que es estable, se realiza    
-   un "merge" a la rama `develop`, cuando una version del código llega a un estado útil, el "merge" se lleva a `main`.
-
-Este enfoque permite una colaboración fluida entre los dos desarrolladores, asegurando que el código sea de alta calidad y esté bien integrado antes de ser lanzado.
+Este enfoque permite una colaboración fluida entre los desarrolladores, asegurando que el código sea de alta calidad y esté bien integrado antes de ser lanzado.
 
 ### Reparto de tareas
 
-TODO
+De acuerdo con lo explicado en el apartado anterior, el desarrollo de la aplicación fue llevado a cabo en paralelo en distintas ramas. Por ello, tratamos de dividir las tareas de forma que pudiésemos trabajar de manera lo más independiente posible. Como nuestro proyecto consta de tres entidades principales: pregunta, modo de juego y partida, cada uno de nosotros se encargó, en un principio, de realizar tanto el back como el front para el CRUD de cada una de ellas. Yelko desarrolló la parte correspondiente a pregunta, Evan de modo de juego (incluyendo el atributo multievaluado categoría) y David de partida. Al terminar este apartado, David pudo imlementar ya las relaciones que partida tiene con pregunta, modo de juego y usuario, añadiendo además de añadir la diferenciación entre usuarios administradores y los que no lo son. Mientras tanto Yelko elaboró el desarollo de una partida individual y Evan integró y coordinó las vistas entre sí, asegurándose de que el flow de uso fuese el adecuado tanto para administradores como para usuarios. A continuación Evan investigó sobre los métodos para comunicarse entre los clientes, David implementó dicha comunicación mediante SseEmitters, Yelko diseño los estilos de la interfaz y todos colaboramos en el cálculo de la puntuación de una partida para poder llevar a cabo partidas multijugador. Finalmente los últimos detalles y mejoras fueron realizados por todos en "pair programming", y esta documentación fue también producto de todos los integrantes.
 
 ## Extras
 
