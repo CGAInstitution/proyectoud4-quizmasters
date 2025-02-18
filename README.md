@@ -1,6 +1,6 @@
 # Quizmasters
 
-Trabajo realizado por Yelko Veiga Quintas, Evan Silva González y David Búa Teijeiro como proyecto correspondiente a la unidad 4: Creación de Aplicaciones Web con SpringBoot, de la asignatura de Acceso a Datos de 2ºDAM 24/25.
+Trabajo realizado por Yelko Veiga Quin-tas, Evan Silva González y David Búa Teijeiro como proyecto correspondiente a la unidad 4: Creación de Aplicaciones Web con SpringBoot, de la asignatura de Acceso a Datos de 2ºDAM 24/25.
 
 
 ## Índice
@@ -180,6 +180,15 @@ Finalmente, en el controlador se maneja la petición POST y se hace la consulta 
 
 ![controlador_preguntas](img/controlador_preguntas.png)
 
+#### servletContext
+
+Si bien separar a los diferentes usuarios en instancias que guardasen sus datos fué una tarea a tener en cuenta, también nos encontramos con el problem a para compartir un objeto central entre todos los usuarios. Esta tarea, por suerte, fué acarreada por los ServletContext. Actúa igual que httpsession, con muchos métodos que se parecen entre sí, pero el primero pone a disposición de todos los usuarios un objeto que se puede modificar y leer en cualquier momento. En nuestro caso, lo utilizamos para guardar un objeto de tipo QuizData que se está jugando en ese momento, de modo que todos los usuarios puedan acceder a él. En la siguiente imagen se muestra como se guarda la partida en el servletContext:
+
+![servletContectSet.png](img%2FservletContectSet.png)
+
+Y podemos acceder a el en cualquier momento, como se muestra en la siguiente imagen:
+
+![img.png](img/ServletContextget.png)
 ### Testing
 
 [Volver al índice](#índice)

@@ -134,6 +134,7 @@ public class PartidaController {
                 return "redirect:/partida/cancel/" + id;
             }
         }
+
         QuizData quiz = quizService.iniciarQuiz(partida.getId(), partida.getUsuarios() ,preguntas);
         servletContext.setAttribute("quiz" +id, quiz);
         sseController.completeSignal("start" + id);
@@ -147,7 +148,7 @@ public class PartidaController {
         if(!authService.esUsuarioAdmin()){
             throw new UsuarioSinPermisosException();
         }
-        QuizData quizData = (QuizData) servletContext.getAttribute("quiz" +id);
+        QuizData quizData = (QuizData) servletContext.getAttribute("quiz" +id); // <---
         quizService.avanzarPregunta(quizData);
         sseController.completeSignal("pregunta"+ id);
         if (!quizData.getEsFinalizado()){
