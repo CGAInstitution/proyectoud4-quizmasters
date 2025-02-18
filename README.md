@@ -351,9 +351,7 @@ El log in de la aplicación se realiza mediante un correo electrónico y una con
 
 [Volver al índice](#índice)
 
-Cambiar el enlace al nuevo vídeo.
-
-[Vídeo tutorial en Google drive](https://drive.google.com/drive/folders/1WzihyfGQkL56N75eXA3xjHCwqtfAH2ga)
+[Vídeo tutorial en Google drive](https://drive.google.com/drive/folders/1RST-C0gJKt7Cr3mI--Dao4iASQoNlDK8?usp=sharing)
 
 ## Metodología de Desarrollo en Equipo
 
